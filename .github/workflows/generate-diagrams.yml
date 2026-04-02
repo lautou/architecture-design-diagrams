@@ -1,0 +1,68 @@
+name: Generate Diagrams
+
+on:
+  push:
+    branches: [ main ]
+    paths:
+      - 'diagrams/**/*.py'
+      - 'requirements.txt'
+  pull_request:
+    branches: [ main ]
+    paths:
+      - 'diagrams/**/*.py'
+  workflow_dispatch:
+
+jobs:
+  generate:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Set up Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.11'
+        cache: 'pip'
+
+    - name: Install system dependencies
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y graphviz
+
+    - name: Install Python dependencies
+      run: |
+        pip install --upgrade pip
+        pip install -r requirements.txt
+
+    - name: Generate diagrams
+      run: |
+        mkdir -p output
+        find diagrams -name "*.py" -type f | while read diagram; do
+          echo "Generating: $diagram"
+          python3 "$diagram"
+        done
+
+    - name: List generated diagrams
+      run: |
+        echo "Generated diagrams:"
+        ls -lh output/
+
+    - name: Upload diagrams as artifacts
+      uses: actions/upload-artifact@v4
+      with:
+        name: architecture-diagrams
+        path: output/*.png
+        retention-days: 90
+
+    # Optional: Commit generated diagrams back to repo
+    # Uncomment if you want diagrams committed to a separate branch
+    # - name: Commit diagrams
+    #   if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    #   run: |
+    #     git config user.name "GitHub Actions"
+    #     git config user.email "actions@github.com"
+    #     git checkout -b diagrams-output
+    #     git add output/*.png
+    #     git commit -m "Auto-generate diagrams [skip ci]" || echo "No changes"
+    #     git push origin diagrams-output --force
