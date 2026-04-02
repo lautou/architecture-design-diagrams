@@ -19,8 +19,6 @@ Note: Organized by actual OpenShift namespaces for clarity
 from diagrams import Diagram, Cluster, Edge
 from diagrams.k8s.controlplane import APIServer
 from diagrams.k8s.network import Ingress
-from diagrams.k8s.ecosystem import Helm
-from diagrams.onprem.mlops import Mlflow
 from diagrams.onprem.vcs import Github
 from diagrams.onprem.database import PostgreSQL
 from diagrams.onprem.storage import Ceph
@@ -65,7 +63,7 @@ with Diagram(
 
         # Master Operator
         with Cluster("redhat-ods-operator"):
-            rhoai_operator = Helm("Red Hat OpenShift AI\nOperator")
+            rhoai_operator = Server("Red Hat OpenShift AI\nOperator")
 
         with Cluster("redhat-ods-applications"):
 
@@ -74,17 +72,17 @@ with Diagram(
 
             # Row 1: Common Controllers
             with Cluster("Common Controllers"):
-                dsp_operator = Helm("Data Science Pipelines\nOperator")
-                kserve_operator = Helm("KServe\nController")
-                trustyai_operator = Helm("TrustyAI\nOperator")
-                modelreg_operator = Helm("Model Registry\nOperator")
-                notebook_controller = Helm("Notebook\nController")
+                dsp_operator = Server("Data Science Pipelines\nOperator")
+                kserve_operator = Server("KServe\nController")
+                trustyai_operator = Server("TrustyAI\nOperator")
+                modelreg_operator = Server("Model Registry\nOperator")
+                notebook_controller = Server("Notebook\nController")
 
             # Row 2: Model & Framework Support
             with Cluster("Model & Framework Support"):
-                ray_operator = Helm("KubeRay\nOperator")
-                training_operator = Helm("Kubeflow Training\nOperator")
-                kueue_operator = Helm("Kueue Operator\n(Red Hat build)")
+                ray_operator = Server("KubeRay\nOperator")
+                training_operator = Server("Kubeflow Training\nOperator")
+                kueue_operator = Server("Kueue Operator\n(Red Hat build)")
 
     # ========== LAYER 2: USER WORKLOADS ==========
     with Cluster("LAYER 2: Execution Layer (User Workloads)"):
@@ -92,7 +90,7 @@ with Diagram(
         with Cluster("AI Projects (User Namespaces)"):
             # Main Workloads
             workbenches = Python("Workbenches\n(Jupyter, VSCode, RStudio)")
-            pipeline_server = Mlflow("AI Pipelines\nServer")
+            pipeline_server = Server("AI Pipelines\nServer")
             model_serving = Server("Model Serving\n(KServe)")
             trusty_service = Python("TrustyAI Service")
 
@@ -107,7 +105,7 @@ with Diagram(
             pvc = Ceph("Persistent Volume\nClaims")
 
         with Cluster("rhoai-model-registries"):
-            model_registry = Mlflow("Model Registry")
+            model_registry = Server("Model Registry")
 
     # ========== SIDE: OBSERVABILITY ==========
     with Cluster("redhat-ods-monitoring"):
@@ -118,7 +116,7 @@ with Diagram(
 
     # ========== LAYER 3: ACCELERATOR MANAGEMENT ==========
     with Cluster("Accelerator Management"):
-        accelerator_profiles = Helm("Accelerator Profiles\n(GPU/TPU Config)")
+        accelerator_profiles = Server("Accelerator Profiles\n(GPU/TPU Config)")
         gpu_nodes = Server("GPU Worker Nodes")
 
     # =========================================================

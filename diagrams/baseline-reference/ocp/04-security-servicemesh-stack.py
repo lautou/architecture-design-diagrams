@@ -19,9 +19,7 @@ Note: Shows actual namespace organization for security stack
 from diagrams import Diagram, Cluster, Edge
 from diagrams.k8s.controlplane import APIServer
 from diagrams.k8s.network import Ingress
-from diagrams.k8s.ecosystem import Helm
 from diagrams.onprem.security import Vault
-from diagrams.onprem.network import Istio
 from diagrams.onprem.client import Users
 from diagrams.onprem.compute import Server
 
@@ -56,14 +54,14 @@ with Diagram(
     with Cluster("Identity & Access Management"):
 
         with Cluster("rhsso-operator"):
-            keycloak_operator = Helm("Keycloak Operator")
+            keycloak_operator = Server("Keycloak Operator")
 
         with Cluster("keycloak (instance namespace)"):
             keycloak_server = Vault("Keycloak Server\n(Red Hat build)")
             keycloak_realms = Vault("Realms & Clients\n(OIDC/SAML)")
 
         with Cluster("authorino-operator"):
-            authorino_operator = Helm("Authorino Operator")
+            authorino_operator = Server("Authorino Operator")
 
         with Cluster("authorino-instances"):
             authorino_service = Vault("Authorino\n(API Authorization)")
@@ -72,7 +70,7 @@ with Diagram(
     with Cluster("Certificate Management"):
 
         with Cluster("openshift-cert-manager-operator"):
-            certmanager_operator = Helm("cert-manager\nOperator")
+            certmanager_operator = Server("cert-manager\nOperator")
 
         with Cluster("openshift-cert-manager"):
             with Cluster("Certificate Issuers"):
@@ -84,33 +82,33 @@ with Diagram(
     with Cluster("Service Mesh"):
 
         with Cluster("openshift-operators (Service Mesh)"):
-            servicemesh_operator = Helm("Service Mesh\nOperator")
+            servicemesh_operator = Server("Service Mesh\nOperator")
 
         with Cluster("istio-system"):
-            istiod = Istio("Istiod\n(Control Plane)")
+            istiod = Server("Istiod\n(Control Plane)")
 
             with Cluster("Mesh Features"):
-                mtls_enforcement = Istio("mTLS Enforcement")
-                traffic_management = Istio("Traffic Management\n(VirtualServices)")
-                mesh_observability = Istio("Mesh Telemetry\n(Traces)")
+                mtls_enforcement = Server("mTLS Enforcement")
+                traffic_management = Server("Traffic Management\n(VirtualServices)")
+                mesh_observability = Server("Mesh Telemetry\n(Traces)")
 
     # ========== RATE LIMITING ==========
     with Cluster("Rate Limiting & Traffic Control"):
 
         with Cluster("openshift-operators (Limitador)"):
-            limitador_operator = Helm("Limitador Operator")
+            limitador_operator = Server("Limitador Operator")
 
         with Cluster("limitador-system"):
-            limitador_service = Istio("Limitador\n(Rate Limiting)")
+            limitador_service = Server("Limitador\n(Rate Limiting)")
 
     # ========== CONNECTIVITY ==========
     with Cluster("Hybrid Cloud Connectivity"):
 
         with Cluster("openshift-operators (Connectivity)"):
-            connectivity_operator = Helm("Connectivity Link\nOperator")
+            connectivity_operator = Server("Connectivity Link\nOperator")
 
         with Cluster("skupper-site-controller"):
-            connectivity_service = Istio("Skupper\n(Service Interconnect)")
+            connectivity_service = Server("Skupper\n(Service Interconnect)")
 
     # ========== APPLICATION SERVICES ==========
     with Cluster("Application Services"):

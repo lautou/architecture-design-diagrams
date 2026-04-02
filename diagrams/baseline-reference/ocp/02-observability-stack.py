@@ -17,7 +17,6 @@ Note: Shows actual OpenShift observability namespaces
 
 from diagrams import Diagram, Cluster, Edge
 from diagrams.k8s.controlplane import APIServer
-from diagrams.k8s.ecosystem import Helm
 from diagrams.onprem.monitoring import Prometheus, Grafana
 from diagrams.onprem.logging import Loki
 from diagrams.onprem.tracing import Jaeger
@@ -59,29 +58,29 @@ with Diagram(
     with Cluster("LAYER 2: Add-on Observability Operators"):
 
         with Cluster("openshift-logging"):
-            logging_operator = Helm("Logging Operator")
+            logging_operator = Server("Logging Operator")
 
             with Cluster("Log Collection & Storage"):
                 log_collector = Loki("Vector/Fluentd\n(Collector)")
                 loki_stack = Loki("LokiStack\n(Storage)")
 
         with Cluster("openshift-tempo-operator"):
-            tempo_operator = Helm("Tempo Operator")
+            tempo_operator = Server("Tempo Operator")
             tempo = Jaeger("Tempo\n(Distributed Tracing)")
 
         with Cluster("openshift-opentelemetry-operator"):
-            otel_operator = Helm("OpenTelemetry\nOperator")
+            otel_operator = Server("OpenTelemetry\nOperator")
             otel_collector = Jaeger("OTel Collector\n(OTLP)")
 
         with Cluster("openshift-cluster-observability-operator"):
-            cluster_obs_operator = Helm("Cluster Observability\nOperator")
+            cluster_obs_operator = Server("Cluster Observability\nOperator")
 
         with Cluster("netobserv"):
-            network_obs_operator = Helm("Network Observability\nOperator")
+            network_obs_operator = Server("Network Observability\nOperator")
             flow_collector = Clickhouse("Flow Collector\n(eBPF)")
 
         with Cluster("openshift-operators (Grafana)"):
-            grafana_operator = Helm("Grafana Operator")
+            grafana_operator = Server("Grafana Operator")
             grafana = Grafana("Grafana\n(Custom Dashboards)")
 
     # ========== APPLICATION WORKLOADS ==========

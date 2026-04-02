@@ -22,7 +22,6 @@ from diagrams.k8s.infra import Master, Node
 from diagrams.onprem.network import Etcd, Nginx
 from diagrams.onprem.storage import Ceph
 from diagrams.onprem.compute import Server
-from diagrams.k8s.ecosystem import Helm
 from diagrams.k8s.network import Ingress
 from diagrams.onprem.client import Users
 
@@ -76,10 +75,10 @@ with Diagram(
             cluster_dns = Server("Cluster DNS\n(CoreDNS)")
 
         with Cluster("openshift-network-operator"):
-            network_operator = Helm("Cluster Network\n(OVN-Kubernetes)")
+            network_operator = Server("Cluster Network\n(OVN-Kubernetes)")
 
         with Cluster("openshift-dns-operator"):
-            dns_operator = Helm("DNS Operator")
+            dns_operator = Server("DNS Operator")
 
     # ========== LAYER 3: PLATFORM SERVICES ==========
     with Cluster("LAYER 3: Platform Services"):
@@ -91,10 +90,10 @@ with Diagram(
             oauth_server = Server("OAuth Server")
 
         with Cluster("openshift-operator-lifecycle-manager"):
-            olm = Helm("Operator Lifecycle\nManager (OLM)")
+            olm = Server("Operator Lifecycle\nManager (OLM)")
 
         with Cluster("openshift-machine-api"):
-            machine_api = Helm("Machine API\n& Autoscaler")
+            machine_api = Server("Machine API\n& Autoscaler")
 
     # ========== COMPUTE INFRASTRUCTURE ==========
     with Cluster("Compute Infrastructure"):
@@ -104,10 +103,10 @@ with Diagram(
 
         with Cluster("GPU Worker Nodes"):
             with Cluster("openshift-nfd"):
-                nfd_operator = Helm("Node Feature\nDiscovery Operator")
+                nfd_operator = Server("Node Feature\nDiscovery Operator")
 
             with Cluster("nvidia-gpu-operator"):
-                gpu_operator = Helm("NVIDIA GPU\nOperator")
+                gpu_operator = Server("NVIDIA GPU\nOperator")
 
             gpu_nodes = Server("GPU Workers\n(AI/ML)")
 
@@ -116,7 +115,7 @@ with Diagram(
 
         with Cluster("openshift-storage"):
             with Cluster("OpenShift Data Foundation"):
-                odf_operator = Helm("ODF Operator")
+                odf_operator = Server("ODF Operator")
 
                 with Cluster("Storage Classes"):
                     sc_block = Ceph("Block (RBD)")

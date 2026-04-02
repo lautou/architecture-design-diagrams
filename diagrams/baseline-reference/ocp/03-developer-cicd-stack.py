@@ -17,13 +17,10 @@ Note: Shows actual namespace organization
 
 from diagrams import Diagram, Cluster, Edge
 from diagrams.k8s.controlplane import APIServer
-from diagrams.k8s.ecosystem import Helm
-from diagrams.onprem.gitops import Argocd
 from diagrams.onprem.vcs import Github, Gitlab
-from diagrams.onprem.registry import Harbor
-from diagrams.onprem.ci import Jenkins
 from diagrams.programming.language import Python
 from diagrams.onprem.client import Users
+from diagrams.onprem.compute import Server
 
 graph_attr = {
     "fontsize": "16",
@@ -50,7 +47,7 @@ with Diagram(
     with Cluster("External Systems"):
         source_repo = Github("Source Repository\n(GitHub/GitLab)")
         config_repo = Gitlab("Config Repository\n(GitOps)")
-        external_registry = Harbor("External Registry\n(Quay, Harbor)")
+        external_registry = Server("External Registry\n(Quay, Harbor)")
 
     api = APIServer("OpenShift\nAPI Server")
 
@@ -58,41 +55,41 @@ with Diagram(
     with Cluster("GitOps - Continuous Delivery"):
 
         with Cluster("openshift-gitops-operator"):
-            gitops_operator = Helm("GitOps Operator")
+            gitops_operator = Server("GitOps Operator")
 
         with Cluster("openshift-gitops"):
-            argocd_server = Argocd("ArgoCD Server")
-            argocd_apps = Argocd("ArgoCD Applications\n(App of Apps)")
-            argocd_appsets = Argocd("ApplicationSets")
+            argocd_server = Server("ArgoCD Server")
+            argocd_apps = Server("ArgoCD Applications\n(App of Apps)")
+            argocd_appsets = Server("ApplicationSets")
 
     # ========== PIPELINES - CONTINUOUS INTEGRATION ==========
     with Cluster("Pipelines - Continuous Integration"):
 
         with Cluster("openshift-pipelines"):
-            pipelines_operator = Helm("Pipelines Operator\n(Tekton)")
+            pipelines_operator = Server("Pipelines Operator\n(Tekton)")
 
             with Cluster("Pipeline Execution"):
-                tekton_pipeline = Jenkins("Tekton Pipeline")
-                event_listener = Jenkins("EventListener\n(Webhooks)")
-                pipeline_runs = Jenkins("PipelineRuns")
+                tekton_pipeline = Server("Tekton Pipeline")
+                event_listener = Server("EventListener\n(Webhooks)")
+                pipeline_runs = Server("PipelineRuns")
 
     # ========== BUILDS ==========
     with Cluster("Image Builds"):
 
         with Cluster("openshift-builds"):
-            builds_operator = Helm("Builds Operator\n(Shipwright)")
+            builds_operator = Server("Builds Operator\n(Shipwright)")
 
             with Cluster("Build Strategies"):
-                s2i_build = Jenkins("Source-to-Image")
-                buildah_build = Jenkins("Buildah\n(Dockerfile)")
-                buildpacks = Jenkins("Cloud Native\nBuildpacks")
+                s2i_build = Server("Source-to-Image")
+                buildah_build = Server("Buildah\n(Dockerfile)")
+                buildpacks = Server("Cloud Native\nBuildpacks")
 
     # ========== DEVELOPER WORKSPACE ==========
     with Cluster("Developer Workspace"):
 
         with Cluster("openshift-operators"):
-            devworkspace_operator = Helm("DevWorkspace\nOperator")
-            web_terminal_operator = Helm("Web Terminal\nOperator")
+            devworkspace_operator = Server("DevWorkspace\nOperator")
+            web_terminal_operator = Server("Web Terminal\nOperator")
 
             with Cluster("Developer Tools"):
                 cloud_ide = Python("Cloud IDE\n(DevSpaces)")
@@ -100,11 +97,11 @@ with Diagram(
 
     # ========== REGISTRY ==========
     with Cluster("openshift-image-registry"):
-        internal_registry = Harbor("Internal Registry")
+        internal_registry = Server("Internal Registry")
 
     # ========== APPLICATION DEPLOYMENTS ==========
     with Cluster("User Namespaces"):
-        applications = Jenkins("Applications\n(Deployments)")
+        applications = Server("Applications\n(Deployments)")
 
     # =========================================================
     # CONNECTIONS
