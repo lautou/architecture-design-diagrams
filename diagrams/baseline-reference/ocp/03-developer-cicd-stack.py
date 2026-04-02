@@ -21,6 +21,7 @@ from diagrams.onprem.vcs import Github, Gitlab
 from diagrams.programming.language import Python
 from diagrams.onprem.client import Users
 from diagrams.onprem.compute import Server
+from diagrams.custom import Custom
 
 graph_attr = {
     "fontsize": "16",
@@ -55,10 +56,10 @@ with Diagram(
     with Cluster("GitOps - Continuous Delivery"):
 
         with Cluster("openshift-gitops-operator"):
-            gitops_operator = Server("GitOps Operator")
+            gitops_operator = Custom("GitOps Operator", "custom_icons/Technology icons/Red Hat OpenShift GitOps/Technology_icon-Red_Hat-OpenShift_GitOps-Standard-RGB.Large_icon_transparent.png")
 
         with Cluster("openshift-gitops"):
-            argocd_server = Server("ArgoCD Server")
+            argocd_server = Custom("ArgoCD Server", "custom_icons/Technology icons/Red Hat OpenShift GitOps/Technology_icon-Red_Hat-OpenShift_GitOps-Standard-RGB.Large_icon_transparent.png")
             argocd_apps = Server("ArgoCD Applications\n(App of Apps)")
             argocd_appsets = Server("ApplicationSets")
 
@@ -66,10 +67,10 @@ with Diagram(
     with Cluster("Pipelines - Continuous Integration"):
 
         with Cluster("openshift-pipelines"):
-            pipelines_operator = Server("Pipelines Operator\n(Tekton)")
+            pipelines_operator = Custom("Pipelines Operator\n(Tekton)", "custom_icons/Technology icons/Red Hat OpenShift Pipelines/Technology_icon-Red_Hat-OpenShift_Pipelines-Standard-RGB.Large_icon_transparent.png")
 
             with Cluster("Pipeline Execution"):
-                tekton_pipeline = Server("Tekton Pipeline")
+                tekton_pipeline = Custom("Tekton Pipeline", "custom_icons/Technology icons/Red Hat OpenShift Pipelines/Technology_icon-Red_Hat-OpenShift_Pipelines-Standard-RGB.Large_icon_transparent.png")
                 event_listener = Server("EventListener\n(Webhooks)")
                 pipeline_runs = Server("PipelineRuns")
 
@@ -77,7 +78,7 @@ with Diagram(
     with Cluster("Image Builds"):
 
         with Cluster("openshift-builds"):
-            builds_operator = Server("Builds Operator\n(Shipwright)")
+            builds_operator = Custom("Builds Operator\n(Shipwright)", "custom_icons/Technology icons/Builds for Red Hat OpenShift/Technology_icon-Red_Hat-OpenShift_Builds-Standard-RGB.Large_icon_transparent.png")
 
             with Cluster("Build Strategies"):
                 s2i_build = Server("Source-to-Image")
@@ -88,8 +89,8 @@ with Diagram(
     with Cluster("Developer Workspace"):
 
         with Cluster("openshift-operators"):
-            devworkspace_operator = Server("DevWorkspace\nOperator")
-            web_terminal_operator = Server("Web Terminal\nOperator")
+            devworkspace_operator = Custom("DevWorkspace\nOperator", "custom_icons/Technology icons/operator/Technology_icon-Red_Hat-operator-Standard-RGB.Large_icon_transparent.png")
+            web_terminal_operator = Custom("Web Terminal\nOperator", "custom_icons/Technology icons/operator/Technology_icon-Red_Hat-operator-Standard-RGB.Large_icon_transparent.png")
 
             with Cluster("Developer Tools"):
                 cloud_ide = Python("Cloud IDE\n(DevSpaces)")

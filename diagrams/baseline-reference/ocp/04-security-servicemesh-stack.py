@@ -22,6 +22,7 @@ from diagrams.k8s.network import Ingress
 from diagrams.onprem.security import Vault
 from diagrams.onprem.client import Users
 from diagrams.onprem.compute import Server
+from diagrams.custom import Custom
 
 graph_attr = {
     "fontsize": "16",
@@ -54,14 +55,14 @@ with Diagram(
     with Cluster("Identity & Access Management"):
 
         with Cluster("rhsso-operator"):
-            keycloak_operator = Server("Keycloak Operator")
+            keycloak_operator = Custom("Keycloak Operator", "custom_icons/Technology icons/Red Hat build of Keycloak/Technology_icon-Red_Hat-Keycloak-Standard-RGB.Large_icon_transparent.png")
 
         with Cluster("keycloak (instance namespace)"):
-            keycloak_server = Vault("Keycloak Server\n(Red Hat build)")
+            keycloak_server = Custom("Keycloak Server\n(Red Hat build)", "custom_icons/Technology icons/Red Hat build of Keycloak/Technology_icon-Red_Hat-Keycloak-Standard-RGB.Large_icon_transparent.png")
             keycloak_realms = Vault("Realms & Clients\n(OIDC/SAML)")
 
         with Cluster("authorino-operator"):
-            authorino_operator = Server("Authorino Operator")
+            authorino_operator = Custom("Authorino Operator", "custom_icons/Technology icons/operator/Technology_icon-Red_Hat-operator-Standard-RGB.Large_icon_transparent.png")
 
         with Cluster("authorino-instances"):
             authorino_service = Vault("Authorino\n(API Authorization)")
@@ -70,7 +71,7 @@ with Diagram(
     with Cluster("Certificate Management"):
 
         with Cluster("openshift-cert-manager-operator"):
-            certmanager_operator = Server("cert-manager\nOperator")
+            certmanager_operator = Custom("cert-manager\nOperator", "custom_icons/Technology icons/operator/Technology_icon-Red_Hat-operator-Standard-RGB.Large_icon_transparent.png")
 
         with Cluster("openshift-cert-manager"):
             with Cluster("Certificate Issuers"):
@@ -82,10 +83,10 @@ with Diagram(
     with Cluster("Service Mesh"):
 
         with Cluster("openshift-operators (Service Mesh)"):
-            servicemesh_operator = Server("Service Mesh\nOperator")
+            servicemesh_operator = Custom("Service Mesh\nOperator", "custom_icons/Technology icons/Red Hat OpenShift Service Mesh/Technology_icon-Red_Hat-OpenShift_Service_Mesh-Standard-RGB.Large_icon_transparent.png")
 
         with Cluster("istio-system"):
-            istiod = Server("Istiod\n(Control Plane)")
+            istiod = Custom("Istiod\n(Control Plane)", "custom_icons/Technology icons/Red Hat OpenShift Service Mesh/Technology_icon-Red_Hat-OpenShift_Service_Mesh-Standard-RGB.Large_icon_transparent.png")
 
             with Cluster("Mesh Features"):
                 mtls_enforcement = Server("mTLS Enforcement")
@@ -96,7 +97,7 @@ with Diagram(
     with Cluster("Rate Limiting & Traffic Control"):
 
         with Cluster("openshift-operators (Limitador)"):
-            limitador_operator = Server("Limitador Operator")
+            limitador_operator = Custom("Limitador Operator", "custom_icons/Technology icons/operator/Technology_icon-Red_Hat-operator-Standard-RGB.Large_icon_transparent.png")
 
         with Cluster("limitador-system"):
             limitador_service = Server("Limitador\n(Rate Limiting)")
@@ -105,10 +106,10 @@ with Diagram(
     with Cluster("Hybrid Cloud Connectivity"):
 
         with Cluster("openshift-operators (Connectivity)"):
-            connectivity_operator = Server("Connectivity Link\nOperator")
+            connectivity_operator = Custom("Connectivity Link\nOperator", "custom_icons/Technology icons/Red Hat Connectivity Link/Technology_icon-Red_Hat-Connectivity_Link-Standard-RGB.Large_icon_transparent.png")
 
         with Cluster("skupper-site-controller"):
-            connectivity_service = Server("Skupper\n(Service Interconnect)")
+            connectivity_service = Custom("Skupper\n(Service Interconnect)", "custom_icons/Technology icons/Red Hat Connectivity Link/Technology_icon-Red_Hat-Connectivity_Link-Standard-RGB.Large_icon_transparent.png")
 
     # ========== APPLICATION SERVICES ==========
     with Cluster("Application Services"):

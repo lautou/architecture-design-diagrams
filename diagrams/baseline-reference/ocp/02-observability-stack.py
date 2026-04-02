@@ -22,6 +22,7 @@ from diagrams.onprem.logging import Loki
 from diagrams.onprem.tracing import Jaeger
 from diagrams.onprem.database import Clickhouse
 from diagrams.onprem.compute import Server
+from diagrams.custom import Custom
 
 graph_attr = {
     "fontsize": "16",
@@ -58,29 +59,29 @@ with Diagram(
     with Cluster("LAYER 2: Add-on Observability Operators"):
 
         with Cluster("openshift-logging"):
-            logging_operator = Server("Logging Operator")
+            logging_operator = Custom("Logging Operator", "custom_icons/Technology icons/operator/Technology_icon-Red_Hat-operator-Standard-RGB.Large_icon_transparent.png")
 
             with Cluster("Log Collection & Storage"):
                 log_collector = Loki("Vector/Fluentd\n(Collector)")
                 loki_stack = Loki("LokiStack\n(Storage)")
 
         with Cluster("openshift-tempo-operator"):
-            tempo_operator = Server("Tempo Operator")
+            tempo_operator = Custom("Tempo Operator", "custom_icons/Technology icons/operator/Technology_icon-Red_Hat-operator-Standard-RGB.Large_icon_transparent.png")
             tempo = Jaeger("Tempo\n(Distributed Tracing)")
 
         with Cluster("openshift-opentelemetry-operator"):
-            otel_operator = Server("OpenTelemetry\nOperator")
+            otel_operator = Custom("OpenTelemetry\nOperator", "custom_icons/Technology icons/Red Hat build of OpenTelemetry/Technology_icon-Red_Hat-OpenTelemetry-Standard-RGB.Large_icon_transparent.png")
             otel_collector = Jaeger("OTel Collector\n(OTLP)")
 
         with Cluster("openshift-cluster-observability-operator"):
-            cluster_obs_operator = Server("Cluster Observability\nOperator")
+            cluster_obs_operator = Custom("Cluster Observability\nOperator", "custom_icons/Technology icons/Cluster observability/Technology_icon-Red_Hat-Cluster_observability_operator-Standard-RGB.Large_icon_transparent.png")
 
         with Cluster("netobserv"):
-            network_obs_operator = Server("Network Observability\nOperator")
+            network_obs_operator = Custom("Network Observability\nOperator", "custom_icons/Technology icons/operator/Technology_icon-Red_Hat-operator-Standard-RGB.Large_icon_transparent.png")
             flow_collector = Clickhouse("Flow Collector\n(eBPF)")
 
         with Cluster("openshift-operators (Grafana)"):
-            grafana_operator = Server("Grafana Operator")
+            grafana_operator = Custom("Grafana Operator", "custom_icons/Technology icons/operator/Technology_icon-Red_Hat-operator-Standard-RGB.Large_icon_transparent.png")
             grafana = Grafana("Grafana\n(Custom Dashboards)")
 
     # ========== APPLICATION WORKLOADS ==========

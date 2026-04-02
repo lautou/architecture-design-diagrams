@@ -24,6 +24,7 @@ from diagrams.onprem.storage import Ceph
 from diagrams.onprem.compute import Server
 from diagrams.k8s.network import Ingress
 from diagrams.onprem.client import Users
+from diagrams.custom import Custom
 
 graph_attr = {
     "fontsize": "16",
@@ -78,7 +79,7 @@ with Diagram(
             network_operator = Server("Cluster Network\n(OVN-Kubernetes)")
 
         with Cluster("openshift-dns-operator"):
-            dns_operator = Server("DNS Operator")
+            dns_operator = Custom("DNS Operator", "custom_icons/Technology icons/operator/Technology_icon-Red_Hat-operator-Standard-RGB.Large_icon_transparent.png")
 
     # ========== LAYER 3: PLATFORM SERVICES ==========
     with Cluster("LAYER 3: Platform Services"):
@@ -90,7 +91,7 @@ with Diagram(
             oauth_server = Server("OAuth Server")
 
         with Cluster("openshift-operator-lifecycle-manager"):
-            olm = Server("Operator Lifecycle\nManager (OLM)")
+            olm = Custom("Operator Lifecycle\nManager (OLM)", "custom_icons/Technology icons/operator/Technology_icon-Red_Hat-operator-Standard-RGB.Large_icon_transparent.png")
 
         with Cluster("openshift-machine-api"):
             machine_api = Server("Machine API\n& Autoscaler")
@@ -103,10 +104,10 @@ with Diagram(
 
         with Cluster("GPU Worker Nodes"):
             with Cluster("openshift-nfd"):
-                nfd_operator = Server("Node Feature\nDiscovery Operator")
+                nfd_operator = Custom("Node Feature\nDiscovery Operator", "custom_icons/Technology icons/operator/Technology_icon-Red_Hat-operator-Standard-RGB.Large_icon_transparent.png")
 
             with Cluster("nvidia-gpu-operator"):
-                gpu_operator = Server("NVIDIA GPU\nOperator")
+                gpu_operator = Custom("NVIDIA GPU\nOperator", "custom_icons/Technology icons/operator/Technology_icon-Red_Hat-operator-Standard-RGB.Large_icon_transparent.png")
 
             gpu_nodes = Server("GPU Workers\n(AI/ML)")
 
@@ -115,7 +116,7 @@ with Diagram(
 
         with Cluster("openshift-storage"):
             with Cluster("OpenShift Data Foundation"):
-                odf_operator = Server("ODF Operator")
+                odf_operator = Custom("ODF Operator", "custom_icons/Technology icons/operator/Technology_icon-Red_Hat-operator-Standard-RGB.Large_icon_transparent.png")
 
                 with Cluster("Storage Classes"):
                     sc_block = Ceph("Block (RBD)")

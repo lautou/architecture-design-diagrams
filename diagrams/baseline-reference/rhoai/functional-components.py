@@ -26,6 +26,7 @@ from diagrams.programming.language import Python
 from diagrams.onprem.compute import Server
 from diagrams.onprem.client import Users
 from diagrams.onprem.monitoring import Prometheus
+from diagrams.custom import Custom
 
 graph_attr = {
     "fontsize": "14",
@@ -63,7 +64,7 @@ with Diagram(
 
         # Master Operator
         with Cluster("redhat-ods-operator"):
-            rhoai_operator = Server("Red Hat OpenShift AI\nOperator")
+            rhoai_operator = Custom("Red Hat OpenShift AI\nOperator", "custom_icons/Technology icons/Red Hat AI/Technology_icon-Red_Hat-AI-Standard-RGB.Large_icon_transparent.png")
 
         with Cluster("redhat-ods-applications"):
 
@@ -72,17 +73,17 @@ with Diagram(
 
             # Row 1: Common Controllers
             with Cluster("Common Controllers"):
-                dsp_operator = Server("Data Science Pipelines\nOperator")
-                kserve_operator = Server("KServe\nController")
-                trustyai_operator = Server("TrustyAI\nOperator")
-                modelreg_operator = Server("Model Registry\nOperator")
-                notebook_controller = Server("Notebook\nController")
+                dsp_operator = Custom("Data Science Pipelines\nOperator", "custom_icons/Technology icons/operator/Technology_icon-Red_Hat-operator-Standard-RGB.Large_icon_transparent.png")
+                kserve_operator = Custom("KServe\nController", "custom_icons/Technology icons/operator/Technology_icon-Red_Hat-operator-Standard-RGB.Large_icon_transparent.png")
+                trustyai_operator = Custom("TrustyAI\nOperator", "custom_icons/Technology icons/operator/Technology_icon-Red_Hat-operator-Standard-RGB.Large_icon_transparent.png")
+                modelreg_operator = Custom("Model Registry\nOperator", "custom_icons/Technology icons/operator/Technology_icon-Red_Hat-operator-Standard-RGB.Large_icon_transparent.png")
+                notebook_controller = Custom("Notebook\nController", "custom_icons/Technology icons/operator/Technology_icon-Red_Hat-operator-Standard-RGB.Large_icon_transparent.png")
 
             # Row 2: Model & Framework Support
             with Cluster("Model & Framework Support"):
-                ray_operator = Server("KubeRay\nOperator")
-                training_operator = Server("Kubeflow Training\nOperator")
-                kueue_operator = Server("Kueue Operator\n(Red Hat build)")
+                ray_operator = Custom("KubeRay\nOperator", "custom_icons/Technology icons/operator/Technology_icon-Red_Hat-operator-Standard-RGB.Large_icon_transparent.png")
+                training_operator = Custom("Kubeflow Training\nOperator", "custom_icons/Technology icons/operator/Technology_icon-Red_Hat-operator-Standard-RGB.Large_icon_transparent.png")
+                kueue_operator = Custom("Kueue Operator\n(Red Hat build)", "custom_icons/Technology icons/operator/Technology_icon-Red_Hat-operator-Standard-RGB.Large_icon_transparent.png")
 
     # ========== LAYER 2: USER WORKLOADS ==========
     with Cluster("LAYER 2: Execution Layer (User Workloads)"):
@@ -105,7 +106,7 @@ with Diagram(
             pvc = Ceph("Persistent Volume\nClaims")
 
         with Cluster("rhoai-model-registries"):
-            model_registry = Server("Model Registry")
+            model_registry = Custom("Model Registry", "custom_icons/Technology icons/AI model/Technology_icon-Red_Hat-AI_model-Standard-RGB.Large_icon_transparent.png")
 
     # ========== SIDE: OBSERVABILITY ==========
     with Cluster("redhat-ods-monitoring"):
