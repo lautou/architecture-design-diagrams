@@ -16,7 +16,8 @@ Note: No pod-level representation - focus on logical components and data flows
 
 from diagrams import Diagram, Cluster, Edge
 from diagrams.k8s.controlplane import APIServer
-from diagrams.k8s.network import Service, Ingress
+from diagrams.k8s.network import Ingress
+from diagrams.k8s.ecosystem import Helm
 from diagrams.onprem.mlops import Mlflow
 from diagrams.onprem.vcs import Github
 from diagrams.onprem.database import PostgreSQL
@@ -44,7 +45,7 @@ with Diagram(
     data_scientist = Users("Data Scientists\n& ML Engineers")
 
     with Cluster("External Integration Points"):
-        idp = Service("Identity Provider\n(Keycloak/LDAP)")
+        idp = Server("Identity Provider\n(Keycloak/LDAP)")
         git = Github("Git Repository\n(GitHub/GitLab)")
         s3_storage = Ceph("Object Storage\n(S3/Ceph RGW)")
         external_db = PostgreSQL("External Database\n(PostgreSQL/MySQL)")
@@ -54,13 +55,13 @@ with Diagram(
 
     with Cluster("RHOAI Platform - DataScienceCluster CR"):
 
-        rhoai_operator = Service("RHOAI Operator")
+        rhoai_operator = Helm("RHOAI Operator")
 
         with Cluster("User Interface"):
-            dashboard = Service("RHOAI Dashboard\n(Web Console)")
+            dashboard = Python("RHOAI Dashboard\n(Web Console)")
 
         with Cluster("Development Environments - Workbenches"):
-            workbenches = Service("Workbench Controller")
+            workbenches = Helm("Workbench Controller")
 
             with Cluster("Notebook Images"):
                 jupyter = Python("JupyterLab")
@@ -70,91 +71,91 @@ with Diagram(
             workbenches >> [jupyter, vscode, rstudio]
 
         with Cluster("Data Science Pipelines"):
-            dsp_operator = Service("Data Science Pipelines\nOperator")
+            dsp_operator = Helm("Data Science Pipelines\nOperator")
 
             with Cluster("Pipeline Components"):
-                kubeflow = Service("Kubeflow Pipelines\nAPI Server")
-                elyra = Service("Elyra\n(Pipeline Authoring)")
-                pipeline_storage = Service("Pipeline Metadata\nDB")
+                kubeflow = Mlflow("Kubeflow Pipelines\nAPI Server")
+                elyra = Python("Elyra\n(Pipeline Authoring)")
+                pipeline_storage = PostgreSQL("Pipeline Metadata\nDB")
 
             dsp_operator >> [kubeflow, elyra, pipeline_storage]
 
         with Cluster("Model Training"):
-            training_operator = Service("Training Operator")
+            training_operator = Helm("Training Operator")
 
             with Cluster("Distributed Training Frameworks"):
-                pytorch = Service("PyTorchJob")
-                tensorflow = Service("TensorFlowJob")
-                xgboost = Service("XGBoostJob")
-                mpi = Service("MPIJob")
+                pytorch = Python("PyTorchJob")
+                tensorflow = Python("TensorFlowJob")
+                xgboost = Python("XGBoostJob")
+                mpi = Python("MPIJob")
 
             training_operator >> [pytorch, tensorflow, xgboost, mpi]
 
         with Cluster("Distributed Computing"):
             with Cluster("Ray"):
-                ray_operator = Service("Ray Operator")
-                ray_cluster = Service("Ray Cluster\n(Head + Workers)")
+                ray_operator = Helm("Ray Operator")
+                ray_cluster = Python("Ray Cluster\n(Head + Workers)")
 
                 ray_operator >> ray_cluster
 
             with Cluster("CodeFlare"):
-                codeflare_operator = Service("CodeFlare Operator")
+                codeflare_operator = Helm("CodeFlare Operator")
                 codeflare_sdk = Python("CodeFlare SDK\n(Simplified API)")
 
                 codeflare_operator >> codeflare_sdk
 
         with Cluster("Job Queuing & Resource Management"):
-            kueue_operator = Service("Kueue Operator\n(Red Hat build)")
+            kueue_operator = Helm("Kueue Operator\n(Red Hat build)")
 
             with Cluster("Queue Management"):
-                cluster_queue = Service("ClusterQueue\n(Resource Pools)")
-                local_queue = Service("LocalQueue\n(Namespace Queues)")
+                cluster_queue = Helm("ClusterQueue\n(Resource Pools)")
+                local_queue = Helm("LocalQueue\n(Namespace Queues)")
 
             kueue_operator >> [cluster_queue, local_queue]
 
         with Cluster("Model Serving"):
             with Cluster("KServe (Single Model)"):
-                kserve = Service("KServe Controller")
-                serving_runtime = Service("Serving Runtimes\n(OVMS, vLLM, Triton)")
+                kserve = Helm("KServe Controller")
+                serving_runtime = Server("Serving Runtimes\n(OVMS, vLLM, Triton)")
 
                 kserve >> serving_runtime
 
             with Cluster("ModelMesh (Multi-Model)"):
-                modelmesh = Service("ModelMesh Controller")
-                model_cache = Service("Model Cache\n& Routing")
+                modelmesh = Helm("ModelMesh Controller")
+                model_cache = Server("Model Cache\n& Routing")
 
                 modelmesh >> model_cache
 
         with Cluster("Model Registry"):
-            model_registry_operator = Service("Model Registry\nOperator")
+            model_registry_operator = Helm("Model Registry\nOperator")
 
             with Cluster("Registry Components"):
                 registry_api = Mlflow("Model Registry\nAPI")
-                registry_db = Service("Registry Metadata\nDB")
-                registry_storage = Service("Model Artifacts\nStorage")
+                registry_db = PostgreSQL("Registry Metadata\nDB")
+                registry_storage = Ceph("Model Artifacts\nStorage")
 
             model_registry_operator >> [registry_api, registry_db, registry_storage]
 
         with Cluster("Model Governance & Explainability"):
-            trustyai_operator = Service("TrustyAI Operator")
+            trustyai_operator = Helm("TrustyAI Operator")
 
             with Cluster("TrustyAI Services"):
-                explainability = Service("Model Explainability\n(LIME, SHAP)")
-                fairness = Service("Fairness Metrics\n& Bias Detection")
-                monitoring_trust = Service("Model Monitoring")
+                explainability = Python("Model Explainability\n(LIME, SHAP)")
+                fairness = Python("Fairness Metrics\n& Bias Detection")
+                monitoring_trust = Mlflow("Model Monitoring")
 
             trustyai_operator >> [explainability, fairness, monitoring_trust]
 
         with Cluster("Accelerator Management"):
-            accelerator_profiles = Service("Accelerator Profiles\n(GPU/TPU Config)")
+            accelerator_profiles = Helm("Accelerator Profiles\n(GPU/TPU Config)")
 
     with Cluster("OpenShift Infrastructure"):
         gpu_nodes = Server("GPU Worker Nodes\n(NVIDIA Operator)")
         odf_storage = Ceph("OpenShift Data Foundation\n(PVCs for models/data)")
 
     with Cluster("Monitoring & Observability"):
-        prometheus = Service("Prometheus\n(UDWM)")
-        grafana = Service("Grafana Dashboards")
+        prometheus = Server("Prometheus\n(UDWM)")
+        grafana = Server("Grafana Dashboards")
 
     # User access
     data_scientist >> Edge(label="1. login (SSO)") >> idp

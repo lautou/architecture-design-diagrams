@@ -13,10 +13,12 @@ Note: No pod-level representation - focus on logical components and security flo
 
 from diagrams import Diagram, Cluster, Edge
 from diagrams.k8s.controlplane import APIServer
-from diagrams.k8s.network import Service, Ingress
+from diagrams.k8s.network import Ingress
+from diagrams.k8s.ecosystem import Helm
 from diagrams.onprem.security import Vault
 from diagrams.onprem.network import Istio
 from diagrams.onprem.client import Users
+from diagrams.onprem.compute import Server
 
 graph_attr = {
     "fontsize": "16",
@@ -37,7 +39,7 @@ with Diagram(
     users = Users("End Users")
 
     with Cluster("External Identity Provider"):
-        external_idp = Service("Corporate IDP\n(LDAP/AD/SAML/OIDC)")
+        external_idp = Server("Corporate IDP\n(LDAP/AD/SAML/OIDC)")
 
     with Cluster("External PKI/CA"):
         external_ca = Vault("External CA\n(Enterprise PKI)")
@@ -48,57 +50,57 @@ with Diagram(
     with Cluster("Identity & Access Management"):
 
         with Cluster("Keycloak (SSO)"):
-            keycloak_operator = Service("Keycloak Operator")
-            keycloak = Service("Keycloak\n(Red Hat build)")
-            keycloak_realms = Service("Realms & Clients\n(OIDC/SAML)")
+            keycloak_operator = Helm("Keycloak Operator")
+            keycloak = Vault("Keycloak\n(Red Hat build)")
+            keycloak_realms = Vault("Realms & Clients\n(OIDC/SAML)")
 
             keycloak_operator >> keycloak
             keycloak >> keycloak_realms
 
         with Cluster("API Security"):
-            authorino_operator = Service("Authorino Operator")
-            authorino = Service("Authorino\n(API Authorization)")
+            authorino_operator = Helm("Authorino Operator")
+            authorino = Vault("Authorino\n(API Authorization)")
 
             authorino_operator >> authorino
 
     with Cluster("Certificate Management"):
-        certmanager_operator = Service("cert-manager\nOperator")
+        certmanager_operator = Helm("cert-manager\nOperator")
 
         with Cluster("Certificate Issuers"):
-            ca_issuer = Service("CA Issuer")
-            acme_issuer = Service("ACME Issuer\n(Let's Encrypt)")
+            ca_issuer = Vault("CA Issuer")
+            acme_issuer = Vault("ACME Issuer\n(Let's Encrypt)")
 
             certmanager_operator >> [ca_issuer, acme_issuer]
 
     with Cluster("Service Mesh"):
-        servicemesh_operator = Service("Service Mesh\nOperator")
+        servicemesh_operator = Helm("Service Mesh\nOperator")
 
         with Cluster("Istio Control Plane"):
             istiod = Istio("Istiod\n(Control Plane)")
 
         with Cluster("Service Mesh Features"):
-            mtls = Service("mTLS\n(Service-to-Service)")
-            traffic_mgmt = Service("Traffic Management\n(Routing, LB)")
-            observability_mesh = Service("Mesh Observability\n(Traces, Metrics)")
+            mtls = Istio("mTLS\n(Service-to-Service)")
+            traffic_mgmt = Istio("Traffic Management\n(Routing, LB)")
+            observability_mesh = Istio("Mesh Observability\n(Traces, Metrics)")
 
         servicemesh_operator >> istiod
         istiod >> [mtls, traffic_mgmt, observability_mesh]
 
     with Cluster("Rate Limiting & Traffic Control"):
-        limitador_operator = Service("Limitador Operator")
-        limitador = Service("Limitador\n(Rate Limiting)")
+        limitador_operator = Helm("Limitador Operator")
+        limitador = Istio("Limitador\n(Rate Limiting)")
 
         limitador_operator >> limitador
 
     with Cluster("Connectivity"):
-        connectivity_operator = Service("Connectivity Link\nOperator")
-        connectivity = Service("Hybrid Cloud\nConnectivity")
+        connectivity_operator = Helm("Connectivity Link\nOperator")
+        connectivity = Istio("Hybrid Cloud\nConnectivity")
 
         connectivity_operator >> connectivity
 
     with Cluster("Application Services"):
-        mesh_apps = Service("Service Mesh\nApplications")
-        standard_apps = Service("Standard\nApplications")
+        mesh_apps = Server("Service Mesh\nApplications")
+        standard_apps = Server("Standard\nApplications")
 
     # API integration
     api >> [keycloak_operator, authorino_operator, certmanager_operator, servicemesh_operator, limitador_operator, connectivity_operator]
@@ -131,9 +133,9 @@ with Diagram(
     router >> Edge(label="direct", style="dashed") >> standard_apps
 
     # Observability integration
-    observability_mesh >> Edge(label="export traces", style="dotted") >> Service("Tempo/Jaeger")
+    observability_mesh >> Edge(label="export traces", style="dotted") >> Server("Tempo/Jaeger")
 
     # Hybrid connectivity
-    connectivity >> Edge(label="secure tunnel", style="dotted") >> Service("Remote Services\n(On-prem, Cloud)")
+    connectivity >> Edge(label="secure tunnel", style="dotted") >> Server("Remote Services\n(On-prem, Cloud)")
 
 print("✓ Generated: output/baseline-ocp-04-security-servicemesh-stack.png")

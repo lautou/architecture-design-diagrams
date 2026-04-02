@@ -11,11 +11,12 @@ Note: No pod-level representation - focus on logical components and data flows
 
 from diagrams import Diagram, Cluster, Edge
 from diagrams.k8s.controlplane import APIServer
-from diagrams.k8s.network import Service
+from diagrams.k8s.ecosystem import Helm
 from diagrams.onprem.monitoring import Prometheus, Grafana
 from diagrams.onprem.logging import Loki
 from diagrams.onprem.tracing import Jaeger
 from diagrams.onprem.database import Clickhouse
+from diagrams.onprem.compute import Server
 
 graph_attr = {
     "fontsize": "16",
@@ -38,13 +39,13 @@ with Diagram(
     with Cluster("Embedded Monitoring (Built-in)"):
         with Cluster("Cluster Monitoring"):
             cluster_prom = Prometheus("Prometheus\n(Platform Metrics)")
-            cluster_alert = Service("Alertmanager\n(Platform Alerts)")
+            cluster_alert = Prometheus("Alertmanager\n(Platform Alerts)")
 
             cluster_prom >> cluster_alert
 
         with Cluster("User Defined Workload Monitoring (UDWM)"):
             udwm_prom = Prometheus("Prometheus\n(User Workload Metrics)")
-            udwm_thanos = Service("Thanos Querier\n(Unified Query)")
+            udwm_thanos = Prometheus("Thanos Querier\n(Unified Query)")
 
             udwm_prom >> udwm_thanos
             cluster_prom >> udwm_thanos
@@ -52,22 +53,22 @@ with Diagram(
     with Cluster("Add-on Observability Operators"):
 
         with Cluster("Logging"):
-            logging_operator = Service("OpenShift Logging\nOperator")
-            log_collector = Service("Vector/Fluentd\n(Log Collection)")
+            logging_operator = Helm("OpenShift Logging\nOperator")
+            log_collector = Loki("Vector/Fluentd\n(Log Collection)")
             log_store = Loki("LokiStack\n(Log Storage)")
 
             logging_operator >> [log_collector, log_store]
             log_collector >> Edge(label="forward") >> log_store
 
         with Cluster("Distributed Tracing"):
-            tempo_operator = Service("Tempo Operator")
+            tempo_operator = Helm("Tempo Operator")
             tempo = Jaeger("Tempo\n(Trace Storage)")
 
             tempo_operator >> tempo
 
         with Cluster("OpenTelemetry"):
-            otel_operator = Service("OpenTelemetry\nOperator")
-            otel_collector = Service("OTel Collector\n(Metrics, Logs, Traces)")
+            otel_operator = Helm("OpenTelemetry\nOperator")
+            otel_collector = Jaeger("OTel Collector\n(Metrics, Logs, Traces)")
 
             otel_operator >> otel_collector
             otel_collector >> Edge(label="traces") >> tempo
@@ -75,25 +76,25 @@ with Diagram(
             otel_collector >> Edge(label="logs") >> log_store
 
         with Cluster("Enhanced Observability"):
-            cluster_obs_operator = Service("Cluster Observability\nOperator")
+            cluster_obs_operator = Helm("Cluster Observability\nOperator")
 
-            network_obs_operator = Service("Network Observability\nOperator")
+            network_obs_operator = Helm("Network Observability\nOperator")
             network_flow = Clickhouse("Flow Collector\n(Network Flows)")
 
             network_obs_operator >> network_flow
 
         with Cluster("Visualization"):
-            grafana_operator = Service("Grafana Operator")
+            grafana_operator = Helm("Grafana Operator")
             grafana = Grafana("Grafana\n(Custom Dashboards)")
 
             grafana_operator >> grafana
 
     with Cluster("Application Workloads"):
-        app_workloads = Service("Applications\n(Platform & User)")
+        app_workloads = Server("Applications\n(Platform & User)")
 
     with Cluster("External Integration"):
-        external_storage = Service("External Storage\n(S3/NFS for logs)")
-        external_siem = Service("External SIEM\n(Splunk, Elastic, etc)")
+        external_storage = Server("External Storage\n(S3/NFS for logs)")
+        external_siem = Server("External SIEM\n(Splunk, Elastic, etc)")
 
     # API integration
     api >> [logging_operator, tempo_operator, otel_operator, network_obs_operator, grafana_operator, cluster_obs_operator]

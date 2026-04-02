@@ -14,11 +14,10 @@ Note: No pod-level representation - focus on logical components and operators
 from diagrams import Diagram, Cluster, Edge
 from diagrams.k8s.controlplane import APIServer, ControllerManager, Scheduler
 from diagrams.k8s.infra import Master, Node
-from diagrams.k8s.network import Service
-from diagrams.onprem.network import Etcd
+from diagrams.onprem.network import Etcd, Nginx
 from diagrams.onprem.storage import Ceph
 from diagrams.onprem.compute import Server
-from diagrams.custom import Custom
+from diagrams.k8s.ecosystem import Helm
 
 graph_attr = {
     "fontsize": "16",
@@ -37,8 +36,8 @@ with Diagram(
 ):
 
     with Cluster("External Infrastructure Integration"):
-        lb = Service("Load Balancer\n(External)")
-        dns_external = Service("DNS\n(External)")
+        lb = Nginx("Load Balancer\n(External)")
+        dns_external = Server("DNS\n(External)")
         storage_external = Ceph("External Storage\n(Optional)")
 
     with Cluster("OpenShift Control Plane"):
@@ -50,7 +49,7 @@ with Diagram(
         etcd_cluster = Etcd("etcd Cluster\n(HA: 3x)")
 
     with Cluster("Core Operators"):
-        dns_operator = Service("DNS Operator")
+        dns_operator = Helm("DNS Operator")
 
     with Cluster("Compute Infrastructure"):
         with Cluster("Worker Nodes"):
@@ -58,8 +57,8 @@ with Diagram(
                 workers = Node("Worker Nodes\n(CPU workloads)")
 
             with Cluster("GPU Compute"):
-                nfd_operator = Service("Node Feature\nDiscovery Operator")
-                gpu_operator = Service("NVIDIA GPU\nOperator")
+                nfd_operator = Helm("Node Feature\nDiscovery Operator")
+                gpu_operator = Helm("NVIDIA GPU\nOperator")
                 gpu_nodes = Server("GPU Worker Nodes\n(AI/ML workloads)")
 
                 nfd_operator >> Edge(label="detect features") >> gpu_nodes
@@ -67,12 +66,12 @@ with Diagram(
 
     with Cluster("Storage Infrastructure"):
         with Cluster("OpenShift Data Foundation (ODF)"):
-            odf_operator = Service("ODF Operator")
+            odf_operator = Helm("ODF Operator")
 
             with Cluster("Storage Classes"):
-                sc_block = Service("Block (RBD)")
-                sc_file = Service("File (CephFS)")
-                sc_object = Service("Object (RGW/S3)")
+                sc_block = Ceph("Block (RBD)")
+                sc_file = Ceph("File (CephFS)")
+                sc_object = Ceph("Object (RGW/S3)")
 
             with Cluster("Ceph Cluster"):
                 ceph = Ceph("Ceph Storage\n(MON, OSD, MDS, RGW)")
@@ -81,7 +80,7 @@ with Diagram(
             ceph >> [sc_block, sc_file, sc_object]
 
     with Cluster("Machine Management"):
-        machine_api = Service("Machine API\n& Autoscaler")
+        machine_api = Helm("Machine API\n& Autoscaler")
 
     # External integration
     lb >> Edge(label="ingress traffic") >> api
