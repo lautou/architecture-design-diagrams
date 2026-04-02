@@ -1,14 +1,18 @@
 """
 OpenShift Container Platform - Developer & CI/CD Stack Baseline
 
-This diagram shows the developer experience and CI/CD components:
-- OpenShift GitOps (ArgoCD)
-- OpenShift Pipelines (Tekton)
-- Builds for OpenShift
-- Developer Workspaces
-- Integration with external Git and registries
+Namespace-based layered architecture for developer experience:
+- GitOps Operators (openshift-gitops-operator, openshift-gitops)
+- Pipeline Operators (openshift-pipelines, openshift-builds)
+- Developer Workspaces (openshift-operators)
 
-Note: No pod-level representation - focus on logical components and workflows
+Color-coded connections:
+- Orange: Operator management
+- Green: Git/source code flows
+- Blue: Image/artifact flows
+- Purple: Deployment flows
+
+Note: Shows actual namespace organization
 """
 
 from diagrams import Diagram, Cluster, Edge
@@ -19,105 +23,147 @@ from diagrams.onprem.vcs import Github, Gitlab
 from diagrams.onprem.registry import Harbor
 from diagrams.onprem.ci import Jenkins
 from diagrams.programming.language import Python
+from diagrams.onprem.client import Users
 
 graph_attr = {
     "fontsize": "16",
     "bgcolor": "white",
     "pad": "0.5",
     "nodesep": "1.0",
-    "ranksep": "1.2"
+    "ranksep": "1.8"
 }
 
 with Diagram(
-    "OCP Baseline - Developer & CI/CD Stack",
+    "OCP Baseline - Developer & CI/CD Stack (Namespace-Based)",
     show=False,
     direction="LR",
     filename="output/baseline-ocp-03-developer-cicd-stack",
     graph_attr=graph_attr
 ):
 
-    with Cluster("External Source Control"):
-        git = Github("Git Repository\n(GitHub/GitLab/Gitea)")
-        config_repo = Gitlab("Config Repository\n(GitOps)")
+    # ========== PERSONAS ==========
+    with Cluster("Users"):
+        developer = Users("Developer")
+        platform_engineer = Users("Platform Engineer")
 
-    with Cluster("External Registry"):
-        external_registry = Harbor("External Registry\n(Quay, Harbor, etc.)")
+    # ========== EXTERNAL ==========
+    with Cluster("External Systems"):
+        source_repo = Github("Source Repository\n(GitHub/GitLab)")
+        config_repo = Gitlab("Config Repository\n(GitOps)")
+        external_registry = Harbor("External Registry\n(Quay, Harbor)")
 
     api = APIServer("OpenShift\nAPI Server")
 
+    # ========== GITOPS - CONTINUOUS DELIVERY ==========
     with Cluster("GitOps - Continuous Delivery"):
-        gitops_operator = Helm("OpenShift GitOps\nOperator")
 
-        with Cluster("ArgoCD Instance"):
-            argocd = Argocd("ArgoCD Server")
+        with Cluster("openshift-gitops-operator"):
+            gitops_operator = Helm("GitOps Operator")
+
+        with Cluster("openshift-gitops"):
+            argocd_server = Argocd("ArgoCD Server")
             argocd_apps = Argocd("ArgoCD Applications\n(App of Apps)")
+            argocd_appsets = Argocd("ApplicationSets")
 
-            gitops_operator >> argocd
-            argocd >> argocd_apps
-
+    # ========== PIPELINES - CONTINUOUS INTEGRATION ==========
     with Cluster("Pipelines - Continuous Integration"):
-        pipelines_operator = Helm("OpenShift Pipelines\nOperator (Tekton)")
 
-        with Cluster("Pipeline Execution"):
-            pipeline = Jenkins("Pipeline\n(Tasks & Steps)")
-            triggers = Jenkins("EventListener\n(Webhooks)")
+        with Cluster("openshift-pipelines"):
+            pipelines_operator = Helm("Pipelines Operator\n(Tekton)")
 
-            pipelines_operator >> [pipeline, triggers]
+            with Cluster("Pipeline Execution"):
+                tekton_pipeline = Jenkins("Tekton Pipeline")
+                event_listener = Jenkins("EventListener\n(Webhooks)")
+                pipeline_runs = Jenkins("PipelineRuns")
 
-    with Cluster("Builds"):
-        builds_operator = Helm("Builds for OpenShift\nOperator (Shipwright)")
+    # ========== BUILDS ==========
+    with Cluster("Image Builds"):
 
-        with Cluster("Build Strategies"):
-            build_s2i = Jenkins("Source-to-Image\n(S2I)")
-            build_buildah = Jenkins("Buildah\n(Dockerfile)")
-            build_buildpacks = Jenkins("Cloud Native\nBuildpacks)")
+        with Cluster("openshift-builds"):
+            builds_operator = Helm("Builds Operator\n(Shipwright)")
 
-            builds_operator >> [build_s2i, build_buildah, build_buildpacks]
+            with Cluster("Build Strategies"):
+                s2i_build = Jenkins("Source-to-Image")
+                buildah_build = Jenkins("Buildah\n(Dockerfile)")
+                buildpacks = Jenkins("Cloud Native\nBuildpacks")
 
-    with Cluster("Internal Image Registry"):
-        internal_registry = Harbor("OpenShift\nInternal Registry")
-
+    # ========== DEVELOPER WORKSPACE ==========
     with Cluster("Developer Workspace"):
-        devworkspace_operator = Helm("DevWorkspace\nOperator")
-        web_terminal_operator = Helm("Web Terminal\nOperator")
 
-        with Cluster("Developer Tools"):
-            ide = Python("Cloud IDE\n(DevSpaces/Eclipse Che)")
-            terminal = Python("Web Terminal")
+        with Cluster("openshift-operators"):
+            devworkspace_operator = Helm("DevWorkspace\nOperator")
+            web_terminal_operator = Helm("Web Terminal\nOperator")
 
-            devworkspace_operator >> ide
-            web_terminal_operator >> terminal
+            with Cluster("Developer Tools"):
+                cloud_ide = Python("Cloud IDE\n(DevSpaces)")
+                web_terminal = Python("Web Terminal")
 
-    with Cluster("Application Deployments"):
-        applications = Jenkins("Applications\n(Deployments, StatefulSets)")
+    # ========== REGISTRY ==========
+    with Cluster("openshift-image-registry"):
+        internal_registry = Harbor("Internal Registry")
 
-    # API integration
-    api >> [gitops_operator, pipelines_operator, builds_operator, devworkspace_operator, web_terminal_operator]
+    # ========== APPLICATION DEPLOYMENTS ==========
+    with Cluster("User Namespaces"):
+        applications = Jenkins("Applications\n(Deployments)")
 
-    # GitOps flow
-    config_repo >> Edge(label="1. poll/webhook") >> argocd
-    argocd >> Edge(label="2. sync") >> api
-    api >> Edge(label="3. deploy") >> applications
+    # =========================================================
+    # CONNECTIONS
+    # =========================================================
 
-    # CI Pipeline flow
-    git >> Edge(label="1. webhook") >> triggers
-    triggers >> Edge(label="2. trigger") >> pipeline
-    pipeline >> Edge(label="3. clone source") >> git
-    pipeline >> Edge(label="4. build") >> [build_s2i, build_buildah, build_buildpacks]
-    [build_s2i, build_buildah, build_buildpacks] >> Edge(label="5. push image") >> internal_registry
+    # --- OPERATOR MANAGEMENT (Orange) ---
+    api >> Edge(color="orange") >> gitops_operator
+    api >> Edge(color="orange") >> pipelines_operator
+    api >> Edge(color="orange") >> builds_operator
+    api >> Edge(color="orange") >> devworkspace_operator
+    api >> Edge(color="orange") >> web_terminal_operator
 
-    # Pipeline can also push to external registry
-    pipeline >> Edge(label="push", style="dashed") >> external_registry
+    gitops_operator >> Edge(color="orange") >> argocd_server
+    pipelines_operator >> Edge(color="orange") >> [tekton_pipeline, event_listener]
+    builds_operator >> Edge(color="orange") >> [s2i_build, buildah_build, buildpacks]
+    devworkspace_operator >> Edge(color="orange") >> cloud_ide
+    web_terminal_operator >> Edge(color="orange") >> web_terminal
 
-    # Image triggers
-    internal_registry >> Edge(label="6. image change trigger") >> argocd_apps
+    # --- USER ACCESS (Green) ---
+    developer >> Edge(color="green", label="access") >> cloud_ide
+    developer >> Edge(color="green", label="access") >> web_terminal
+    platform_engineer >> Edge(color="green", label="configure") >> argocd_server
 
-    # Developer workspace integration
-    ide >> Edge(label="commit code") >> git
-    ide >> Edge(label="deploy/test") >> api
-    terminal >> Edge(label="oc/kubectl commands") >> api
+    # --- GITOPS FLOW (Purple = Deployment) ---
+    config_repo >> Edge(color="purple", label="1. poll/webhook") >> argocd_server
+    argocd_server >> argocd_apps
+    argocd_server >> argocd_appsets
+    argocd_apps >> Edge(color="purple", label="2. sync") >> api
+    api >> Edge(color="purple", label="3. deploy") >> applications
 
-    # Registry synchronization
-    internal_registry >> Edge(label="mirror", style="dotted") >> external_registry
+    # --- CI PIPELINE FLOW ---
+    # Trigger
+    source_repo >> Edge(color="green", label="1. webhook") >> event_listener
+    event_listener >> Edge(label="2. trigger") >> tekton_pipeline
+    tekton_pipeline >> pipeline_runs
+
+    # Build process
+    pipeline_runs >> Edge(color="green", label="3. clone") >> source_repo
+    pipeline_runs >> Edge(label="4. build") >> [s2i_build, buildah_build, buildpacks]
+
+    # Image push
+    s2i_build >> Edge(color="blue", label="5. push") >> internal_registry
+    buildah_build >> Edge(color="blue", label="5. push") >> internal_registry
+    buildpacks >> Edge(color="blue", label="5. push") >> internal_registry
+
+    # External registry option
+    pipeline_runs >> Edge(color="blue", style="dashed", label="push") >> external_registry
+
+    # --- IMAGE TRIGGER ---
+    internal_registry >> Edge(color="purple", label="6. image change") >> argocd_apps
+
+    # --- DEVELOPER WORKFLOW ---
+    cloud_ide >> Edge(color="green", label="commit") >> source_repo
+    cloud_ide >> Edge(color="green", label="test deploy") >> api
+    web_terminal >> Edge(color="green", label="oc/kubectl") >> api
+
+    # --- REGISTRY SYNC ---
+    internal_registry >> Edge(style="dotted", label="mirror") >> external_registry
 
 print("✓ Generated: output/baseline-ocp-03-developer-cicd-stack.png")
+print("  → Namespace-based: openshift-gitops → openshift-pipelines → openshift-builds")
+print("  → Color-coded: Orange=management, Green=source, Blue=images, Purple=deployment")

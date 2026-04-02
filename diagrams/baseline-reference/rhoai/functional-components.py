@@ -1,17 +1,19 @@
 """
 Red Hat OpenShift AI (RHOAI) - Functional Components Baseline
 
-This diagram shows all RHOAI components available through the DataScienceCluster CR:
-- Dashboard and user interface
-- Workbenches (development environments)
-- Data Science Pipelines
-- Model Serving (KServe, ModelMesh)
-- Distributed Computing (Ray, CodeFlare)
-- Model Registry and TrustyAI
-- Training Operator
-- Integration with external systems (IDP, Git, S3, etc.)
+This diagram follows the namespace-based layered architecture pattern:
+- LAYER 1: Management & Operators (redhat-ods-operator, redhat-ods-applications)
+- LAYER 2: User Workloads (AI Projects - user namespaces)
+- LAYER 3: Infrastructure Dependencies (External systems)
+- SIDE: Observability (redhat-ods-monitoring)
 
-Note: No pod-level representation - focus on logical components and data flows
+Color-coded connections:
+- Orange: Management/hierarchy
+- Purple: Observability/monitoring
+- Green: API requests
+- Blue: Data flows
+
+Note: Organized by actual OpenShift namespaces for clarity
 """
 
 from diagrams import Diagram, Cluster, Edge
@@ -25,209 +27,180 @@ from diagrams.onprem.storage import Ceph
 from diagrams.programming.language import Python
 from diagrams.onprem.compute import Server
 from diagrams.onprem.client import Users
+from diagrams.onprem.monitoring import Prometheus
 
 graph_attr = {
     "fontsize": "14",
     "bgcolor": "white",
     "pad": "0.5",
     "nodesep": "0.8",
-    "ranksep": "1.0"
+    "ranksep": "1.5"
 }
 
 with Diagram(
-    "RHOAI Baseline - Functional Components (DataScienceCluster)",
+    "RHOAI Baseline - Functional Components (Namespace-Based)",
     show=False,
     direction="TB",
     filename="output/baseline-rhoai-functional-components",
     graph_attr=graph_attr
 ):
 
-    data_scientist = Users("Data Scientists\n& ML Engineers")
+    # ========== PERSONAS ==========
+    with Cluster("Users"):
+        data_scientist = Users("Data Scientist")
+        mlops_engineer = Users("MLOps Engineer")
 
-    with Cluster("External Integration Points"):
+    # ========== EXTERNAL INTEGRATION ==========
+    with Cluster("Infrastructure Dependencies (External)"):
         idp = Server("Identity Provider\n(Keycloak/LDAP)")
         git = Github("Git Repository\n(GitHub/GitLab)")
         s3_storage = Ceph("Object Storage\n(S3/Ceph RGW)")
-        external_db = PostgreSQL("External Database\n(PostgreSQL/MySQL)")
+        external_db = PostgreSQL("External Database\n(MariaDB/MySQL)")
 
     ocp_api = APIServer("OpenShift\nAPI Server")
     router = Ingress("OpenShift Router")
 
-    with Cluster("RHOAI Platform - DataScienceCluster CR"):
+    # ========== LAYER 1: MANAGEMENT & OPERATORS ==========
+    with Cluster("LAYER 1: Management & Operators"):
 
-        rhoai_operator = Helm("RHOAI Operator")
+        # Master Operator
+        with Cluster("redhat-ods-operator"):
+            rhoai_operator = Helm("Red Hat OpenShift AI\nOperator")
 
-        with Cluster("User Interface"):
-            dashboard = Python("RHOAI Dashboard\n(Web Console)")
+        with Cluster("redhat-ods-applications"):
 
-        with Cluster("Development Environments - Workbenches"):
-            workbenches = Helm("Workbench Controller")
+            # Dashboard
+            dashboard = Python("RHOAI Dashboard")
 
-            with Cluster("Notebook Images"):
-                jupyter = Python("JupyterLab")
-                vscode = Python("VSCode Server")
-                rstudio = Python("RStudio")
+            # Row 1: Common Controllers
+            with Cluster("Common Controllers"):
+                dsp_operator = Helm("Data Science Pipelines\nOperator")
+                kserve_operator = Helm("KServe\nController")
+                trustyai_operator = Helm("TrustyAI\nOperator")
+                modelreg_operator = Helm("Model Registry\nOperator")
+                notebook_controller = Helm("Notebook\nController")
 
-            workbenches >> [jupyter, vscode, rstudio]
+            # Row 2: Model & Framework Support
+            with Cluster("Model & Framework Support"):
+                ray_operator = Helm("KubeRay\nOperator")
+                training_operator = Helm("Kubeflow Training\nOperator")
+                kueue_operator = Helm("Kueue Operator\n(Red Hat build)")
 
-        with Cluster("Data Science Pipelines"):
-            dsp_operator = Helm("Data Science Pipelines\nOperator")
+    # ========== LAYER 2: USER WORKLOADS ==========
+    with Cluster("LAYER 2: Execution Layer (User Workloads)"):
 
-            with Cluster("Pipeline Components"):
-                kubeflow = Mlflow("Kubeflow Pipelines\nAPI Server")
-                elyra = Python("Elyra\n(Pipeline Authoring)")
-                pipeline_storage = PostgreSQL("Pipeline Metadata\nDB")
+        with Cluster("AI Projects (User Namespaces)"):
+            # Main Workloads
+            workbenches = Python("Workbenches\n(Jupyter, VSCode, RStudio)")
+            pipeline_server = Mlflow("AI Pipelines\nServer")
+            model_serving = Server("Model Serving\n(KServe)")
+            trusty_service = Python("TrustyAI Service")
 
-            dsp_operator >> [kubeflow, elyra, pipeline_storage]
+            # Ephemeral Workloads
+            pipeline_runs = Python("AI Pipeline\nRuns")
 
-        with Cluster("Model Training"):
-            training_operator = Helm("Training Operator")
+            # Training Jobs
+            training_jobs = Python("Training Jobs\n(PyTorch, TensorFlow)")
+            ray_cluster = Python("Ray Cluster\n(Distributed)")
 
-            with Cluster("Distributed Training Frameworks"):
-                pytorch = Python("PyTorchJob")
-                tensorflow = Python("TensorFlowJob")
-                xgboost = Python("XGBoostJob")
-                mpi = Python("MPIJob")
+            # Storage
+            pvc = Ceph("Persistent Volume\nClaims")
 
-            training_operator >> [pytorch, tensorflow, xgboost, mpi]
+        with Cluster("rhoai-model-registries"):
+            model_registry = Mlflow("Model Registry")
 
-        with Cluster("Distributed Computing"):
-            with Cluster("Ray"):
-                ray_operator = Helm("Ray Operator")
-                ray_cluster = Python("Ray Cluster\n(Head + Workers)")
+    # ========== SIDE: OBSERVABILITY ==========
+    with Cluster("redhat-ods-monitoring"):
+        with Cluster("Data Science Monitoring Stack"):
+            prometheus_ds = Prometheus("Prometheus\n(Data Science)")
+            collector_ds = Prometheus("Data Science\nCollector")
+            alertmanager_ds = Prometheus("Alertmanager")
 
-                ray_operator >> ray_cluster
+    # ========== LAYER 3: ACCELERATOR MANAGEMENT ==========
+    with Cluster("Accelerator Management"):
+        accelerator_profiles = Helm("Accelerator Profiles\n(GPU/TPU Config)")
+        gpu_nodes = Server("GPU Worker Nodes")
 
-            with Cluster("CodeFlare"):
-                codeflare_operator = Helm("CodeFlare Operator")
-                codeflare_sdk = Python("CodeFlare SDK\n(Simplified API)")
+    # =========================================================
+    # CONNECTIONS
+    # =========================================================
 
-                codeflare_operator >> codeflare_sdk
+    # --- 1. USER ACCESS (Green = API requests) ---
+    data_scientist >> Edge(color="green") >> router
+    router >> Edge(color="green") >> dashboard
+    data_scientist >> Edge(color="green", label="launches") >> workbenches
+    mlops_engineer >> Edge(color="green", label="registers models") >> model_registry
 
-        with Cluster("Job Queuing & Resource Management"):
-            kueue_operator = Helm("Kueue Operator\n(Red Hat build)")
+    # --- 2. AUTHENTICATION ---
+    router >> Edge(label="SSO") >> idp
 
-            with Cluster("Queue Management"):
-                cluster_queue = Helm("ClusterQueue\n(Resource Pools)")
-                local_queue = Helm("LocalQueue\n(Namespace Queues)")
+    # --- 3. OPERATOR HIERARCHY (Orange = Management) ---
+    ocp_api >> Edge(color="orange", style="bold") >> rhoai_operator
+    rhoai_operator >> Edge(color="orange", style="bold", label="manages") >> dashboard
+    rhoai_operator >> Edge(color="orange") >> dsp_operator
+    rhoai_operator >> Edge(color="orange") >> kserve_operator
+    rhoai_operator >> Edge(color="orange") >> trustyai_operator
+    rhoai_operator >> Edge(color="orange") >> modelreg_operator
+    rhoai_operator >> Edge(color="orange") >> notebook_controller
+    rhoai_operator >> Edge(color="orange") >> ray_operator
+    rhoai_operator >> Edge(color="orange") >> training_operator
+    rhoai_operator >> Edge(color="orange") >> kueue_operator
 
-            kueue_operator >> [cluster_queue, local_queue]
+    # --- 4. PROVISIONING (Controllers -> Workloads) ---
+    notebook_controller >> Edge(label="manages") >> workbenches
+    dsp_operator >> Edge(label="manages") >> pipeline_server
+    kserve_operator >> Edge(label="manages") >> model_serving
+    modelreg_operator >> Edge(label="manages") >> model_registry
+    trustyai_operator >> Edge(label="manages") >> trusty_service
+    training_operator >> Edge(label="manages") >> training_jobs
+    ray_operator >> Edge(label="manages") >> ray_cluster
 
-        with Cluster("Model Serving"):
-            with Cluster("KServe (Single Model)"):
-                kserve = Helm("KServe Controller")
-                serving_runtime = Server("Serving Runtimes\n(OVMS, vLLM, Triton)")
+    # --- 5. DASHBOARD CONFIGURATION ---
+    dashboard >> Edge(label="user config") >> workbenches
+    dashboard >> Edge(label="user config") >> pipeline_server
 
-                kserve >> serving_runtime
-
-            with Cluster("ModelMesh (Multi-Model)"):
-                modelmesh = Helm("ModelMesh Controller")
-                model_cache = Server("Model Cache\n& Routing")
-
-                modelmesh >> model_cache
-
-        with Cluster("Model Registry"):
-            model_registry_operator = Helm("Model Registry\nOperator")
-
-            with Cluster("Registry Components"):
-                registry_api = Mlflow("Model Registry\nAPI")
-                registry_db = PostgreSQL("Registry Metadata\nDB")
-                registry_storage = Ceph("Model Artifacts\nStorage")
-
-            model_registry_operator >> [registry_api, registry_db, registry_storage]
-
-        with Cluster("Model Governance & Explainability"):
-            trustyai_operator = Helm("TrustyAI Operator")
-
-            with Cluster("TrustyAI Services"):
-                explainability = Python("Model Explainability\n(LIME, SHAP)")
-                fairness = Python("Fairness Metrics\n& Bias Detection")
-                monitoring_trust = Mlflow("Model Monitoring")
-
-            trustyai_operator >> [explainability, fairness, monitoring_trust]
-
-        with Cluster("Accelerator Management"):
-            accelerator_profiles = Helm("Accelerator Profiles\n(GPU/TPU Config)")
-
-    with Cluster("OpenShift Infrastructure"):
-        gpu_nodes = Server("GPU Worker Nodes\n(NVIDIA Operator)")
-        odf_storage = Ceph("OpenShift Data Foundation\n(PVCs for models/data)")
-
-    with Cluster("Monitoring & Observability"):
-        prometheus = Server("Prometheus\n(UDWM)")
-        grafana = Server("Grafana Dashboards")
-
-    # User access
-    data_scientist >> Edge(label="1. login (SSO)") >> idp
-    idp >> Edge(label="authenticate") >> dashboard
-    data_scientist >> Edge(label="2. access") >> router
-    router >> dashboard
-
-    # RHOAI operator manages all components
-    ocp_api >> rhoai_operator
-    rhoai_operator >> Edge(label="manage", style="dashed") >> [
-        dashboard, workbenches, dsp_operator, training_operator,
-        ray_operator, codeflare_operator, kueue_operator,
-        kserve, modelmesh, model_registry_operator, trustyai_operator
-    ]
-
-    # Development workflow
-    dashboard >> Edge(label="launch") >> workbenches
-    [jupyter, vscode, rstudio] >> Edge(label="commit code") >> git
-    [jupyter, vscode, rstudio] >> Edge(label="read/write data") >> s3_storage
-
-    # Pipeline workflow
-    workbenches >> Edge(label="create pipeline") >> elyra
-    elyra >> Edge(label="submit") >> kubeflow
-    kubeflow >> Edge(label="execute") >> training_operator
-    kubeflow >> Edge(label="store metadata") >> pipeline_storage
+    # --- 6. WORKLOAD FLOWS (Blue = Data flows) ---
+    workbenches >> Edge(color="blue", label="sync code") >> git
+    workbenches >> Edge(color="blue", label="mount data") >> pvc
+    pipeline_server >> Edge(label="spawns") >> pipeline_runs
+    pipeline_runs >> Edge(color="blue", label="artifacts") >> s3_storage
 
     # Training workflow
-    training_operator >> Edge(label="request GPUs") >> kueue_operator
-    kueue_operator >> Edge(label="allocate resources") >> cluster_queue
-    cluster_queue >> Edge(label="assign") >> gpu_nodes
-    [pytorch, tensorflow, xgboost, mpi] >> Edge(label="run on") >> gpu_nodes
+    pipeline_runs >> Edge(label="submit") >> training_jobs
+    training_jobs >> Edge(label="request GPUs") >> kueue_operator
+    kueue_operator >> Edge(label="allocate") >> accelerator_profiles
+    accelerator_profiles >> Edge(label="configure") >> gpu_nodes
+    training_jobs >> Edge(color="blue", label="run on") >> gpu_nodes
 
     # Distributed computing
-    codeflare_sdk >> Edge(label="submit jobs") >> ray_cluster
-    ray_cluster >> Edge(label="use GPUs") >> gpu_nodes
-    kueue_operator >> Edge(label="queue") >> ray_cluster
-
-    # Accelerator profiles
-    accelerator_profiles >> Edge(label="configure") >> [training_operator, kserve, ray_cluster]
-
-    # Model registry workflow
-    training_operator >> Edge(label="register model") >> registry_api
-    registry_api >> Edge(label="metadata") >> registry_db
-    registry_api >> Edge(label="artifacts") >> registry_storage
-    registry_storage >> s3_storage
+    pipeline_runs >> Edge(label="submit") >> ray_cluster
+    ray_cluster >> Edge(color="blue", label="use GPUs") >> gpu_nodes
 
     # Model serving
-    registry_api >> Edge(label="deploy model") >> kserve
-    kserve >> Edge(label="load from") >> registry_storage
-    serving_runtime >> Edge(label="inference on") >> gpu_nodes
-    router >> Edge(label="inference requests") >> serving_runtime
+    training_jobs >> Edge(color="blue", label="register model") >> model_registry
+    model_registry >> Edge(color="blue", label="deploy") >> model_serving
+    model_serving >> Edge(color="blue", label="fetch models") >> s3_storage
+    model_serving >> Edge(color="blue", label="inference on") >> gpu_nodes
 
-    # ModelMesh for multi-model serving
-    registry_api >> Edge(label="deploy multiple") >> modelmesh
-    model_cache >> s3_storage
+    # TrustyAI monitoring
+    model_serving >> Edge(label="prediction data") >> trusty_service
 
-    # TrustyAI integration
-    kserve >> Edge(label="prediction data") >> trustyai_operator
-    explainability >> Edge(label="analyze") >> serving_runtime
-    fairness >> Edge(label="monitor") >> monitoring_trust
+    # --- 7. DATABASE DEPENDENCIES ---
+    trusty_service >> Edge(label="persist data") >> external_db
+    model_registry >> Edge(label="metadata") >> external_db
+    pipeline_server >> Edge(label="metadata") >> external_db
 
-    # Storage integration
-    [jupyter, vscode, rstudio] >> Edge(label="PVC") >> odf_storage
-    pipeline_storage >> odf_storage
-    registry_storage >> odf_storage
+    # --- 8. OBSERVABILITY (Purple = Monitoring) ---
+    collector_ds >> Edge(color="purple", style="dotted", label="scrapes") >> model_serving
+    collector_ds >> Edge(color="purple", style="dotted", label="scrapes") >> trusty_service
+    collector_ds >> Edge(color="purple", style="dotted", label="scrapes") >> workbenches
+    prometheus_ds << Edge(color="purple", style="dotted", label="ingests") << collector_ds
+    prometheus_ds >> alertmanager_ds
 
-    # Data connections
-    workbenches >> Edge(label="query data") >> external_db
-    kubeflow >> Edge(label="data pipeline") >> external_db
-
-    # Monitoring
-    [workbenches, training_operator, kserve, ray_cluster] >> Edge(label="metrics", style="dotted") >> prometheus
-    prometheus >> grafana
+    # --- 9. STORAGE INTEGRATION ---
+    workbenches >> Edge(color="blue") >> pvc
+    pipeline_server >> Edge(color="blue") >> pvc
 
 print("✓ Generated: output/baseline-rhoai-functional-components.png")
+print("  → Namespace-based layers: redhat-ods-operator → redhat-ods-applications → AI Projects")
+print("  → Color-coded: Orange=management, Purple=observability, Green=API, Blue=data")

@@ -1,14 +1,19 @@
 """
 OpenShift Container Platform - Security & Service Mesh Stack Baseline
 
-This diagram shows security and service mesh components:
-- Identity and Access Management (Keycloak, Authorino)
-- Certificate Management
-- Service Mesh (Istio-based)
-- Rate Limiting
-- Integration with external IDP and security systems
+Namespace-based layered architecture for security:
+- Identity & Access (rhsso-operator, authorino-operator)
+- Certificate Management (openshift-cert-manager-operator)
+- Service Mesh (openshift-operators, istio-system)
+- Rate Limiting & Connectivity
 
-Note: No pod-level representation - focus on logical components and security flows
+Color-coded connections:
+- Orange: Operator management
+- Green: User/API traffic
+- Red: Security enforcement
+- Purple: mTLS/encrypted traffic
+
+Note: Shows actual namespace organization for security stack
 """
 
 from diagrams import Diagram, Cluster, Edge
@@ -25,117 +30,158 @@ graph_attr = {
     "bgcolor": "white",
     "pad": "0.5",
     "nodesep": "1.0",
-    "ranksep": "1.2"
+    "ranksep": "1.8"
 }
 
 with Diagram(
-    "OCP Baseline - Security & Service Mesh Stack",
+    "OCP Baseline - Security & Service Mesh Stack (Namespace-Based)",
     show=False,
     direction="TB",
     filename="output/baseline-ocp-04-security-servicemesh-stack",
     graph_attr=graph_attr
 ):
 
-    users = Users("End Users")
+    # ========== PERSONAS ==========
+    end_users = Users("End Users")
 
-    with Cluster("External Identity Provider"):
-        external_idp = Server("Corporate IDP\n(LDAP/AD/SAML/OIDC)")
-
-    with Cluster("External PKI/CA"):
-        external_ca = Vault("External CA\n(Enterprise PKI)")
+    # ========== EXTERNAL ==========
+    with Cluster("External Security Services"):
+        corporate_idp = Server("Corporate IDP\n(LDAP/AD/OIDC)")
+        enterprise_pki = Vault("Enterprise PKI\n(CA)")
 
     api = APIServer("OpenShift\nAPI Server")
-    router = Ingress("OpenShift Router\n(Ingress)")
+    router = Ingress("OpenShift Router")
 
+    # ========== IDENTITY & ACCESS MANAGEMENT ==========
     with Cluster("Identity & Access Management"):
 
-        with Cluster("Keycloak (SSO)"):
+        with Cluster("rhsso-operator"):
             keycloak_operator = Helm("Keycloak Operator")
-            keycloak = Vault("Keycloak\n(Red Hat build)")
+
+        with Cluster("keycloak (instance namespace)"):
+            keycloak_server = Vault("Keycloak Server\n(Red Hat build)")
             keycloak_realms = Vault("Realms & Clients\n(OIDC/SAML)")
 
-            keycloak_operator >> keycloak
-            keycloak >> keycloak_realms
-
-        with Cluster("API Security"):
+        with Cluster("authorino-operator"):
             authorino_operator = Helm("Authorino Operator")
-            authorino = Vault("Authorino\n(API Authorization)")
 
-            authorino_operator >> authorino
+        with Cluster("authorino-instances"):
+            authorino_service = Vault("Authorino\n(API Authorization)")
 
+    # ========== CERTIFICATE MANAGEMENT ==========
     with Cluster("Certificate Management"):
-        certmanager_operator = Helm("cert-manager\nOperator")
 
-        with Cluster("Certificate Issuers"):
-            ca_issuer = Vault("CA Issuer")
-            acme_issuer = Vault("ACME Issuer\n(Let's Encrypt)")
+        with Cluster("openshift-cert-manager-operator"):
+            certmanager_operator = Helm("cert-manager\nOperator")
 
-            certmanager_operator >> [ca_issuer, acme_issuer]
+        with Cluster("openshift-cert-manager"):
+            with Cluster("Certificate Issuers"):
+                ca_issuer = Vault("CA Issuer")
+                acme_issuer = Vault("ACME Issuer\n(Let's Encrypt)")
+                cert_manager = Vault("cert-manager\nController")
 
+    # ========== SERVICE MESH ==========
     with Cluster("Service Mesh"):
-        servicemesh_operator = Helm("Service Mesh\nOperator")
 
-        with Cluster("Istio Control Plane"):
+        with Cluster("openshift-operators (Service Mesh)"):
+            servicemesh_operator = Helm("Service Mesh\nOperator")
+
+        with Cluster("istio-system"):
             istiod = Istio("Istiod\n(Control Plane)")
 
-        with Cluster("Service Mesh Features"):
-            mtls = Istio("mTLS\n(Service-to-Service)")
-            traffic_mgmt = Istio("Traffic Management\n(Routing, LB)")
-            observability_mesh = Istio("Mesh Observability\n(Traces, Metrics)")
+            with Cluster("Mesh Features"):
+                mtls_enforcement = Istio("mTLS Enforcement")
+                traffic_management = Istio("Traffic Management\n(VirtualServices)")
+                mesh_observability = Istio("Mesh Telemetry\n(Traces)")
 
-        servicemesh_operator >> istiod
-        istiod >> [mtls, traffic_mgmt, observability_mesh]
-
+    # ========== RATE LIMITING ==========
     with Cluster("Rate Limiting & Traffic Control"):
-        limitador_operator = Helm("Limitador Operator")
-        limitador = Istio("Limitador\n(Rate Limiting)")
 
-        limitador_operator >> limitador
+        with Cluster("openshift-operators (Limitador)"):
+            limitador_operator = Helm("Limitador Operator")
 
-    with Cluster("Connectivity"):
-        connectivity_operator = Helm("Connectivity Link\nOperator")
-        connectivity = Istio("Hybrid Cloud\nConnectivity")
+        with Cluster("limitador-system"):
+            limitador_service = Istio("Limitador\n(Rate Limiting)")
 
-        connectivity_operator >> connectivity
+    # ========== CONNECTIVITY ==========
+    with Cluster("Hybrid Cloud Connectivity"):
 
+        with Cluster("openshift-operators (Connectivity)"):
+            connectivity_operator = Helm("Connectivity Link\nOperator")
+
+        with Cluster("skupper-site-controller"):
+            connectivity_service = Istio("Skupper\n(Service Interconnect)")
+
+    # ========== APPLICATION SERVICES ==========
     with Cluster("Application Services"):
-        mesh_apps = Server("Service Mesh\nApplications")
-        standard_apps = Server("Standard\nApplications")
+        mesh_applications = Server("Service Mesh\nApplications")
+        standard_applications = Server("Standard\nApplications")
 
-    # API integration
-    api >> [keycloak_operator, authorino_operator, certmanager_operator, servicemesh_operator, limitador_operator, connectivity_operator]
+    with Cluster("Remote Services"):
+        remote_services = Server("On-Premise/Cloud\nServices")
 
-    # External IDP integration
-    external_idp >> Edge(label="federation") >> keycloak
-    keycloak >> Edge(label="OIDC tokens") >> api
-    keycloak >> Edge(label="OIDC") >> authorino
+    # =========================================================
+    # CONNECTIONS
+    # =========================================================
 
-    # User authentication flow
-    users >> Edge(label="1. access app") >> router
-    router >> Edge(label="2. check auth") >> authorino
-    authorino >> Edge(label="3. validate token") >> keycloak
+    # --- OPERATOR MANAGEMENT (Orange) ---
+    api >> Edge(color="orange") >> keycloak_operator
+    api >> Edge(color="orange") >> authorino_operator
+    api >> Edge(color="orange") >> certmanager_operator
+    api >> Edge(color="orange") >> servicemesh_operator
+    api >> Edge(color="orange") >> limitador_operator
+    api >> Edge(color="orange") >> connectivity_operator
 
-    # Certificate management
-    external_ca >> Edge(label="issue certs", style="dashed") >> ca_issuer
-    certmanager_operator >> Edge(label="request certs") >> [ca_issuer, acme_issuer]
-    ca_issuer >> Edge(label="provision") >> [router, istiod, api]
+    keycloak_operator >> Edge(color="orange") >> keycloak_server
+    authorino_operator >> Edge(color="orange") >> authorino_service
+    certmanager_operator >> Edge(color="orange") >> cert_manager
+    servicemesh_operator >> Edge(color="orange") >> istiod
+    limitador_operator >> Edge(color="orange") >> limitador_service
+    connectivity_operator >> Edge(color="orange") >> connectivity_service
 
-    # Service mesh traffic flow
-    router >> Edge(label="ingress") >> mesh_apps
-    mesh_apps >> Edge(label="service-to-service\n(mTLS)") >> mesh_apps
-    istiod >> Edge(label="configure sidecar") >> mesh_apps
+    # Keycloak internal
+    keycloak_server >> keycloak_realms
 
-    # Rate limiting
-    router >> Edge(label="rate limit check") >> limitador
-    limitador >> Edge(label="allow/deny") >> mesh_apps
+    # Service mesh features
+    istiod >> [mtls_enforcement, traffic_management, mesh_observability]
 
-    # Standard apps (outside mesh)
-    router >> Edge(label="direct", style="dashed") >> standard_apps
+    # cert-manager issuers
+    cert_manager >> [ca_issuer, acme_issuer]
 
-    # Observability integration
-    observability_mesh >> Edge(label="export traces", style="dotted") >> Server("Tempo/Jaeger")
+    # --- EXTERNAL INTEGRATION ---
+    corporate_idp >> Edge(label="federation") >> keycloak_server
+    enterprise_pki >> Edge(color="red", label="issue certs") >> ca_issuer
 
-    # Hybrid connectivity
-    connectivity >> Edge(label="secure tunnel", style="dotted") >> Server("Remote Services\n(On-prem, Cloud)")
+    # --- USER AUTHENTICATION FLOW (Green → Red enforcement) ---
+    end_users >> Edge(color="green", label="1. access") >> router
+    router >> Edge(color="red", label="2. AuthN/AuthZ") >> authorino_service
+    authorino_service >> Edge(color="red", label="3. validate") >> keycloak_server
+    keycloak_server >> Edge(label="OIDC token") >> api
+
+    # --- CERTIFICATE PROVISIONING ---
+    cert_manager >> Edge(color="red", label="provision") >> router
+    cert_manager >> Edge(color="red", label="provision") >> api
+    cert_manager >> Edge(color="red", label="provision") >> istiod
+
+    # --- SERVICE MESH TRAFFIC FLOW (Purple = mTLS) ---
+    router >> Edge(color="green", label="ingress") >> mesh_applications
+    mesh_applications >> Edge(color="purple", label="mTLS", style="bold") >> mesh_applications
+    istiod >> Edge(color="purple", label="configure sidecars") >> mesh_applications
+
+    # --- RATE LIMITING (Red = enforcement) ---
+    router >> Edge(color="red", label="rate limit check") >> limitador_service
+    limitador_service >> Edge(color="red", label="allow/deny") >> mesh_applications
+
+    # --- STANDARD APPS (bypass mesh) ---
+    router >> Edge(style="dashed", label="direct") >> standard_applications
+
+    # --- OBSERVABILITY INTEGRATION ---
+    mesh_observability >> Edge(style="dotted", label="export traces") >> Server("Tempo/Jaeger")
+
+    # --- HYBRID CONNECTIVITY (Purple = secure tunnel) ---
+    connectivity_service >> Edge(color="purple", style="dotted", label="secure tunnel") >> remote_services
+    mesh_applications >> Edge(style="dotted") >> connectivity_service
 
 print("✓ Generated: output/baseline-ocp-04-security-servicemesh-stack.png")
+print("  → Namespace-based: rhsso-operator → istio-system → limitador-system")
+print("  → Color-coded: Orange=management, Green=traffic, Red=security, Purple=mTLS")

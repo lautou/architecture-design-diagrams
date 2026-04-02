@@ -1,12 +1,18 @@
 """
 OpenShift Container Platform - Observability Stack Baseline
 
-This diagram shows the complete observability stack including:
-- Embedded monitoring (Cluster Monitoring, User Defined Workload Monitoring)
-- Add-on operators for enhanced observability
-- Integration points for metrics, logs, and traces
+Namespace-based layered architecture for observability:
+- LAYER 1: Embedded Monitoring (openshift-monitoring, openshift-user-workload-monitoring)
+- LAYER 2: Add-on Operators (openshift-logging, openshift-tempo-operator, etc.)
+- Integration with external systems
 
-Note: No pod-level representation - focus on logical components and data flows
+Color-coded connections:
+- Purple: Observability/monitoring flows
+- Orange: Operator management
+- Blue: Data ingestion
+- Red: Alerts
+
+Note: Shows actual OpenShift observability namespaces
 """
 
 from diagrams import Diagram, Cluster, Edge
@@ -23,11 +29,11 @@ graph_attr = {
     "bgcolor": "white",
     "pad": "0.5",
     "nodesep": "1.0",
-    "ranksep": "1.2"
+    "ranksep": "1.8"
 }
 
 with Diagram(
-    "OCP Baseline - Observability Stack",
+    "OCP Baseline - Observability Stack (Namespace-Based)",
     show=False,
     direction="TB",
     filename="output/baseline-ocp-02-observability-stack",
@@ -36,86 +42,112 @@ with Diagram(
 
     api = APIServer("OpenShift\nAPI Server")
 
-    with Cluster("Embedded Monitoring (Built-in)"):
-        with Cluster("Cluster Monitoring"):
-            cluster_prom = Prometheus("Prometheus\n(Platform Metrics)")
-            cluster_alert = Prometheus("Alertmanager\n(Platform Alerts)")
+    # ========== LAYER 1: EMBEDDED MONITORING ==========
+    with Cluster("LAYER 1: Embedded Monitoring (Built-in)"):
 
-            cluster_prom >> cluster_alert
+        with Cluster("openshift-monitoring"):
+            with Cluster("Cluster Monitoring"):
+                cluster_prom = Prometheus("Prometheus\n(Platform Metrics)")
+                cluster_alert = Prometheus("Alertmanager\n(Platform Alerts)")
 
-        with Cluster("User Defined Workload Monitoring (UDWM)"):
-            udwm_prom = Prometheus("Prometheus\n(User Workload Metrics)")
-            udwm_thanos = Prometheus("Thanos Querier\n(Unified Query)")
+        with Cluster("openshift-user-workload-monitoring"):
+            with Cluster("User Defined Workload Monitoring"):
+                udwm_prom = Prometheus("Prometheus\n(User Metrics)")
+                thanos = Prometheus("Thanos Querier\n(Unified)")
 
-            udwm_prom >> udwm_thanos
-            cluster_prom >> udwm_thanos
+    # ========== LAYER 2: ADD-ON OPERATORS ==========
+    with Cluster("LAYER 2: Add-on Observability Operators"):
 
-    with Cluster("Add-on Observability Operators"):
+        with Cluster("openshift-logging"):
+            logging_operator = Helm("Logging Operator")
 
-        with Cluster("Logging"):
-            logging_operator = Helm("OpenShift Logging\nOperator")
-            log_collector = Loki("Vector/Fluentd\n(Log Collection)")
-            log_store = Loki("LokiStack\n(Log Storage)")
+            with Cluster("Log Collection & Storage"):
+                log_collector = Loki("Vector/Fluentd\n(Collector)")
+                loki_stack = Loki("LokiStack\n(Storage)")
 
-            logging_operator >> [log_collector, log_store]
-            log_collector >> Edge(label="forward") >> log_store
-
-        with Cluster("Distributed Tracing"):
+        with Cluster("openshift-tempo-operator"):
             tempo_operator = Helm("Tempo Operator")
-            tempo = Jaeger("Tempo\n(Trace Storage)")
+            tempo = Jaeger("Tempo\n(Distributed Tracing)")
 
-            tempo_operator >> tempo
-
-        with Cluster("OpenTelemetry"):
+        with Cluster("openshift-opentelemetry-operator"):
             otel_operator = Helm("OpenTelemetry\nOperator")
-            otel_collector = Jaeger("OTel Collector\n(Metrics, Logs, Traces)")
+            otel_collector = Jaeger("OTel Collector\n(OTLP)")
 
-            otel_operator >> otel_collector
-            otel_collector >> Edge(label="traces") >> tempo
-            otel_collector >> Edge(label="metrics") >> udwm_prom
-            otel_collector >> Edge(label="logs") >> log_store
-
-        with Cluster("Enhanced Observability"):
+        with Cluster("openshift-cluster-observability-operator"):
             cluster_obs_operator = Helm("Cluster Observability\nOperator")
 
+        with Cluster("netobserv"):
             network_obs_operator = Helm("Network Observability\nOperator")
-            network_flow = Clickhouse("Flow Collector\n(Network Flows)")
+            flow_collector = Clickhouse("Flow Collector\n(eBPF)")
 
-            network_obs_operator >> network_flow
-
-        with Cluster("Visualization"):
+        with Cluster("openshift-operators (Grafana)"):
             grafana_operator = Helm("Grafana Operator")
             grafana = Grafana("Grafana\n(Custom Dashboards)")
 
-            grafana_operator >> grafana
-
+    # ========== APPLICATION WORKLOADS ==========
     with Cluster("Application Workloads"):
-        app_workloads = Server("Applications\n(Platform & User)")
+        platform_apps = Server("Platform\nComponents")
+        user_apps = Server("User\nApplications")
 
+    # ========== EXTERNAL INTEGRATION ==========
     with Cluster("External Integration"):
-        external_storage = Server("External Storage\n(S3/NFS for logs)")
-        external_siem = Server("External SIEM\n(Splunk, Elastic, etc)")
+        external_storage = Server("External Storage\n(S3/NFS)")
+        external_siem = Server("External SIEM\n(Splunk, Elastic)")
 
-    # API integration
-    api >> [logging_operator, tempo_operator, otel_operator, network_obs_operator, grafana_operator, cluster_obs_operator]
+    # =========================================================
+    # CONNECTIONS
+    # =========================================================
 
-    # Data collection from workloads
-    app_workloads >> Edge(label="metrics") >> cluster_prom
-    app_workloads >> Edge(label="user metrics") >> udwm_prom
-    app_workloads >> Edge(label="logs") >> log_collector
-    app_workloads >> Edge(label="traces") >> otel_collector
+    # --- OPERATOR MANAGEMENT (Orange) ---
+    api >> Edge(color="orange") >> logging_operator
+    api >> Edge(color="orange") >> tempo_operator
+    api >> Edge(color="orange") >> otel_operator
+    api >> Edge(color="orange") >> network_obs_operator
+    api >> Edge(color="orange") >> grafana_operator
+    api >> Edge(color="orange") >> cluster_obs_operator
 
-    # Grafana queries all sources
-    grafana >> Edge(label="query", style="dashed") >> udwm_thanos
-    grafana >> Edge(label="query", style="dashed") >> log_store
-    grafana >> Edge(label="query", style="dashed") >> tempo
-    grafana >> Edge(label="query", style="dashed") >> network_flow
+    logging_operator >> Edge(color="orange") >> [log_collector, loki_stack]
+    tempo_operator >> Edge(color="orange") >> tempo
+    otel_operator >> Edge(color="orange") >> otel_collector
+    network_obs_operator >> Edge(color="orange") >> flow_collector
+    grafana_operator >> Edge(color="orange") >> grafana
 
-    # External integration
-    log_store >> Edge(label="export", style="dotted") >> external_storage
-    log_collector >> Edge(label="forward", style="dotted") >> external_siem
+    # --- EMBEDDED MONITORING FLOW (Purple) ---
+    cluster_prom >> Edge(color="purple") >> cluster_alert
+    udwm_prom >> Edge(color="purple") >> thanos
+    cluster_prom >> Edge(color="purple") >> thanos
 
-    # Cluster observability coordinates
-    cluster_obs_operator >> Edge(label="configure", style="dashed") >> [grafana, udwm_thanos, log_store]
+    # --- DATA COLLECTION (Blue) ---
+    platform_apps >> Edge(color="blue", style="dotted", label="platform metrics") >> cluster_prom
+    user_apps >> Edge(color="blue", style="dotted", label="user metrics") >> udwm_prom
+    user_apps >> Edge(color="blue", style="dotted", label="logs") >> log_collector
+    user_apps >> Edge(color="blue", style="dotted", label="traces") >> otel_collector
+
+    # Log flow
+    log_collector >> Edge(color="blue", label="forward") >> loki_stack
+
+    # OTel distribution
+    otel_collector >> Edge(color="purple", label="traces") >> tempo
+    otel_collector >> Edge(color="purple", label="metrics") >> udwm_prom
+    otel_collector >> Edge(color="purple", label="logs") >> loki_stack
+
+    # --- VISUALIZATION (Purple queries) ---
+    grafana >> Edge(color="purple", style="dashed", label="query") >> thanos
+    grafana >> Edge(color="purple", style="dashed", label="query") >> loki_stack
+    grafana >> Edge(color="purple", style="dashed", label="query") >> tempo
+    grafana >> Edge(color="purple", style="dashed", label="query") >> flow_collector
+
+    # --- EXTERNAL INTEGRATION ---
+    loki_stack >> Edge(style="dotted", label="export") >> external_storage
+    log_collector >> Edge(style="dotted", label="forward") >> external_siem
+
+    # --- CLUSTER OBSERVABILITY COORDINATION ---
+    cluster_obs_operator >> Edge(color="orange", style="dashed", label="configure") >> grafana
+    cluster_obs_operator >> Edge(color="orange", style="dashed", label="configure") >> thanos
+
+    # --- ALERTS (Red) ---
+    cluster_alert >> Edge(color="red", style="bold", label="platform alerts") >> external_siem
 
 print("✓ Generated: output/baseline-ocp-02-observability-stack.png")
+print("  → Namespace-based: openshift-monitoring → openshift-logging → netobserv")
+print("  → Color-coded: Orange=management, Purple=observability, Blue=data, Red=alerts")
