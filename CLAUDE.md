@@ -24,23 +24,38 @@ These diagrams serve consulting engagements for AI platform deployments. They mu
 
 ### Icon Usage Rules
 
-**CRITICAL: Do NOT use generic `Service` icons**
+**CRITICAL: No 3rd party logos for internal components**
 
-Use specific, meaningful icons for better visual clarity:
+Only Red Hat and NVIDIA branding allowed for internal OpenShift/RHOAI components.
 
-| Component Type | Icon Type | Import | Example |
+**Allowed Icons:**
+
+| Component Type | Icon Type | Import | Use For |
 |---|---|---|---|
-| **Operators** | `Helm` | `diagrams.k8s.ecosystem` | GPU Operator, ODF Operator |
-| **Applications** | `Server` or `Python` | `diagrams.onprem.compute` | Workloads, ML applications |
-| **Load Balancers** | `Nginx` | `diagrams.onprem.network` | External LB, HAProxy |
-| **Security/Identity** | `Vault` | `diagrams.onprem.security` | Keycloak, Authorino, cert-manager |
-| **Monitoring** | `Prometheus`, `Grafana` | `diagrams.onprem.monitoring` | Alertmanager, Thanos |
-| **Storage/Database** | `Ceph`, `PostgreSQL` | `diagrams.onprem.storage` | Storage classes, metadata DBs |
-| **CI/CD** | `Jenkins`, `Argocd` | `diagrams.onprem.ci`, `.gitops` | Pipelines, GitOps |
-| **Service Mesh** | `Istio` | `diagrams.onprem.network` | mTLS, traffic management |
-| **External Systems** | `Server` | `diagrams.onprem.compute` | External IDP, SIEM, DNS |
+| **Operators** | `Server` | `diagrams.onprem.compute` | All operators (GPU, ODF, Logging, etc.) |
+| **Applications** | `Server` or `Python` | `diagrams.onprem.compute`, `.language` | Workloads, ML apps, pipelines |
+| **Security/Identity** | `Vault` | `diagrams.onprem.security` | Keycloak, Authorino, cert-manager (generic enough) |
+| **Monitoring** | `Prometheus`, `Grafana` | `diagrams.onprem.monitoring` | Part of OpenShift monitoring stack |
+| **Storage/Database** | `Ceph`, `PostgreSQL` | `diagrams.onprem.storage`, `.database` | Storage, metadata DBs (generic infrastructure) |
+| **Network** | `Nginx`, `Server` | `diagrams.onprem.network`, `.compute` | Load balancers, ingress |
+| **Personas** | `Users` | `diagrams.onprem.client` | Data Scientists, Developers, etc. |
+| **External Only** | `Github`, `Gitlab` | `diagrams.onprem.vcs` | **External** Git repos only |
 
-**Why:** Generic blue "Service" boxes make diagrams hard to digest. Different icons create clear visual hierarchy.
+**FORBIDDEN for internal components:**
+- ❌ `Helm` - Implies 3rd party packaging
+- ❌ `Jenkins` - 3rd party CI brand
+- ❌ `Argocd` - 3rd party GitOps brand  
+- ❌ `Harbor` - 3rd party registry brand
+- ❌ `Istio` - 3rd party service mesh brand
+- ❌ `Mlflow` - 3rd party MLOps brand
+
+Use **`Server`** for all these instead.
+
+**Why:**
+1. These diagrams represent **Red Hat OpenShift/RHOAI**, not 3rd party products
+2. Avoids confusion about what's OpenShift-native vs external dependencies
+3. Prevents appearance of endorsing 3rd party products
+4. Keeps diagrams clean and Red Hat-focused
 
 ### Representation Rules
 
