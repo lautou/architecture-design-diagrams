@@ -1,205 +1,169 @@
 """
 Red Hat OpenShift AI (RHOAI) - Functional Components Baseline
 
-This diagram follows the namespace-based layered architecture pattern:
-- LAYER 1: Management & Operators (redhat-ods-operator, redhat-ods-applications)
-- LAYER 2: User Workloads (AI Projects - user namespaces)
-- LAYER 3: Infrastructure Dependencies (External systems)
-- SIDE: Observability (redhat-ods-monitoring)
+Functional view showing RHOAI platform components organized by namespace.
 
-Color-coded connections:
-- Orange: Management/hierarchy
-- Purple: Observability/monitoring
-- Green: API requests
-- Blue: Data flows
+Out-of-the-box namespaces (gray background):
+- redhat-ods-applications: Dashboard + 14 Operators/Controllers
+- redhat-ods-monitoring: Monitoring stack (Prometheus, Alertmanager, Thanos, Tempo, OTel)
+- rhods-notebooks: Default Jupyter Workbenches (2x)
+- rhoai-model-registries: Model registries + Model Catalog + PostgreSQL
 
-Note: Organized by actual OpenShift namespaces for clarity
+AI Project namespaces (user-created, Kubernetes naming convention):
+- dev-ai-project-x: Jupyter Workbench + Model Server
+- dev-ai-project-z: VS Code Workbench
+- mlops-pipeline-project-y: Data Science Pipeline Server + Ray Cluster
+- prod-ai-project-x: Model Server + TrustyAI Service
+- prod-guardrails-project-y: Model Server + Guardrail Orchestrator
+
+Layout: 5x3 grid for redhat-ods-applications, structured rows for other namespaces
 """
 
 from diagrams import Diagram, Cluster, Edge
-from diagrams.k8s.controlplane import APIServer
-from diagrams.k8s.network import Ingress
-from diagrams.onprem.vcs import Github
-from diagrams.onprem.database import PostgreSQL
-from diagrams.onprem.storage import Ceph
-from diagrams.programming.language import Python
-from diagrams.onprem.compute import Server
-from diagrams.onprem.client import Users
-from diagrams.onprem.monitoring import Prometheus
 from diagrams.custom import Custom
+from diagrams.onprem.monitoring import Prometheus
+from diagrams.onprem.tracing import Tempo
+import os
+
+# Get absolute paths for icons
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+PROJECT_ROOT = os.path.join(BASE_DIR, '../../..')
+OPERATOR_ICON = os.path.join(PROJECT_ROOT, "custom_icons/Technology icons/operator/Technology_icon-Red_Hat-operator-Standard-RGB.Large_icon_transparent.png")
+DASHBOARD_ICON = os.path.join(PROJECT_ROOT, "custom_icons/Icons/Monitor/Icon-Red_Hat-Monitor_Blank-A-Red-RGB.Large_icon_transparent.png")
+OTEL_ICON = os.path.join(PROJECT_ROOT, "custom_icons/Icons/OpenTelemetry/opentelemetry-400x400.png")
+THANOS_ICON = os.path.join(PROJECT_ROOT, "custom_icons/Icons/Thanos/thanos-400x400.png")
+
+# AI Project workload icons
+JUPYTER_ICON = os.path.join(PROJECT_ROOT, "custom_icons/Icons/Jupyter/jupyter-400x400.png")
+VSCODE_ICON = os.path.join(PROJECT_ROOT, "custom_icons/Icons/VSCode/vscode-400x400.png")
+AI_MODEL_ICON = os.path.join(PROJECT_ROOT, "custom_icons/Technology icons/AI model/Technology_icon-Red_Hat-AI_model-Standard-RGB.Large_icon_transparent.png")
+KUBEFLOW_ICON = os.path.join(PROJECT_ROOT, "custom_icons/Icons/Kubeflow/kubeflow-400x400.png")
+RAY_ICON = os.path.join(PROJECT_ROOT, "custom_icons/Icons/Ray/ray-400x400.png")
+TRUSTYAI_ICON = os.path.join(PROJECT_ROOT, "custom_icons/Icons/TrustyAI/trustyai-400x400.png")
+GUARDRAILS_ICON = os.path.join(PROJECT_ROOT, "custom_icons/Icons/Guardrails/guardrails-400x400.png")
+CATALOG_ICON = os.path.join(PROJECT_ROOT, "custom_icons/Icons/Catalog/Icon-Red_Hat-Catalog-A-Red-RGB.Large_icon_transparent.png")
+POSTGRESQL_ICON = os.path.join(PROJECT_ROOT, "custom_icons/Icons/PostgreSQL/postgresql-400x400.png")
 
 graph_attr = {
-    "fontsize": "14",
+    "fontsize": "9",
     "bgcolor": "white",
     "pad": "0.5",
-    "nodesep": "0.8",
-    "ranksep": "1.5"
+    "nodesep": "1.0",
+    "ranksep": "0.5",
+    "dpi": "300"
+}
+
+node_attr = {
+    "margin": "0.5,0.3"
 }
 
 with Diagram(
-    "RHOAI Baseline - Functional Components (Namespace-Based)",
+    "Red Hat OpenShift AI - Functional Components",
     show=False,
     direction="TB",
     filename="output/baseline-rhoai-functional-components",
-    graph_attr=graph_attr
+    graph_attr=graph_attr,
+    node_attr=node_attr
 ):
 
-    # ========== PERSONAS ==========
-    with Cluster("Users"):
-        data_scientist = Users("Data Scientist")
-        mlops_engineer = Users("MLOps Engineer")
+    # ========== RED HAT OPENSHIFT AI PLATFORM ==========
+    with Cluster("Red Hat OpenShift AI", graph_attr={"margin": "20", "bgcolor": "lightblue"}):
 
-    # ========== EXTERNAL INTEGRATION ==========
-    with Cluster("Infrastructure Dependencies (External)"):
-        idp = Server("Identity Provider\n(Keycloak/LDAP)")
-        git = Github("Git Repository\n(GitHub/GitLab)")
-        s3_storage = Ceph("Object Storage\n(S3/Ceph RGW)")
-        external_db = PostgreSQL("External Database\n(MariaDB/MySQL)")
+        # redhat-ods-applications namespace (out-of-the-box)
+        with Cluster("redhat-ods-applications", graph_attr={"margin": "15", "bgcolor": "lightgray"}):
+            # Row 1: Core (5 components)
+            dashboard = Custom("\nDashboard", DASHBOARD_ICON)
+            rhoai_operator = Custom("\nRed Hat\nOpenShift AI\nOperator", OPERATOR_ICON)
+            kubeflow_notebook = Custom("\nKubeflow\nNotebook\nController", OPERATOR_ICON)
+            odh_notebook = Custom("\nOpen Data Hub\nNotebook\nController Manager", OPERATOR_ICON)
+            kserve_controller = Custom("\nKServe\nController\nManager", OPERATOR_ICON)
 
-    ocp_api = APIServer("OpenShift\nAPI Server")
-    router = Ingress("OpenShift Router")
+            # Row 2: Model & Pipelines (5 components)
+            odh_model_controller = Custom("\nOpen Data Hub\nModel\nController", OPERATOR_ICON)
+            modelreg_controller = Custom("\nModel Registry\nOperator\nController Manager", OPERATOR_ICON)
+            dsp_operator = Custom("\nData Science\nPipelines Operator\nController Manager", OPERATOR_ICON)
+            training_operator = Custom("\nKubeflow\nTraining\nOperator", OPERATOR_ICON)
+            kuberay_operator = Custom("\nKubeRay\nOperator", OPERATOR_ICON)
 
-    # ========== LAYER 1: MANAGEMENT & OPERATORS ==========
-    with Cluster("LAYER 1: Management & Operators"):
+            # Row 3: ML Platforms & Governance (5 components)
+            mlflow_operator = Custom("\nMLFlow\nOperator\nController Manager", OPERATOR_ICON)
+            llamastack_operator = Custom("\nLlamaStack\nK8s Operator\nController Manager", OPERATOR_ICON)
+            feast_operator = Custom("\nFeast\nOperator\nController Manager", OPERATOR_ICON)
+            trustyai_operator = Custom("\nTrustyAI\nService Operator\nController Manager", OPERATOR_ICON)
+            maas_api = Custom("\nMaaS API", OPERATOR_ICON)
 
-        # Master Operator
-        with Cluster("redhat-ods-operator"):
-            rhoai_operator = Custom("Red Hat OpenShift AI\nOperator", "custom_icons/Technology icons/Red Hat AI/Technology_icon-Red_Hat-AI-Standard-RGB.Large_icon_transparent.png")
+            # Horizontal edges for rows
+            dashboard - Edge(style="invis") - rhoai_operator - Edge(style="invis") - kubeflow_notebook - Edge(style="invis") - odh_notebook - Edge(style="invis") - kserve_controller
+            odh_model_controller - Edge(style="invis") - modelreg_controller - Edge(style="invis") - dsp_operator - Edge(style="invis") - training_operator - Edge(style="invis") - kuberay_operator
+            mlflow_operator - Edge(style="invis") - llamastack_operator - Edge(style="invis") - feast_operator - Edge(style="invis") - trustyai_operator - Edge(style="invis") - maas_api
 
-        with Cluster("redhat-ods-applications"):
+            # Vertical edges to stack rows
+            dashboard >> Edge(style="invis") >> odh_model_controller >> Edge(style="invis") >> mlflow_operator
+            rhoai_operator >> Edge(style="invis") >> modelreg_controller >> Edge(style="invis") >> llamastack_operator
+            kubeflow_notebook >> Edge(style="invis") >> dsp_operator >> Edge(style="invis") >> feast_operator
+            odh_notebook >> Edge(style="invis") >> training_operator >> Edge(style="invis") >> trustyai_operator
+            kserve_controller >> Edge(style="invis") >> kuberay_operator >> Edge(style="invis") >> maas_api
 
-            # Dashboard
-            dashboard = Python("RHOAI Dashboard")
+        # redhat-ods-monitoring namespace (out-of-the-box)
+        with Cluster("redhat-ods-monitoring", graph_attr={"margin": "15", "bgcolor": "lightgray"}):
+            # Row 1: Metrics
+            alertmanager_ds = Prometheus("\nAlertManager\nData Science\nMonitoring Stack")
+            prometheus_ds = Prometheus("\nPrometheus\nData Science\nMonitoring Stack")
+            thanos_querier = Custom("\nThanos Querier\nData Science", THANOS_ICON)
 
-            # Row 1: Common Controllers
-            with Cluster("Common Controllers"):
-                dsp_operator = Custom("Data Science Pipelines\nOperator", "custom_icons/Technology icons/operator/Technology_icon-Red_Hat-operator-Standard-RGB.Large_icon_transparent.png")
-                kserve_operator = Custom("KServe\nController", "custom_icons/Technology icons/operator/Technology_icon-Red_Hat-operator-Standard-RGB.Large_icon_transparent.png")
-                trustyai_operator = Custom("TrustyAI\nOperator", "custom_icons/Technology icons/operator/Technology_icon-Red_Hat-operator-Standard-RGB.Large_icon_transparent.png")
-                modelreg_operator = Custom("Model Registry\nOperator", "custom_icons/Technology icons/operator/Technology_icon-Red_Hat-operator-Standard-RGB.Large_icon_transparent.png")
-                notebook_controller = Custom("Notebook\nController", "custom_icons/Technology icons/operator/Technology_icon-Red_Hat-operator-Standard-RGB.Large_icon_transparent.png")
+            # Row 2: Telemetry
+            ds_collector = Custom("\nData Science\nCollector", OTEL_ICON)
+            tempo_ds = Tempo("\nTempo\nData Science\nTempoMonolithic")
 
-            # Row 2: Model & Framework Support
-            with Cluster("Model & Framework Support"):
-                ray_operator = Custom("KubeRay\nOperator", "custom_icons/Technology icons/operator/Technology_icon-Red_Hat-operator-Standard-RGB.Large_icon_transparent.png")
-                training_operator = Custom("Kubeflow Training\nOperator", "custom_icons/Technology icons/operator/Technology_icon-Red_Hat-operator-Standard-RGB.Large_icon_transparent.png")
-                kueue_operator = Custom("Kueue Operator\n(Red Hat build)", "custom_icons/Technology icons/operator/Technology_icon-Red_Hat-operator-Standard-RGB.Large_icon_transparent.png")
+            # Layout
+            alertmanager_ds - Edge(style="invis") - prometheus_ds - Edge(style="invis") - thanos_querier
+            ds_collector - Edge(style="invis") - tempo_ds
+            alertmanager_ds >> Edge(style="invis") >> ds_collector
 
-    # ========== LAYER 2: USER WORKLOADS ==========
-    with Cluster("LAYER 2: Execution Layer (User Workloads)"):
+        # rhods notebook namespace (out-of-the-box)
+        with Cluster("rhods-notebooks", graph_attr={"margin": "15", "bgcolor": "lightgray"}):
+            workbench_default1 = Custom("\nJupyter\nWorkbench 1", JUPYTER_ICON)
+            workbench_default2 = Custom("\nJupyter\nWorkbench 2", JUPYTER_ICON)
+            workbench_default1 - Edge(style="invis") - workbench_default2
 
-        with Cluster("AI Projects (User Namespaces)"):
-            # Main Workloads
-            workbenches = Python("Workbenches\n(Jupyter, VSCode, RStudio)")
-            pipeline_server = Server("AI Pipelines\nServer")
-            model_serving = Server("Model Serving\n(KServe)")
-            trusty_service = Python("TrustyAI Service")
+        # Model registries namespace (out-of-the-box)
+        with Cluster("rhoai-model-registries", graph_attr={"margin": "15", "bgcolor": "lightgray"}):
+            model_registry_a = Custom("\nmodel-registry-A", KUBEFLOW_ICON)
+            model_registry_b = Custom("\nmodel-registry-B", KUBEFLOW_ICON)
+            model_catalog = Custom("\nModel Catalog", CATALOG_ICON)
+            postgres_db = Custom("\nModel Catalog\nPostgreSQL", POSTGRESQL_ICON)
 
-            # Ephemeral Workloads
-            pipeline_runs = Python("AI Pipeline\nRuns")
+            model_registry_a - Edge(style="invis") - model_registry_b - Edge(style="invis") - model_catalog - Edge(style="invis") - postgres_db
 
-            # Training Jobs
-            training_jobs = Python("Training Jobs\n(PyTorch, TensorFlow)")
-            ray_cluster = Python("Ray Cluster\n(Distributed)")
+        # AI Project 1: Development with Jupyter
+        with Cluster("dev-ai-project-x", graph_attr={"margin": "10"}):
+            workbench_jupyter = Custom("\nJupyter\nWorkbench", JUPYTER_ICON)
+            model_server_x = Custom("\nModel Server\n(KServe)", AI_MODEL_ICON)
+            workbench_jupyter - Edge(style="invis") - model_server_x
 
-            # Storage
-            pvc = Ceph("Persistent Volume\nClaims")
+        # AI Project 2: Development with VS Code
+        with Cluster("dev-ai-project-z", graph_attr={"margin": "10"}):
+            workbench_vscode = Custom("\nVS Code\nWorkbench", VSCODE_ICON)
 
-        with Cluster("rhoai-model-registries"):
-            model_registry = Custom("Model Registry", "custom_icons/Technology icons/AI model/Technology_icon-Red_Hat-AI_model-Standard-RGB.Large_icon_transparent.png")
+        # AI Project 3: MLOps Pipeline
+        with Cluster("mlops-pipeline-project-y", graph_attr={"margin": "10"}):
+            pipeline_server = Custom("\nData Science\nPipeline Server", KUBEFLOW_ICON)
+            ray_cluster = Custom("\nRay Cluster", RAY_ICON)
+            pipeline_server - Edge(style="invis") - ray_cluster
 
-    # ========== SIDE: OBSERVABILITY ==========
-    with Cluster("redhat-ods-monitoring"):
-        with Cluster("Data Science Monitoring Stack"):
-            prometheus_ds = Prometheus("Prometheus\n(Data Science)")
-            collector_ds = Prometheus("Data Science\nCollector")
-            alertmanager_ds = Prometheus("Alertmanager")
+        # AI Project 4: Production serving with TrustyAI
+        with Cluster("prod-ai-project-x", graph_attr={"margin": "10"}):
+            model_server_prod = Custom("\nModel Server\n(KServe)", AI_MODEL_ICON)
+            trustyai_service = Custom("\nTrustyAI Service", TRUSTYAI_ICON)
+            model_server_prod - Edge(style="invis") - trustyai_service
 
-    # ========== LAYER 3: ACCELERATOR MANAGEMENT ==========
-    with Cluster("Accelerator Management"):
-        accelerator_profiles = Server("Accelerator Profiles\n(GPU/TPU Config)")
-        gpu_nodes = Server("GPU Worker Nodes")
-
-    # =========================================================
-    # CONNECTIONS
-    # =========================================================
-
-    # --- 1. USER ACCESS (Green = API requests) ---
-    data_scientist >> Edge(color="green") >> router
-    router >> Edge(color="green") >> dashboard
-    data_scientist >> Edge(color="green", label="launches") >> workbenches
-    mlops_engineer >> Edge(color="green", label="registers models") >> model_registry
-
-    # --- 2. AUTHENTICATION ---
-    router >> Edge(label="SSO") >> idp
-
-    # --- 3. OPERATOR HIERARCHY (Orange = Management) ---
-    ocp_api >> Edge(color="orange", style="bold") >> rhoai_operator
-    rhoai_operator >> Edge(color="orange", style="bold", label="manages") >> dashboard
-    rhoai_operator >> Edge(color="orange") >> dsp_operator
-    rhoai_operator >> Edge(color="orange") >> kserve_operator
-    rhoai_operator >> Edge(color="orange") >> trustyai_operator
-    rhoai_operator >> Edge(color="orange") >> modelreg_operator
-    rhoai_operator >> Edge(color="orange") >> notebook_controller
-    rhoai_operator >> Edge(color="orange") >> ray_operator
-    rhoai_operator >> Edge(color="orange") >> training_operator
-    rhoai_operator >> Edge(color="orange") >> kueue_operator
-
-    # --- 4. PROVISIONING (Controllers -> Workloads) ---
-    notebook_controller >> Edge(label="manages") >> workbenches
-    dsp_operator >> Edge(label="manages") >> pipeline_server
-    kserve_operator >> Edge(label="manages") >> model_serving
-    modelreg_operator >> Edge(label="manages") >> model_registry
-    trustyai_operator >> Edge(label="manages") >> trusty_service
-    training_operator >> Edge(label="manages") >> training_jobs
-    ray_operator >> Edge(label="manages") >> ray_cluster
-
-    # --- 5. DASHBOARD CONFIGURATION ---
-    dashboard >> Edge(label="user config") >> workbenches
-    dashboard >> Edge(label="user config") >> pipeline_server
-
-    # --- 6. WORKLOAD FLOWS (Blue = Data flows) ---
-    workbenches >> Edge(color="blue", label="sync code") >> git
-    workbenches >> Edge(color="blue", label="mount data") >> pvc
-    pipeline_server >> Edge(label="spawns") >> pipeline_runs
-    pipeline_runs >> Edge(color="blue", label="artifacts") >> s3_storage
-
-    # Training workflow
-    pipeline_runs >> Edge(label="submit") >> training_jobs
-    training_jobs >> Edge(label="request GPUs") >> kueue_operator
-    kueue_operator >> Edge(label="allocate") >> accelerator_profiles
-    accelerator_profiles >> Edge(label="configure") >> gpu_nodes
-    training_jobs >> Edge(color="blue", label="run on") >> gpu_nodes
-
-    # Distributed computing
-    pipeline_runs >> Edge(label="submit") >> ray_cluster
-    ray_cluster >> Edge(color="blue", label="use GPUs") >> gpu_nodes
-
-    # Model serving
-    training_jobs >> Edge(color="blue", label="register model") >> model_registry
-    model_registry >> Edge(color="blue", label="deploy") >> model_serving
-    model_serving >> Edge(color="blue", label="fetch models") >> s3_storage
-    model_serving >> Edge(color="blue", label="inference on") >> gpu_nodes
-
-    # TrustyAI monitoring
-    model_serving >> Edge(label="prediction data") >> trusty_service
-
-    # --- 7. DATABASE DEPENDENCIES ---
-    trusty_service >> Edge(label="persist data") >> external_db
-    model_registry >> Edge(label="metadata") >> external_db
-    pipeline_server >> Edge(label="metadata") >> external_db
-
-    # --- 8. OBSERVABILITY (Purple = Monitoring) ---
-    collector_ds >> Edge(color="purple", style="dotted", label="scrapes") >> model_serving
-    collector_ds >> Edge(color="purple", style="dotted", label="scrapes") >> trusty_service
-    collector_ds >> Edge(color="purple", style="dotted", label="scrapes") >> workbenches
-    prometheus_ds << Edge(color="purple", style="dotted", label="ingests") << collector_ds
-    prometheus_ds >> alertmanager_ds
-
-    # --- 9. STORAGE INTEGRATION ---
-    workbenches >> Edge(color="blue") >> pvc
-    pipeline_server >> Edge(color="blue") >> pvc
+        # AI Project 5: Production with Guardrails
+        with Cluster("prod-guardrails-project-y", graph_attr={"margin": "10"}):
+            model_server_guardrails = Custom("\nModel Server\n(KServe)", AI_MODEL_ICON)
+            guardrail_orchestrator = Custom("\nGuardrail\nOrchestrator", GUARDRAILS_ICON)
+            model_server_guardrails - Edge(style="invis") - guardrail_orchestrator
 
 print("✓ Generated: output/baseline-rhoai-functional-components.png")
-print("  → Namespace-based layers: redhat-ods-operator → redhat-ods-applications → AI Projects")
-print("  → Color-coded: Orange=management, Purple=observability, Green=API, Blue=data")
+print("  → Platform namespaces (gray): redhat-ods-applications + redhat-ods-monitoring + rhods-notebooks + rhoai-model-registries")
+print("  → AI Project namespaces: dev-ai-project-x/z + mlops-pipeline-project-y + prod-ai-project-x + prod-guardrails-project-y")
+print("  → Components: 15 operators + 5 monitoring + 2 workbenches + 4 model registry components + 5 AI projects")
