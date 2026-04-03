@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg id="icon205" data-name="icon" xmlns="http://www.w3.org/2000/svg" width="32" height="32" version="1.1" viewBox="0 0 32 32">
+  <!-- Generator: Adobe Illustrator 29.8.2, SVG Export Plug-In . SVG Version: 2.1.1 Build 3)  -->
+  <title>rh-ui-icon-notification-active-alt-fill</title>
+<metadata><?xpacket begin="﻿" id="W5M0MpCehiHzreSzNTczkc9d"?>
+<x:xmpmeta xmlns:x="adobe:ns:meta/" x:xmptk="Adobe XMP Core 8.0-c001 1.000000, 0000/00/00-00:00:00        ">
+   <rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+      <rdf:Description rdf:about=""
+            xmlns:xmp="http://ns.adobe.com/xap/1.0/"
+            xmlns:dc="http://purl.org/dc/elements/1.1/"
+            xmlns:tiff="http://ns.adobe.com/tiff/1.0/">
+         <xmp:brand-content-subtype>UI</xmp:brand-content-subtype>
+         <xmp:rhcc-rights-restricted>no</xmp:rhcc-rights-restricted>
+         <xmp:rhcc-file-last-modified>2025-10-14T20:44:34.845Z</xmp:rhcc-file-last-modified>
+         <xmp:brand-content-type>Icon</xmp:brand-content-type>
+         <xmp:brand-colorway>
+            <rdf:Bag>
+               <rdf:li>colorway:black</rdf:li>
+            </rdf:Bag>
+         </xmp:brand-colorway>
+         <dc:modified>2025-10-14T20:49:45.887Z</dc:modified>
+         <dc:format>image/svg+xml</dc:format>
+         <dc:title>
+            <rdf:Alt>
+               <rdf:li xml:lang="x-default">rh-ui-icon-notification-active-alt-fill</rdf:li>
+            </rdf:Alt>
+         </dc:title>
+         <tiff:ImageLength>32</tiff:ImageLength>
+         <tiff:ImageWidth>32</tiff:ImageWidth>
+      </rdf:Description>
+   </rdf:RDF>
+</x:xmpmeta>
+                                                                                                    
+                                                                                                    
+                                                                                                    
+                                                                                                    
+                                                                                                    
+                                                                                                    
+                                                                                                    
+                                                                                                    
+                                                                                                    
+                                                                                                    
+                                                                                                    
+                                                                                                    
+                                                                                                    
+                                                                                                    
+                                                                                                    
+                                        
+<?xpacket end="w"?></metadata>
+<defs>
+    <style>
+      .st0 {
+        fill: none;
+      }
+
+      .st1 {
+        fill: #151515;
+      }
+    </style>
+  </defs>
+  <path class="st1" d="M27,10.5c0,1.93-1.57,3.5-3.5,3.5s-3.5-1.57-3.5-3.5,1.57-3.5,3.5-3.5,3.5,1.57,3.5,3.5ZM28,21.25c-1.24,0-2.25-1.009-2.25-2.25v-2.181c0-.229-.104-.446-.284-.588-.18-.143-.417-.195-.638-.142-.459.108-.893.161-1.328.161-3.171,0-5.75-2.58-5.75-5.75,0-1.336.469-2.637,1.32-3.665.161-.195.213-.458.139-.7s-.266-.429-.509-.5c-.362-.104-.728-.173-1.095-.235.542-.459.895-1.136.895-1.9,0-1.378-1.121-2.5-2.5-2.5s-2.5,1.122-2.5,2.5c0,.761.349,1.436.888,1.895-4.61.772-8.138,4.779-8.138,9.605v4c0,1.241-1.01,2.25-2.25,2.25-.414,0-.75.336-.75.75v3.5c0,.689.561,1.25,1.25,1.25h7.521c-.005.084-.021.166-.021.25,0,2.206,1.794,4,4,4s4-1.794,4-4c0-.084-.016-.166-.021-.25h7.521c.689,0,1.25-.561,1.25-1.25v-3.5c0-.414-.336-.75-.75-.75Z"/>
+  <rect class="st0" width="32" height="32"/>
+</svg>

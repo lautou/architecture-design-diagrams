@@ -119,9 +119,8 @@ engagement-ai-platform/
 ### 1. Start with Overview Diagrams
 Generate the landscape and topology first to align on high-level approach:
 ```bash
-source venv/bin/activate
-python3 diagrams/engagement-ai-platform/00-overview/environment-landscape.py
-python3 diagrams/engagement-ai-platform/00-overview/cluster-topology.py
+./venv/bin/python3 diagrams/engagement-ai-platform/00-overview/environment-landscape.py
+./venv/bin/python3 diagrams/engagement-ai-platform/00-overview/cluster-topology.py
 ```
 
 ### 2. Customize for Customer

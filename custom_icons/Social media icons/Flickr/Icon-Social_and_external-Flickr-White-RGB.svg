@@ -1,0 +1,78 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 30 30">
+  <title>Flickr sharing icon - White</title>
+<metadata><?xpacket begin="﻿" id="W5M0MpCehiHzreSzNTczkc9d"?>
+<x:xmpmeta xmlns:x="adobe:ns:meta/" x:xmptk="Adobe XMP Core 8.0-c001 1.000000, 0000/00/00-00:00:00        ">
+   <rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+      <rdf:Description rdf:about=""
+            xmlns:xmp="http://ns.adobe.com/xap/1.0/"
+            xmlns:dc="http://purl.org/dc/elements/1.1/"
+            xmlns:cq="http://www.day.com/jcr/cq/1.0"
+            xmlns:tiff="http://ns.adobe.com/tiff/1.0/">
+         <xmp:rhcc-effective-on>2023-12-07T22:16:46.383Z</xmp:rhcc-effective-on>
+         <xmp:rhcc-metadata-complete-moderator>pending</xmp:rhcc-metadata-complete-moderator>
+         <xmp:rhcc-translation-id>TRA13f96252-0c68-4e9f-a63e-b39f8175d885</xmp:rhcc-translation-id>
+         <xmp:brand-content-type>Icon</xmp:brand-content-type>
+         <xmp:CreateDate>2023-12-07T22:16:46.383Z</xmp:CreateDate>
+         <xmp:rhcc-aspect-ratio>square</xmp:rhcc-aspect-ratio>
+         <xmp:rhcc-effective-on-set-on-upload>true</xmp:rhcc-effective-on-set-on-upload>
+         <xmp:rhcc-published-asset-email-sent>true</xmp:rhcc-published-asset-email-sent>
+         <xmp:rhcc-metadata-complete-uploader>pending</xmp:rhcc-metadata-complete-uploader>
+         <xmp:rhcc-file-last-modified>2024-07-12T23:24:40.398Z</xmp:rhcc-file-last-modified>
+         <xmp:rhcc-audience>rhcc-audience:internal</xmp:rhcc-audience>
+         <xmp:rhcc-rights-restricted>no</xmp:rhcc-rights-restricted>
+         <xmp:brand-content-subtype>Social sharing</xmp:brand-content-subtype>
+         <xmp:rhcc-derivative-id>DER13f96252-0c68-4e9f-a63e-b39f8175d885</xmp:rhcc-derivative-id>
+         <xmp:rhcc-uploaded-by>pmeilleu@redhat.com</xmp:rhcc-uploaded-by>
+         <xmp:brand-logo-color>White</xmp:brand-logo-color>
+         <xmp:rhcc-notify-portal-subscribers-on-change>yes</xmp:rhcc-notify-portal-subscribers-on-change>
+         <dc:format>image/svg+xml</dc:format>
+         <dc:modified>2024-02-09T20:37:46.890Z</dc:modified>
+         <dc:title>
+            <rdf:Alt>
+               <rdf:li xml:lang="x-default">Flickr sharing icon - White</rdf:li>
+            </rdf:Alt>
+         </dc:title>
+         <cq:lastReplicationAction_scene7>Activate</cq:lastReplicationAction_scene7>
+         <cq:lastReplicationAction_publish>Activate</cq:lastReplicationAction_publish>
+         <cq:lastReplicated_publish>2024-10-02T19:49:04.376Z</cq:lastReplicated_publish>
+         <cq:lastReplicatedBy>workflow-process-service</cq:lastReplicatedBy>
+         <cq:lastReplicationAction>Activate</cq:lastReplicationAction>
+         <cq:lastReplicatedBy_publish>workflow-process-service</cq:lastReplicatedBy_publish>
+         <cq:isDelivered>false</cq:isDelivered>
+         <cq:lastReplicated>2024-10-02T19:49:04.376Z</cq:lastReplicated>
+         <cq:lastReplicatedBy_scene7>workflow-process-service</cq:lastReplicatedBy_scene7>
+         <cq:lastReplicated_scene7>2024-10-02T19:49:04.376Z</cq:lastReplicated_scene7>
+         <tiff:ImageLength>30</tiff:ImageLength>
+         <tiff:ImageWidth>30</tiff:ImageWidth>
+      </rdf:Description>
+   </rdf:RDF>
+</x:xmpmeta>
+                                                                                                    
+                                                                                                    
+                                                                                                    
+                                                                                                    
+                                                                                                    
+                                                                                                    
+                                                                                                    
+                                                                                                    
+        
+<?xpacket end="w"?></metadata>
+<defs>
+    <style>
+      .f357be51-5281-4284-b1c8-beaafe886281 {
+        fill: none;
+      }
+
+      .b5c02f11-b58e-4eff-bb43-964503ab5aa9 {
+        fill: #fff;
+      }
+    </style>
+  </defs>
+  <g id="ad8228af-95ee-4760-b0a0-3288fc4228fa" data-name="Flickr">
+    <rect class="f357be51-5281-4284-b1c8-beaafe886281" width="30" height="30"/>
+    <g>
+      <path class="b5c02f11-b58e-4eff-bb43-964503ab5aa9" d="M8.93,19.86A4.86,4.86,0,1,1,13.79,15a4.86,4.86,0,0,1-4.86,4.86Z"/>
+      <path class="b5c02f11-b58e-4eff-bb43-964503ab5aa9" d="M21.07,10.63A4.37,4.37,0,1,1,16.7,15a4.38,4.38,0,0,1,4.37-4.37m0-.49A4.86,4.86,0,1,0,25.93,15a4.87,4.87,0,0,0-4.86-4.86Z"/>
+    </g>
+  </g>
+</svg>

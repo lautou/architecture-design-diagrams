@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg id="uuid-518792ea-42a1-4ea0-8379-f7ef7c5c1866" data-name="Icons" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 38 38">
+  <title>Red Hat build of Trustee icon</title>
+<desc>Operator, cloud</desc>
+<metadata><?xpacket begin="﻿" id="W5M0MpCehiHzreSzNTczkc9d"?>
+<x:xmpmeta xmlns:x="adobe:ns:meta/" x:xmptk="Adobe XMP Core 8.0-c001 1.000000, 0000/00/00-00:00:00        ">
+   <rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+      <rdf:Description rdf:about=""
+            xmlns:xmp="http://ns.adobe.com/xap/1.0/"
+            xmlns:tiff="http://ns.adobe.com/tiff/1.0/"
+            xmlns:dc="http://purl.org/dc/elements/1.1/"
+            xmlns:xmpRights="http://ns.adobe.com/xap/1.0/rights/">
+         <xmp:brand-content-subtype>Technology</xmp:brand-content-subtype>
+         <xmp:rhcc-file-last-modified>2025-02-18T19:02:32.716Z</xmp:rhcc-file-last-modified>
+         <xmp:brand-logo-color>Red</xmp:brand-logo-color>
+         <xmp:rhcc-aspect-ratio>square</xmp:rhcc-aspect-ratio>
+         <xmp:rhcc-rights-restricted>no</xmp:rhcc-rights-restricted>
+         <xmp:brand-content-type>Icon</xmp:brand-content-type>
+         <xmp:rhcc-audience>rhcc-audience:internal</xmp:rhcc-audience>
+         <xmp:rhcc-notify-portal-subscribers-on-change>yes</xmp:rhcc-notify-portal-subscribers-on-change>
+         <xmp:rhcc-product>
+            <rdf:Bag>
+               <rdf:li>rhcc-product:red-hat-openshift</rdf:li>
+            </rdf:Bag>
+         </xmp:rhcc-product>
+         <xmp:rhcc-topics>
+            <rdf:Bag>
+               <rdf:li>rhcc-topics:containers</rdf:li>
+            </rdf:Bag>
+         </xmp:rhcc-topics>
+         <xmp:brand-colorway>
+            <rdf:Bag>
+               <rdf:li>colorway:red</rdf:li>
+            </rdf:Bag>
+         </xmp:brand-colorway>
+         <xmp:brand-subtype>
+            <rdf:Bag>
+               <rdf:li>Technology icon</rdf:li>
+            </rdf:Bag>
+         </xmp:brand-subtype>
+         <tiff:ImageWidth>38</tiff:ImageWidth>
+         <tiff:ImageLength>38</tiff:ImageLength>
+         <dc:modified>2025-02-18T19:03:32.467Z</dc:modified>
+         <dc:format>image/svg+xml</dc:format>
+         <dc:description>
+            <rdf:Alt>
+               <rdf:li xml:lang="x-default">Operator, cloud</rdf:li>
+            </rdf:Alt>
+         </dc:description>
+         <dc:title>
+            <rdf:Alt>
+               <rdf:li xml:lang="x-default">Red Hat build of Trustee icon</rdf:li>
+            </rdf:Alt>
+         </dc:title>
+         <xmpRights:UsageTerms>
+            <rdf:Alt>
+               <rdf:li xml:lang="x-default">Use technology icons to represent Red Hat products and components. Do not remove the icon from the bounding shape.</rdf:li>
+            </rdf:Alt>
+         </xmpRights:UsageTerms>
+      </rdf:Description>
+   </rdf:RDF>
+</x:xmpmeta>
+                                                                                                    
+                                                                                                    
+                                                                                                    
+                                                                                                    
+                                                                                                    
+                                                                                                    
+                                                                                                    
+                                                                                                    
+                                                                                                    
+                                                                                                    
+                          
+<?xpacket end="w"?></metadata>
+<defs>
+    <style>
+      .uuid-8ba7f34a-6b13-4d74-bebe-ffad59918999 {
+        fill: #e00;
+      }
+    </style>
+  </defs>
+  <path class="uuid-8ba7f34a-6b13-4d74-bebe-ffad59918999" d="M28,2.25c4.2733,0,7.75,3.4766,7.75,7.75v18c0,4.2734-3.4767,7.75-7.75,7.75H10c-4.2733,0-7.75-3.4766-7.75-7.75V10c0-4.2734,3.4767-7.75,7.75-7.75h18M28,1H10C5.0294,1,1,5.0294,1,10v18c0,4.9706,4.0294,9,9,9h18c4.9706,0,9-4.0294,9-9V10c0-4.9706-4.0294-9-9-9h0Z"/>
+  <path class="uuid-8ba7f34a-6b13-4d74-bebe-ffad59918999" d="M25.5264,29.625c-2.2744,0-4.125-1.8506-4.125-4.125v-4.0288c0-.2949.2065-.5498.4951-.6113l3.5-.7441c.0859-.0186.1738-.0186.2598,0l3.5.7441c.2886.0615.4951.3164.4951.6113v4.0288c0,2.2744-1.8506,4.125-4.125,4.125ZM22.6514,21.9771v3.5229c0,1.5854,1.2896,2.875,2.875,2.875s2.875-1.2896,2.875-2.875v-3.5229l-2.875-.6108-2.875.6108Z"/>
+  <path class="uuid-8ba7f34a-6b13-4d74-bebe-ffad59918999" d="M17.5,29.625c-.1094,0-.2192-.0288-.3169-.0864l-8.5-5c-.1909-.1123-.3081-.3169-.3081-.5386v-10c0-.2217.1172-.4263.3081-.5386l8.5-5c.1953-.1152.4385-.1152.6338,0l8.5,5c.1909.1123.3081.3169.3081.5386v4c0,.3452-.2798.625-.625.625s-.625-.2798-.625-.625v-3.6426l-7.875-4.6323-7.875,4.6323v9.2852l7.875,4.6323,1.5718-.9248c.2964-.1743.6807-.0767.8555.2217.1753.2974.0757.6807-.2217.8555l-1.8887,1.1113c-.0977.0576-.2075.0864-.3169.0864Z"/>
+  <path class="uuid-8ba7f34a-6b13-4d74-bebe-ffad59918999" d="M25,26.625c-.1602,0-.3198-.061-.4419-.1831l-1-1c-.2441-.2441-.2441-.6396,0-.8838s.6396-.2441.8838,0l.5581.5581,1.5581-1.5581c.2441-.2441.6396-.2441.8838,0s.2441.6396,0,.8838l-2,2c-.1221.1221-.2817.1831-.4419.1831Z"/>
+  <path class="uuid-8ba7f34a-6b13-4d74-bebe-ffad59918999" d="M19.2261,16.8545c0-.9512-.7739-1.7246-1.7251-1.7246s-1.7246.7734-1.7246,1.7246c0,.6855.4048,1.2739.9852,1.5519l-.9778,3.9129c-.0186.0747-.002.1538.0454.2144s.1201.0962.1973.0962h2.9497c.0771,0,.1499-.0356.1973-.0962s.064-.1396.0454-.2144l-.9783-3.9128c.5806-.278.9857-.8665.9857-1.552Z"/>
+</svg>

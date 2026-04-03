@@ -13,8 +13,8 @@ AI Project namespaces (user-created, Kubernetes naming convention):
 - dev-ai-project-x: Jupyter Workbench + Model Server
 - dev-ai-project-z: VS Code Workbench
 - mlops-pipeline-project-y: Data Science Pipeline Server + Ray Cluster
-- prod-ai-project-x: Model Server + TrustyAI Service
-- prod-guardrails-project-y: Model Server + Guardrail Orchestrator
+- prod-ai-project-x: Secured Model Server (KServe + TrustyAI Agent) + TrustyAI Service
+- prod-ai-project-z: Secured Model Server (KServe + Guardrail Detector + Gateway) + Guardrail Orchestrator
 
 Layout: 5x3 grid for redhat-ods-applications, structured rows for other namespaces
 """
@@ -41,8 +41,10 @@ KUBEFLOW_ICON = os.path.join(PROJECT_ROOT, "custom_icons/Icons/Kubeflow/kubeflow
 RAY_ICON = os.path.join(PROJECT_ROOT, "custom_icons/Icons/Ray/ray-400x400.png")
 TRUSTYAI_ICON = os.path.join(PROJECT_ROOT, "custom_icons/Icons/TrustyAI/trustyai-400x400.png")
 GUARDRAILS_ICON = os.path.join(PROJECT_ROOT, "custom_icons/Icons/Guardrails/guardrails-400x400.png")
+GUARDRAILS_SMALL_ICON = os.path.join(PROJECT_ROOT, "custom_icons/Icons/Guardrails/guardrails-100x100.png")
 CATALOG_ICON = os.path.join(PROJECT_ROOT, "custom_icons/Icons/Catalog/Icon-Red_Hat-Catalog-A-Red-RGB.Large_icon_transparent.png")
 POSTGRESQL_ICON = os.path.join(PROJECT_ROOT, "custom_icons/Icons/PostgreSQL/postgresql-400x400.png")
+LLMD_ICON = os.path.join(PROJECT_ROOT, "custom_icons/Icons/LLMD/llmd-400x400.png")
 
 graph_attr = {
     "fontsize": "9",
@@ -153,17 +155,31 @@ with Diagram(
 
         # AI Project 4: Production serving with TrustyAI
         with Cluster("prod-ai-project-x", graph_attr={"margin": "10"}):
-            model_server_prod = Custom("\nModel Server\n(KServe)", AI_MODEL_ICON)
+            # Secured Model Server with TrustyAI agent
+            with Cluster("Secured Model Server", graph_attr={"margin": "8", "bgcolor": "lightyellow", "style": "rounded"}):
+                model_server_trusty = Custom("\nKServe\nModel Server", AI_MODEL_ICON)
+                trustyai_agent = Custom("\nTrustyAI\nAgent", TRUSTYAI_ICON)
+                model_server_trusty - Edge(style="invis") - trustyai_agent
+
+            # TrustyAI Service (outside the pod)
             trustyai_service = Custom("\nTrustyAI Service", TRUSTYAI_ICON)
-            model_server_prod - Edge(style="invis") - trustyai_service
 
         # AI Project 5: Production with Guardrails
-        with Cluster("prod-guardrails-project-y", graph_attr={"margin": "10"}):
-            model_server_guardrails = Custom("\nModel Server\n(KServe)", AI_MODEL_ICON)
+        with Cluster("prod-ai-project-z", graph_attr={"margin": "10"}):
+            # Secured Model Server with Guardrails
+            with Cluster("Secured Model Server", graph_attr={"margin": "8", "bgcolor": "lightyellow", "style": "rounded"}):
+                model_server_guardrails = Custom("\nKServe\nModel Server", AI_MODEL_ICON)
+                guardrail_detector = Custom("\nGuardrail\nBuilt-in Detector", GUARDRAILS_ICON)
+                guardrail_gateway = Custom("\nGuardrail\nGateway", GUARDRAILS_ICON)
+                model_server_guardrails - Edge(style="invis") - guardrail_detector - Edge(style="invis") - guardrail_gateway
+
+            # Guardrail Orchestrator (outside the pod)
             guardrail_orchestrator = Custom("\nGuardrail\nOrchestrator", GUARDRAILS_ICON)
-            model_server_guardrails - Edge(style="invis") - guardrail_orchestrator
+
+            # LLM Router Scheduler
+            llm_router = Custom("\nLLM KServe\nRouter Scheduler", LLMD_ICON)
 
 print("✓ Generated: output/baseline-rhoai-functional-components.png")
 print("  → Platform namespaces (gray): redhat-ods-applications + redhat-ods-monitoring + rhods-notebooks + rhoai-model-registries")
-print("  → AI Project namespaces: dev-ai-project-x/z + mlops-pipeline-project-y + prod-ai-project-x + prod-guardrails-project-y")
+print("  → AI Project namespaces: dev-ai-project-x/z + mlops-pipeline-project-y + prod-ai-project-x + prod-ai-project-z")
 print("  → Components: 15 operators + 5 monitoring + 2 workbenches + 4 model registry components + 5 AI projects")

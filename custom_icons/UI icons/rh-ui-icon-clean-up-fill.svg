@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg id="clean-up-fill" xmlns="http://www.w3.org/2000/svg" width="32" height="32" version="1.1" viewBox="0 0 32 32">
+  <!-- Generator: Adobe Illustrator 30.1.0, SVG Export Plug-In . SVG Version: 2.1.1 Build 136)  -->
+  <title>rh-ui-icon-clean-up-fill</title>
+<desc>sweep, clean, housework, janitor, dust, floor, bristle, housekeeping, tidy, maintenance, witch, halloween, magic, chore, domestic, brush, debris, sanitation, service, straw, broom, brush</desc>
+<metadata><?xpacket begin="﻿" id="W5M0MpCehiHzreSzNTczkc9d"?>
+<x:xmpmeta xmlns:x="adobe:ns:meta/" x:xmptk="Adobe XMP Core 8.0-c001 1.000000, 0000/00/00-00:00:00        ">
+   <rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+      <rdf:Description rdf:about=""
+            xmlns:tiff="http://ns.adobe.com/tiff/1.0/"
+            xmlns:dc="http://purl.org/dc/elements/1.1/"
+            xmlns:xmp="http://ns.adobe.com/xap/1.0/">
+         <tiff:ImageLength>32</tiff:ImageLength>
+         <tiff:ImageWidth>32</tiff:ImageWidth>
+         <dc:format>image/svg+xml</dc:format>
+         <dc:modified>2026-01-20T14:41:10.980Z</dc:modified>
+         <dc:title>
+            <rdf:Alt>
+               <rdf:li xml:lang="x-default">rh-ui-icon-clean-up-fill</rdf:li>
+            </rdf:Alt>
+         </dc:title>
+         <dc:description>
+            <rdf:Alt>
+               <rdf:li xml:lang="x-default">sweep, clean, housework, janitor, dust, floor, bristle, housekeeping, tidy, maintenance, witch, halloween, magic, chore, domestic, brush, debris, sanitation, service, straw, broom, brush</rdf:li>
+            </rdf:Alt>
+         </dc:description>
+         <xmp:brand-content-type>Icon</xmp:brand-content-type>
+         <xmp:brand-content-subtype>UI</xmp:brand-content-subtype>
+         <xmp:rhcc-rights-restricted>no</xmp:rhcc-rights-restricted>
+         <xmp:rhcc-file-last-modified>2026-01-20T14:37:32.338Z</xmp:rhcc-file-last-modified>
+         <xmp:brand-colorway>
+            <rdf:Bag>
+               <rdf:li>colorway:black</rdf:li>
+            </rdf:Bag>
+         </xmp:brand-colorway>
+      </rdf:Description>
+   </rdf:RDF>
+</x:xmpmeta>
+                                                                                                    
+                                                                                                    
+                                                                                                    
+                                                                                                    
+                                                                                                    
+                                                                                                    
+                                                                                                    
+                                                                                                    
+                                                                                                    
+                                                                                                    
+                                                                                                    
+                                                                                                    
+                                                                                                    
+                                                                                 
+<?xpacket end="w"?></metadata>
+<defs>
+    <style>
+      .st0 {
+        fill: none;
+      }
+
+      .st1 {
+        fill: #151515;
+      }
+    </style>
+  </defs>
+  <path id="icon" class="st1" d="M7,16c0-.55225.44727-1,1-1h7V2c0-.55225.44727-1,1-1s1,.44775,1,1v13h7c.55273,0,1,.44775,1,1s-.44727,1-1,1H8c-.55273,0-1-.44775-1-1ZM24.97852,19.79297c-.09863-.46289-.50586-.79297-.97852-.79297H8c-.47266,0-.87988.33008-.97852.79297l-2.12012,10c-.0625.29492.01172.60254.20117.83691.19043.23438.47559.37012.77734.37012h3.69427l1.32526-6.23438c.12891-.60645.72266-.99316,1.33496-.86621.60742.12891.99512.72656.86621,1.33496l-1.22565,5.76562h8.25012l-1.22565-5.76562c-.12891-.6084.25879-1.20605.86621-1.33496.6123-.13086,1.20605.25879,1.33496.86621l1.32532,6.23438h3.69421c.30176,0,.58691-.13574.77734-.37012.18945-.23438.26367-.54199.20117-.83691l-2.12012-10Z"/>
+  <rect id="Transparent_rectangle" class="st0" width="32" height="32"/>
+</svg>

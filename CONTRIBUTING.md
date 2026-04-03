@@ -112,7 +112,7 @@ Before submitting:
 
 1. **Generate the diagram**:
    ```bash
-   python3 diagrams/<category>/<your-diagram>.py
+   ./venv/bin/python3 diagrams/<category>/<your-diagram>.py
    ```
 
 2. **Verify output**:

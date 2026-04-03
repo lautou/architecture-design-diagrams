@@ -1,0 +1,77 @@
+<svg id="e5c7bec6-3c8e-40ef-9b56-c0fc4aafed97" data-name="Icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 36 36">
+  <title>Report icon - White</title>
+<desc>paper, graph, diagram, data, print, project, metrics, performance, media and documents</desc>
+<metadata><?xpacket begin="﻿" id="W5M0MpCehiHzreSzNTczkc9d"?>
+<x:xmpmeta xmlns:x="adobe:ns:meta/" x:xmptk="Adobe XMP Core 8.0-c001 1.000000, 0000/00/00-00:00:00        ">
+   <rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+      <rdf:Description rdf:about=""
+            xmlns:xmp="http://ns.adobe.com/xap/1.0/"
+            xmlns:dc="http://purl.org/dc/elements/1.1/"
+            xmlns:cq="http://www.day.com/jcr/cq/1.0"
+            xmlns:tiff="http://ns.adobe.com/tiff/1.0/">
+         <xmp:rhcc-effective-on>2023-12-08T17:37:26.370Z</xmp:rhcc-effective-on>
+         <xmp:rhcc-metadata-complete-moderator>pending</xmp:rhcc-metadata-complete-moderator>
+         <xmp:rhcc-translation-id>TRA2b68aefd-df16-41d5-94da-93d88b6486e3</xmp:rhcc-translation-id>
+         <xmp:brand-content-type>Icon</xmp:brand-content-type>
+         <xmp:CreateDate>2023-12-08T17:37:26.370Z</xmp:CreateDate>
+         <xmp:rhcc-aspect-ratio>square</xmp:rhcc-aspect-ratio>
+         <xmp:rhcc-effective-on-set-on-upload>true</xmp:rhcc-effective-on-set-on-upload>
+         <xmp:rhcc-published-asset-email-sent>true</xmp:rhcc-published-asset-email-sent>
+         <xmp:rhcc-metadata-complete-uploader>pending</xmp:rhcc-metadata-complete-uploader>
+         <xmp:rhcc-file-last-modified>2024-07-12T20:25:40.416Z</xmp:rhcc-file-last-modified>
+         <xmp:rhcc-audience>rhcc-audience:internal</xmp:rhcc-audience>
+         <xmp:brand-content-subtype>Icon</xmp:brand-content-subtype>
+         <xmp:rhcc-rights-restricted>no</xmp:rhcc-rights-restricted>
+         <xmp:rhcc-derivative-id>DER2b68aefd-df16-41d5-94da-93d88b6486e3</xmp:rhcc-derivative-id>
+         <xmp:rhcc-uploaded-by>pmeilleu@redhat.com</xmp:rhcc-uploaded-by>
+         <xmp:brand-logo-color>White</xmp:brand-logo-color>
+         <xmp:rhcc-notify-portal-subscribers-on-change>yes</xmp:rhcc-notify-portal-subscribers-on-change>
+         <dc:format>image/svg+xml</dc:format>
+         <dc:modified>2024-02-09T20:21:17.165Z</dc:modified>
+         <dc:title>
+            <rdf:Alt>
+               <rdf:li xml:lang="x-default">Report icon - White</rdf:li>
+            </rdf:Alt>
+         </dc:title>
+         <dc:description>
+            <rdf:Alt>
+               <rdf:li xml:lang="x-default">paper, graph, diagram, data, print, project, metrics, performance, media and documents</rdf:li>
+            </rdf:Alt>
+         </dc:description>
+         <cq:lastReplicationAction_scene7>Activate</cq:lastReplicationAction_scene7>
+         <cq:lastReplicationAction_publish>Activate</cq:lastReplicationAction_publish>
+         <cq:lastReplicated_publish>2024-10-02T19:43:12.745Z</cq:lastReplicated_publish>
+         <cq:lastReplicatedBy>workflow-process-service</cq:lastReplicatedBy>
+         <cq:lastReplicationAction>Activate</cq:lastReplicationAction>
+         <cq:lastReplicatedBy_publish>workflow-process-service</cq:lastReplicatedBy_publish>
+         <cq:isDelivered>false</cq:isDelivered>
+         <cq:lastReplicated>2024-10-02T19:43:12.745Z</cq:lastReplicated>
+         <cq:lastReplicatedBy_scene7>workflow-process-service</cq:lastReplicatedBy_scene7>
+         <cq:lastReplicated_scene7>2024-10-02T19:43:12.745Z</cq:lastReplicated_scene7>
+         <tiff:ImageLength>36</tiff:ImageLength>
+         <tiff:ImageWidth>36</tiff:ImageWidth>
+      </rdf:Description>
+   </rdf:RDF>
+</x:xmpmeta>
+                                                                                                    
+                                                                                                    
+                                                                                                    
+                                                                                                    
+                                                                                                    
+                                                                                                    
+                                                                                                    
+                                                                                                    
+        
+<?xpacket end="w"?></metadata>
+<defs>
+    <style>
+      .ac01cd1f-4c13-40fa-9632-e83ccb57e144 {
+        fill: #fff;
+      }
+    </style>
+  </defs>
+  <g>
+    <path class="ac01cd1f-4c13-40fa-9632-e83ccb57e144" d="M28,4.38H12a.7.7,0,0,0-.44.18l-4,4a.55.55,0,0,0-.15.28c0,.05,0,.11,0,.16V31a.61.61,0,0,0,.62.62H28a.6.6,0,0,0,.62-.62V5A.61.61,0,0,0,28,4.38ZM11.38,6.51V8.38H9.51Zm16,23.87H8.62V9.62H12A.61.61,0,0,0,12.62,9V5.62H27.38Z"/>
+    <path class="ac01cd1f-4c13-40fa-9632-e83ccb57e144" d="M13.38,21.38H12a.62.62,0,0,0,0,1.24H24a.61.61,0,0,0,.62-.62c0-.92-1.28-.56-2-.62V14a.62.62,0,0,0-1.24,0v7.38H18.62V17a.62.62,0,0,0-1.24,0v4.38H14.62V19a.62.62,0,0,0-1.24,0Z"/>
+  </g>
+</svg>

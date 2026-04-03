@@ -25,6 +25,12 @@ from diagrams.onprem.compute import Server
 from diagrams.k8s.network import Ingress
 from diagrams.onprem.client import Users
 from diagrams.custom import Custom
+import os
+
+# Get absolute paths for icons
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+PROJECT_ROOT = os.path.join(BASE_DIR, '../../..')
+OPERATOR_ICON = os.path.join(PROJECT_ROOT, "custom_icons/Technology icons/operator/Technology_icon-Red_Hat-operator-Standard-RGB.Large_icon_transparent.png")
 
 graph_attr = {
     "fontsize": "16",
@@ -44,90 +50,90 @@ with Diagram(
 
     # ========== EXTERNAL ==========
     with Cluster("External Infrastructure"):
-        lb_external = Nginx("Load Balancer\n(External)")
-        dns_external = Server("DNS\n(External)")
-        storage_external = Ceph("External Storage\n(Optional)")
+        lb_external = Nginx("\nLoad Balancer\n(External)")
+        dns_external = Server("\nDNS\n(External)")
+        storage_external = Ceph("\nExternal Storage\n(Optional)")
 
-    users = Users("Users/Developers")
+    users = Users("\nUsers/Developers")
 
     # ========== LAYER 1: CONTROL PLANE ==========
     with Cluster("LAYER 1: Control Plane"):
 
         with Cluster("openshift-kube-apiserver"):
-            api = APIServer("API Server\n(HA: 3x)")
+            api = APIServer("\nAPI Server\n(HA: 3x)")
 
         with Cluster("Core Controllers"):
             with Cluster("openshift-etcd"):
-                etcd_cluster = Etcd("etcd Cluster\n(HA: 3x)")
+                etcd_cluster = Etcd("\netcd Cluster\n(HA: 3x)")
 
             with Cluster("openshift-kube-controller-manager"):
-                controller = ControllerManager("Controller Manager")
+                controller = ControllerManager("\nController Manager")
 
             with Cluster("openshift-kube-scheduler"):
-                scheduler = Scheduler("Scheduler")
+                scheduler = Scheduler("\nScheduler")
 
     # ========== LAYER 2: NETWORK & EDGE ==========
     with Cluster("LAYER 2: Network & Edge Services"):
 
         with Cluster("openshift-ingress"):
-            router = Ingress("Ingress Controller\n(HAProxy)")
+            router = Ingress("\nIngress Controller\n(HAProxy)")
 
         with Cluster("openshift-dns"):
-            cluster_dns = Server("Cluster DNS\n(CoreDNS)")
+            cluster_dns = Server("\nCluster DNS\n(CoreDNS)")
 
         with Cluster("openshift-network-operator"):
-            network_operator = Server("Cluster Network\n(OVN-Kubernetes)")
+            network_operator = Server("\nCluster Network\n(OVN-Kubernetes)")
 
         with Cluster("openshift-dns-operator"):
-            dns_operator = Custom("DNS Operator", "custom_icons/Technology icons/operator/Technology_icon-Red_Hat-operator-Standard-RGB.Large_icon_transparent.png")
+            dns_operator = Custom("\nDNS Operator", OPERATOR_ICON)
 
     # ========== LAYER 3: PLATFORM SERVICES ==========
     with Cluster("LAYER 3: Platform Services"):
 
         with Cluster("openshift-image-registry"):
-            internal_registry = Server("Internal Registry")
+            internal_registry = Server("\nInternal Registry")
 
         with Cluster("openshift-authentication"):
-            oauth_server = Server("OAuth Server")
+            oauth_server = Server("\nOAuth Server")
 
         with Cluster("openshift-operator-lifecycle-manager"):
-            olm = Custom("Operator Lifecycle\nManager (OLM)", "custom_icons/Technology icons/operator/Technology_icon-Red_Hat-operator-Standard-RGB.Large_icon_transparent.png")
+            olm = Custom("\nOperator Lifecycle\nManager (OLM)", OPERATOR_ICON)
 
         with Cluster("openshift-machine-api"):
-            machine_api = Server("Machine API\n& Autoscaler")
+            machine_api = Server("\nMachine API\n& Autoscaler")
 
     # ========== COMPUTE INFRASTRUCTURE ==========
     with Cluster("Compute Infrastructure"):
 
         with Cluster("Standard Worker Nodes"):
-            cpu_workers = Node("CPU Workers\n(Compute)")
+            cpu_workers = Node("\nCPU Workers\n(Compute)")
 
         with Cluster("GPU Worker Nodes"):
             with Cluster("openshift-nfd"):
-                nfd_operator = Custom("Node Feature\nDiscovery Operator", "custom_icons/Technology icons/operator/Technology_icon-Red_Hat-operator-Standard-RGB.Large_icon_transparent.png")
+                nfd_operator = Custom("\nNode Feature\nDiscovery Operator", OPERATOR_ICON)
 
             with Cluster("nvidia-gpu-operator"):
-                gpu_operator = Custom("NVIDIA GPU\nOperator", "custom_icons/Technology icons/operator/Technology_icon-Red_Hat-operator-Standard-RGB.Large_icon_transparent.png")
+                gpu_operator = Custom("\nNVIDIA GPU\nOperator", OPERATOR_ICON)
 
-            gpu_nodes = Server("GPU Workers\n(AI/ML)")
+            gpu_nodes = Server("\nGPU Workers\n(AI/ML)")
 
     # ========== STORAGE INFRASTRUCTURE ==========
     with Cluster("Storage Infrastructure"):
 
         with Cluster("openshift-storage"):
             with Cluster("OpenShift Data Foundation"):
-                odf_operator = Custom("ODF Operator", "custom_icons/Technology icons/operator/Technology_icon-Red_Hat-operator-Standard-RGB.Large_icon_transparent.png")
+                odf_operator = Custom("\nODF Operator", OPERATOR_ICON)
 
                 with Cluster("Storage Classes"):
-                    sc_block = Ceph("Block (RBD)")
-                    sc_file = Ceph("File (CephFS)")
-                    sc_object = Ceph("Object (RGW/S3)")
+                    sc_block = Ceph("\nBlock (RBD)")
+                    sc_file = Ceph("\nFile (CephFS)")
+                    sc_object = Ceph("\nObject (RGW/S3)")
 
-                ceph_cluster = Ceph("Ceph Storage\n(MON, OSD, MDS, RGW)")
+                ceph_cluster = Ceph("\nCeph Storage\n(MON, OSD, MDS, RGW)")
 
     # ========== USER WORKLOADS ==========
     with Cluster("User Namespaces"):
-        user_workloads = Server("User Workloads\n(Applications)")
+        user_workloads = Server("\nUser Workloads\n(Applications)")
 
     # =========================================================
     # CONNECTIONS

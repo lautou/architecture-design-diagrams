@@ -1,10 +1,24 @@
 # OpenShift Architecture Diagrams - Standards & Conventions
 
+## 🤖 AI Assistant Instructions (Claude Code)
+
+* **Context check:** Read this document carefully before creating or modifying any diagram.
+* **Meta-Rule:** Proactively update this `CLAUDE.md` file under the appropriate section if we make a new architectural decision, establish a new naming convention, or solve a recurring bug.
+* **Autonomy:** Do not ask for permission to run standard bash commands (like `mkdir`, `touch`, `python`) when scaffolding diagram files, reading the workspace, or running utilities.
+* **Code Standard:** Always calculate absolute paths for custom icons using `os.path.abspath(__file__)` at the top of each diagram file.
+* **Python Execution:** ALWAYS use `./venv/bin/python3` for ALL Python commands (scripts, one-liners, etc.). NEVER use `source venv/bin/activate && python3` as it triggers security prompts. Examples:
+  - Run script: `./venv/bin/python3 diagrams/foo.py`
+  - One-liner: `./venv/bin/python3 -c "import diagrams; print(diagrams.__version__)"`
+  - Module execution: `./venv/bin/python3 -m pip list`
+
+---
+
 This document defines the standards for creating and maintaining OpenShift and RHOAI architecture diagrams in this repository.
 
 ## Diagram Philosophy
 
 ### Purpose
+
 These diagrams serve consulting engagements for AI platform deployments. They must:
 - Be **adaptable** to different customer contexts
 - Show **integration points** with external systems
@@ -22,41 +36,6 @@ These diagrams serve consulting engagements for AI platform deployments. They mu
 
 ## Diagram Standards
 
-### Icon Usage Rules
-
-**CRITICAL: No 3rd party logos for internal components**
-
-Only Red Hat and NVIDIA branding allowed for internal OpenShift/RHOAI components.
-
-**Allowed Icons:**
-
-| Component Type | Icon Type | Import | Use For |
-|---|---|---|---|
-| **Operators** | `Server` | `diagrams.onprem.compute` | All operators (GPU, ODF, Logging, etc.) |
-| **Applications** | `Server` or `Python` | `diagrams.onprem.compute`, `.language` | Workloads, ML apps, pipelines |
-| **Security/Identity** | `Vault` | `diagrams.onprem.security` | Keycloak, Authorino, cert-manager (generic enough) |
-| **Monitoring** | `Prometheus`, `Grafana` | `diagrams.onprem.monitoring` | Part of OpenShift monitoring stack |
-| **Storage/Database** | `Ceph`, `PostgreSQL` | `diagrams.onprem.storage`, `.database` | Storage, metadata DBs (generic infrastructure) |
-| **Network** | `Nginx`, `Server` | `diagrams.onprem.network`, `.compute` | Load balancers, ingress |
-| **Personas** | `Users` | `diagrams.onprem.client` | Data Scientists, Developers, etc. |
-| **External Only** | `Github`, `Gitlab` | `diagrams.onprem.vcs` | **External** Git repos only |
-
-**FORBIDDEN for internal components:**
-- ❌ `Helm` - Implies 3rd party packaging
-- ❌ `Jenkins` - 3rd party CI brand
-- ❌ `Argocd` - 3rd party GitOps brand  
-- ❌ `Harbor` - 3rd party registry brand
-- ❌ `Istio` - 3rd party service mesh brand
-- ❌ `Mlflow` - 3rd party MLOps brand
-
-Use **`Server`** for all these instead.
-
-**Why:**
-1. These diagrams represent **Red Hat OpenShift/RHOAI**, not 3rd party products
-2. Avoids confusion about what's OpenShift-native vs external dependencies
-3. Prevents appearance of endorsing 3rd party products
-4. Keeps diagrams clean and Red Hat-focused
-
 ### Representation Rules
 
 **NO pod-level representation** - Focus on:
@@ -66,29 +45,6 @@ Use **`Server`** for all these instead.
 - Data flows
 
 **Why:** Pod details clutter diagrams and shift focus from architecture to deployment specifics.
-
-### Color-Coded Connections
-
-Use consistent edge colors across all diagrams:
-
-```python
-# Orange: Management/hierarchy
-operator >> Edge(color="orange", style="bold") >> component
-
-# Purple: Observability/monitoring
-component >> Edge(color="purple", style="dotted") >> prometheus
-
-# Green: API requests / User traffic
-user >> Edge(color="green") >> api
-
-# Blue: Data flows
-workload >> Edge(color="blue") >> storage
-
-# Red: Security enforcement / Alerts
-policy >> Edge(color="red", style="bold") >> application
-```
-
-**Why:** Color coding helps viewers quickly understand relationship types without reading every label.
 
 ---
 
@@ -320,14 +276,11 @@ mlops_engineer >> Edge(color="green") >> model_registry
 # Setup (first time)
 ./setup.sh
 
-# Activate virtual environment
-source venv/bin/activate
-
 # Generate all diagrams
 make generate-all
 
 # Generate single diagram
-python3 diagrams/baseline-reference/ocp/01-core-infrastructure.py
+./venv/bin/python3 diagrams/baseline-reference/ocp/01-core-infrastructure.py
 ```
 
 ### Output Location
@@ -438,6 +391,55 @@ from diagrams.onprem.compute import Server
 from diagrams.onprem.client import Users
 ```
 
+### Using Custom Icons
+
+**CRITICAL: Custom icons require absolute paths**
+
+When using Red Hat Technology icons via `Custom()`, always use absolute paths calculated from `__file__`:
+
+```python
+import os
+from diagrams.custom import Custom
+
+# Calculate absolute paths at the top of the file
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+PROJECT_ROOT = os.path.join(BASE_DIR, '../../..')
+OPERATOR_ICON = os.path.join(PROJECT_ROOT, "custom_icons/Technology icons/operator/Technology_icon-Red_Hat-operator-Standard-RGB.Large_icon_transparent.png")
+AI_MODEL_ICON = os.path.join(PROJECT_ROOT, "custom_icons/Technology icons/AI model/Technology_icon-Red_Hat-AI_model-Standard-RGB.Large_icon_transparent.png")
+
+# Use in diagram with leading newline for proper spacing
+with Diagram(...):
+    operator = Custom("\nMy Operator", OPERATOR_ICON)
+    model = Custom("\nAI Model", AI_MODEL_ICON)
+```
+
+**Why absolute paths:** Relative paths don't resolve correctly from nested diagram directories. Icons won't render (only text labels appear) when using relative paths like `"custom_icons/..."`.
+
+**Symptom if broken:** Diagrams generate without errors, but Custom icons don't appear - only text labels show.
+
+**IMPORTANT: Add leading newline to all labels**
+
+Always prefix labels with `\n` to create vertical spacing between icon images and label text:
+
+```python
+# CORRECT - has leading newline for spacing
+dashboard = Custom("\nDashboard", DASHBOARD_ICON)
+operator = Custom("\nRed Hat\nOpenShift AI\nOperator", OPERATOR_ICON)
+
+# WRONG - label text touches icon bottom edge
+dashboard = Custom("Dashboard", DASHBOARD_ICON)
+operator = Custom("Red Hat\nOpenShift AI\nOperator", OPERATOR_ICON)
+```
+
+**Why:** The `node_attr` margin parameter controls padding around the entire node, not internal spacing between the icon image and label text. Without the leading newline, labels touch the bottom of icons.
+
+**Also applies to standard library icons** (Prometheus, Tempo, etc.) when spacing is needed:
+
+```python
+prometheus = Prometheus("\nPrometheus\nData Science\nMonitoring Stack")
+tempo = Tempo("\nTempo\nData Science\nTempoMonolithic")
+```
+
 ---
 
 ## Version Control
@@ -449,6 +451,7 @@ from diagrams.onprem.client import Users
 - Documentation (README, CLAUDE.md)
 - Templates
 - Configuration files (Makefile, requirements.txt, .gitignore)
+- Utility scripts (`utils/`)
 
 ❌ Do NOT commit:
 - Generated images (`output/*.png`) - gitignored
@@ -529,8 +532,3 @@ For questions about:
 - **Technical implementation**: See `diagrams/baseline-reference/README.md`
 - **Contribution process**: See `CONTRIBUTING.md`
 - **Specific examples**: See `docs/EXAMPLES.md`
-
----
-
-**Last Updated:** 2026-04-02  
-**Maintainer:** Consulting Architecture Team

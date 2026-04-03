@@ -17,7 +17,7 @@ setup:
 	./venv/bin/pip install --upgrade pip
 	./venv/bin/pip install -r requirements.txt
 	@echo ""
-	@echo "✓ Setup complete! Activate venv with: source venv/bin/activate"
+	@echo "✓ Setup complete! Run diagrams with: ./venv/bin/python3 <script>"
 
 # Install graphviz system dependency (Fedora/RHEL)
 install-graphviz:
@@ -40,7 +40,7 @@ generate-all:
 	@mkdir -p output
 	@find diagrams -name "*.py" -type f | while read diagram; do \
 		echo "Running $$diagram..."; \
-		python3 $$diagram || exit 1; \
+		./venv/bin/python3 $$diagram || exit 1; \
 	done
 	@echo ""
 	@echo "✓ All diagrams generated in output/"

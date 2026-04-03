@@ -1,0 +1,74 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 30 30">
+  <title>Twitch sharing icon - Black</title>
+<metadata><?xpacket begin="﻿" id="W5M0MpCehiHzreSzNTczkc9d"?>
+<x:xmpmeta xmlns:x="adobe:ns:meta/" x:xmptk="Adobe XMP Core 8.0-c001 1.000000, 0000/00/00-00:00:00        ">
+   <rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+      <rdf:Description rdf:about=""
+            xmlns:xmp="http://ns.adobe.com/xap/1.0/"
+            xmlns:dc="http://purl.org/dc/elements/1.1/"
+            xmlns:cq="http://www.day.com/jcr/cq/1.0"
+            xmlns:tiff="http://ns.adobe.com/tiff/1.0/">
+         <xmp:rhcc-effective-on>2023-12-07T22:16:42.977Z</xmp:rhcc-effective-on>
+         <xmp:rhcc-metadata-complete-moderator>pending</xmp:rhcc-metadata-complete-moderator>
+         <xmp:rhcc-translation-id>TRA5f039ce7-f20a-4c33-97da-3b40f49d92b1</xmp:rhcc-translation-id>
+         <xmp:brand-content-type>Icon</xmp:brand-content-type>
+         <xmp:CreateDate>2023-12-07T22:16:42.977Z</xmp:CreateDate>
+         <xmp:rhcc-aspect-ratio>square</xmp:rhcc-aspect-ratio>
+         <xmp:rhcc-effective-on-set-on-upload>true</xmp:rhcc-effective-on-set-on-upload>
+         <xmp:rhcc-metadata-complete-uploader>pending</xmp:rhcc-metadata-complete-uploader>
+         <xmp:rhcc-file-last-modified>2024-07-12T23:33:55.394Z</xmp:rhcc-file-last-modified>
+         <xmp:rhcc-audience>rhcc-audience:internal</xmp:rhcc-audience>
+         <xmp:rhcc-rights-restricted>no</xmp:rhcc-rights-restricted>
+         <xmp:brand-content-subtype>Social sharing</xmp:brand-content-subtype>
+         <xmp:rhcc-derivative-id>DER5f039ce7-f20a-4c33-97da-3b40f49d92b1</xmp:rhcc-derivative-id>
+         <xmp:rhcc-uploaded-by>pmeilleu@redhat.com</xmp:rhcc-uploaded-by>
+         <xmp:brand-logo-color>Black</xmp:brand-logo-color>
+         <xmp:rhcc-notify-portal-subscribers-on-change>yes</xmp:rhcc-notify-portal-subscribers-on-change>
+         <dc:format>image/svg+xml</dc:format>
+         <dc:modified>2024-02-09T20:38:17.060Z</dc:modified>
+         <dc:title>
+            <rdf:Alt>
+               <rdf:li xml:lang="x-default">Twitch sharing icon - Black</rdf:li>
+            </rdf:Alt>
+         </dc:title>
+         <cq:lastReplicationAction_scene7>Activate</cq:lastReplicationAction_scene7>
+         <cq:lastReplicationAction_publish>Activate</cq:lastReplicationAction_publish>
+         <cq:lastReplicated_publish>2024-10-02T19:49:35.584Z</cq:lastReplicated_publish>
+         <cq:lastReplicatedBy>workflow-process-service</cq:lastReplicatedBy>
+         <cq:lastReplicationAction>Activate</cq:lastReplicationAction>
+         <cq:lastReplicatedBy_publish>workflow-process-service</cq:lastReplicatedBy_publish>
+         <cq:isDelivered>false</cq:isDelivered>
+         <cq:lastReplicated>2024-10-02T19:49:35.584Z</cq:lastReplicated>
+         <cq:lastReplicatedBy_scene7>workflow-process-service</cq:lastReplicatedBy_scene7>
+         <cq:lastReplicated_scene7>2024-10-02T19:49:35.584Z</cq:lastReplicated_scene7>
+         <tiff:ImageLength>30</tiff:ImageLength>
+         <tiff:ImageWidth>30</tiff:ImageWidth>
+      </rdf:Description>
+   </rdf:RDF>
+</x:xmpmeta>
+                                                                                                    
+                                                                                                    
+                                                                                                    
+                                                                                                    
+                                                                                                    
+                                                                                                    
+                                                                                                    
+                                                                                                    
+                                                                                                 
+<?xpacket end="w"?></metadata>
+<defs>
+    <style>
+      .be444e50-e509-4c91-9a17-abc01934b12e {
+        fill: none;
+      }
+    </style>
+  </defs>
+  <g id="a511a186-185a-449a-aee2-6458d9d01b80" data-name="Twitch">
+    <rect class="be444e50-e509-4c91-9a17-abc01934b12e" width="30" height="30"/>
+    <g>
+      <path d="M23,16.2l-3.18,3.19H16.59l-2.78,2.78V19.39H10.22V7.45H23V16.2ZM9.43,5.86l-4,4V24.16h4.77v4l4-4h3.19L24.55,17V5.86Z"/>
+      <polygon points="18.98 10.23 20.57 10.23 20.57 15.01 18.98 15.01 18.98 10.23 18.98 10.23"/>
+      <polygon points="14.6 10.23 16.19 10.23 16.19 15.01 14.6 15.01 14.6 10.23 14.6 10.23"/>
+    </g>
+  </g>
+</svg>

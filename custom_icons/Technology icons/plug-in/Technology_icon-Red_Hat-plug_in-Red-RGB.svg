@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg id="uuid-637bec11-a0e7-468b-a77e-8881d90c3886" data-name="Icons" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 38 38">
+  <title>plug-in icon</title>
+<metadata><?xpacket begin="﻿" id="W5M0MpCehiHzreSzNTczkc9d"?>
+<x:xmpmeta xmlns:x="adobe:ns:meta/" x:xmptk="Adobe XMP Core 8.0-c001 1.000000, 0000/00/00-00:00:00        ">
+   <rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+      <rdf:Description rdf:about=""
+            xmlns:xmp="http://ns.adobe.com/xap/1.0/"
+            xmlns:dc="http://purl.org/dc/elements/1.1/"
+            xmlns:tiff="http://ns.adobe.com/tiff/1.0/"
+            xmlns:xmpRights="http://ns.adobe.com/xap/1.0/rights/">
+         <xmp:rhcc-audience>rhcc-audience:internal</xmp:rhcc-audience>
+         <xmp:brand-content-type>Icon</xmp:brand-content-type>
+         <xmp:rhcc-file-last-modified>2025-04-10T15:22:27.343Z</xmp:rhcc-file-last-modified>
+         <xmp:rhcc-rights-restricted>no</xmp:rhcc-rights-restricted>
+         <xmp:rhcc-notify-portal-subscribers-on-change>yes</xmp:rhcc-notify-portal-subscribers-on-change>
+         <xmp:brand-logo-color>Red</xmp:brand-logo-color>
+         <xmp:rhcc-aspect-ratio>square</xmp:rhcc-aspect-ratio>
+         <xmp:brand-content-subtype>Technology</xmp:brand-content-subtype>
+         <xmp:brand-colorway>
+            <rdf:Bag>
+               <rdf:li>colorway:red</rdf:li>
+            </rdf:Bag>
+         </xmp:brand-colorway>
+         <xmp:brand-subtype>
+            <rdf:Bag>
+               <rdf:li>Technology icon</rdf:li>
+            </rdf:Bag>
+         </xmp:brand-subtype>
+         <dc:format>image/svg+xml</dc:format>
+         <dc:modified>2025-04-10T15:24:17.615Z</dc:modified>
+         <dc:title>
+            <rdf:Alt>
+               <rdf:li xml:lang="x-default">plug-in icon</rdf:li>
+            </rdf:Alt>
+         </dc:title>
+         <tiff:ImageLength>38</tiff:ImageLength>
+         <tiff:ImageWidth>38</tiff:ImageWidth>
+         <xmpRights:UsageTerms>
+            <rdf:Alt>
+               <rdf:li xml:lang="x-default">Use this plugin icon to represent plugins of an existing Red Hat offering.</rdf:li>
+            </rdf:Alt>
+         </xmpRights:UsageTerms>
+      </rdf:Description>
+   </rdf:RDF>
+</x:xmpmeta>
+                                                                                                    
+                                                                                                    
+                                                                                                    
+                                                                                                    
+                                                                                                    
+                                                                                                    
+                                                                                                    
+                                                                                                    
+                                                                                                    
+                                                                                                    
+                                                                                                    
+                                       
+<?xpacket end="w"?></metadata>
+<defs>
+    <style>
+      .uuid-7f9bad61-9cd9-428f-bbde-58512748bb4c {
+        fill: #e00;
+      }
+    </style>
+  </defs>
+  <path class="uuid-7f9bad61-9cd9-428f-bbde-58512748bb4c" d="M28,2.25c4.2734,0,7.75,3.4766,7.75,7.75v18c0,4.2734-3.4766,7.75-7.75,7.75H10c-4.2734,0-7.75-3.4766-7.75-7.75V10c0-4.2734,3.4766-7.75,7.75-7.75h18M28,1H10C5.0294,1,1,5.0294,1,10v18c0,4.9706,4.0294,9,9,9h18c4.9706,0,9-4.0294,9-9V10c0-4.9706-4.0294-9-9-9h0Z"/>
+  <path class="uuid-7f9bad61-9cd9-428f-bbde-58512748bb4c" d="M18.0435,30.6246c-1.6392,0-2.9727-1.3379-2.9727-2.9814,0-.3242.0537-.6436.1567-.9463h-4.2275c-.3452,0-.625-.2803-.625-.625v-5.3262c0-.2471.1455-.4707.3711-.5713.2256-.0996.4893-.0586.6729.1074.3213.29.7285.4502,1.1465.4502.9497,0,1.7227-.7773,1.7227-1.7324s-.7729-1.7314-1.7227-1.7314c-.418,0-.8252.1602-1.1465.4502-.1836.165-.4473.208-.6729.1074s-.3711-.3242-.3711-.5713v-5.3262c0-.3447.2798-.625.625-.625h4.2275c-.103-.3027-.1567-.6221-.1567-.9463,0-1.644,1.3335-2.9819,2.9727-2.9819s2.9727,1.3379,2.9727,2.9819c0,.3242-.0537.6436-.1567.9463h4.2275c.3452,0,.625.2803.625.625v4.2461c.3013-.1025.6187-.1562.9404-.1562,1.6392,0,2.9727,1.3379,2.9727,2.9814,0,1.6445-1.3335,2.9824-2.9727,2.9824-.3218,0-.6392-.0537-.9404-.1562v4.2461c0,.3447-.2798.625-.625.625h-4.2275c.103.3027.1567.6221.1567.9463,0,1.6436-1.3335,2.9814-2.9727,2.9814ZM11.625,25.4468h4.6802c.2466,0,.4702.1455.5708.3711.1006.2246.0591.4883-.106.6719-.2896.3223-.4492.7314-.4492,1.1533,0,.9551.7729,1.7314,1.7227,1.7314s1.7227-.7764,1.7227-1.7314c0-.4219-.1592-.8311-.4487-1.1533-.165-.1836-.2065-.4473-.106-.6729.1006-.2246.3242-.3701.5708-.3701h4.6797v-4.7012c0-.2471.1455-.4707.3711-.5713.2251-.0996.4897-.0586.6729.1074.3213.29.7285.4502,1.1465.4502.9497,0,1.7227-.7773,1.7227-1.7324s-.7729-1.7314-1.7227-1.7314c-.418,0-.8252.1602-1.1465.4502-.1831.165-.4478.208-.6729.1074-.2256-.1006-.3711-.3242-.3711-.5713v-4.7012h-4.6797c-.2466,0-.4702-.1455-.5708-.3701-.1006-.2256-.0591-.4893.106-.6729.2896-.3223.4487-.7314.4487-1.1533,0-.9551-.7729-1.7319-1.7227-1.7319s-1.7227.7769-1.7227,1.7319c0,.4219.1597.8311.4492,1.1533.165.1836.2065.4473.106.6719-.1006.2256-.3242.3711-.5708.3711h-4.6802v3.6211c.3013-.1025.6187-.1562.9404-.1562,1.6392,0,2.9727,1.3379,2.9727,2.9814,0,1.6445-1.3335,2.9824-2.9727,2.9824-.3218,0-.6392-.0537-.9404-.1562v3.6211Z"/>
+</svg>

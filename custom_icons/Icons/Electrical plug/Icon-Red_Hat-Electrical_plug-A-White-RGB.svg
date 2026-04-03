@@ -1,0 +1,74 @@
+<svg id="afae8591-2706-4b5f-8126-e836410abd5a" data-name="Icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 36 36">
+  <title>Electrical plug icon - White</title>
+<desc>outlet, electricity, charge, power, socket, port, cord, cable, extension, objects</desc>
+<metadata><?xpacket begin="﻿" id="W5M0MpCehiHzreSzNTczkc9d"?>
+<x:xmpmeta xmlns:x="adobe:ns:meta/" x:xmptk="Adobe XMP Core 8.0-c001 1.000000, 0000/00/00-00:00:00        ">
+   <rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+      <rdf:Description rdf:about=""
+            xmlns:xmp="http://ns.adobe.com/xap/1.0/"
+            xmlns:dc="http://purl.org/dc/elements/1.1/"
+            xmlns:cq="http://www.day.com/jcr/cq/1.0"
+            xmlns:tiff="http://ns.adobe.com/tiff/1.0/">
+         <xmp:rhcc-effective-on>2023-12-08T17:35:35.664Z</xmp:rhcc-effective-on>
+         <xmp:rhcc-metadata-complete-moderator>pending</xmp:rhcc-metadata-complete-moderator>
+         <xmp:rhcc-translation-id>TRA35cee411-892a-4c6f-83ac-6b80b11ba3ce</xmp:rhcc-translation-id>
+         <xmp:brand-content-type>Icon</xmp:brand-content-type>
+         <xmp:CreateDate>2023-12-08T17:35:35.664Z</xmp:CreateDate>
+         <xmp:rhcc-aspect-ratio>square</xmp:rhcc-aspect-ratio>
+         <xmp:rhcc-effective-on-set-on-upload>true</xmp:rhcc-effective-on-set-on-upload>
+         <xmp:rhcc-published-asset-email-sent>true</xmp:rhcc-published-asset-email-sent>
+         <xmp:rhcc-metadata-complete-uploader>pending</xmp:rhcc-metadata-complete-uploader>
+         <xmp:rhcc-file-last-modified>2024-07-12T22:02:58.352Z</xmp:rhcc-file-last-modified>
+         <xmp:rhcc-audience>rhcc-audience:internal</xmp:rhcc-audience>
+         <xmp:brand-content-subtype>Icon</xmp:brand-content-subtype>
+         <xmp:rhcc-rights-restricted>no</xmp:rhcc-rights-restricted>
+         <xmp:rhcc-derivative-id>DER35cee411-892a-4c6f-83ac-6b80b11ba3ce</xmp:rhcc-derivative-id>
+         <xmp:rhcc-uploaded-by>pmeilleu@redhat.com</xmp:rhcc-uploaded-by>
+         <xmp:brand-logo-color>White</xmp:brand-logo-color>
+         <xmp:rhcc-notify-portal-subscribers-on-change>yes</xmp:rhcc-notify-portal-subscribers-on-change>
+         <dc:format>image/svg+xml</dc:format>
+         <dc:modified>2024-02-09T20:30:16.479Z</dc:modified>
+         <dc:title>
+            <rdf:Alt>
+               <rdf:li xml:lang="x-default">Electrical plug icon - White</rdf:li>
+            </rdf:Alt>
+         </dc:title>
+         <dc:description>
+            <rdf:Alt>
+               <rdf:li xml:lang="x-default">outlet, electricity, charge, power, socket, port, cord, cable, extension, objects</rdf:li>
+            </rdf:Alt>
+         </dc:description>
+         <cq:lastReplicationAction_scene7>Activate</cq:lastReplicationAction_scene7>
+         <cq:lastReplicationAction_publish>Activate</cq:lastReplicationAction_publish>
+         <cq:lastReplicated_publish>2024-10-02T19:33:46.821Z</cq:lastReplicated_publish>
+         <cq:lastReplicatedBy>workflow-process-service</cq:lastReplicatedBy>
+         <cq:lastReplicationAction>Activate</cq:lastReplicationAction>
+         <cq:lastReplicatedBy_publish>workflow-process-service</cq:lastReplicatedBy_publish>
+         <cq:isDelivered>false</cq:isDelivered>
+         <cq:lastReplicated>2024-10-02T19:33:46.821Z</cq:lastReplicated>
+         <cq:lastReplicatedBy_scene7>workflow-process-service</cq:lastReplicatedBy_scene7>
+         <cq:lastReplicated_scene7>2024-10-02T19:33:46.821Z</cq:lastReplicated_scene7>
+         <tiff:ImageLength>36</tiff:ImageLength>
+         <tiff:ImageWidth>36</tiff:ImageWidth>
+      </rdf:Description>
+   </rdf:RDF>
+</x:xmpmeta>
+                                                                                                    
+                                                                                                    
+                                                                                                    
+                                                                                                    
+                                                                                                    
+                                                                                                    
+                                                                                                    
+                                                                                                    
+        
+<?xpacket end="w"?></metadata>
+<defs>
+    <style>
+      .b9717c0d-7f28-4e58-9552-05a51741a8a0 {
+        fill: #fff;
+      }
+    </style>
+  </defs>
+  <path class="b9717c0d-7f28-4e58-9552-05a51741a8a0" d="M25.5,4.38a6.12,6.12,0,0,0-6.12,6.12v15a4.88,4.88,0,0,1-9.76,0V21.56a4.61,4.61,0,0,0,4-4.56V13a.62.62,0,0,0-.62-.62H11.62V9a.62.62,0,0,0-1.24,0v3.38H7.62V9A.62.62,0,0,0,6.38,9v3.38H5a.62.62,0,0,0-.62.62v4a4.61,4.61,0,0,0,4,4.56V25.5a6.12,6.12,0,0,0,12.24,0v-15a4.88,4.88,0,1,1,9.76,0V27a.62.62,0,0,0,1.24,0V10.5A6.12,6.12,0,0,0,25.5,4.38ZM5.62,17V13.62h6.76V17a3.38,3.38,0,0,1-6.76,0Z"/>
+</svg>

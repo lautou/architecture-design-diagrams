@@ -1,0 +1,78 @@
+<svg id="a1798bf3-23f1-47a8-b7cb-2330eaa28412" data-name="Icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 36 36">
+  <title>App icon - Red</title>
+<desc>application, develop, development, code, square, button, program, software, software and technologies</desc>
+<metadata><?xpacket begin="﻿" id="W5M0MpCehiHzreSzNTczkc9d"?>
+<x:xmpmeta xmlns:x="adobe:ns:meta/" x:xmptk="Adobe XMP Core 8.0-c001 1.000000, 0000/00/00-00:00:00        ">
+   <rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+      <rdf:Description rdf:about=""
+            xmlns:xmp="http://ns.adobe.com/xap/1.0/"
+            xmlns:dc="http://purl.org/dc/elements/1.1/"
+            xmlns:cq="http://www.day.com/jcr/cq/1.0"
+            xmlns:tiff="http://ns.adobe.com/tiff/1.0/">
+         <xmp:rhcc-effective-on>2023-12-08T17:41:51.508Z</xmp:rhcc-effective-on>
+         <xmp:rhcc-metadata-complete-moderator>pending</xmp:rhcc-metadata-complete-moderator>
+         <xmp:rhcc-translation-id>TRA44cc02a0-44ad-4d63-8bf0-3c68ff5f7fa6</xmp:rhcc-translation-id>
+         <xmp:brand-content-type>Icon</xmp:brand-content-type>
+         <xmp:CreateDate>2023-12-08T17:41:51.508Z</xmp:CreateDate>
+         <xmp:rhcc-aspect-ratio>square</xmp:rhcc-aspect-ratio>
+         <xmp:rhcc-effective-on-set-on-upload>true</xmp:rhcc-effective-on-set-on-upload>
+         <xmp:rhcc-published-asset-email-sent>true</xmp:rhcc-published-asset-email-sent>
+         <xmp:rhcc-metadata-complete-uploader>pending</xmp:rhcc-metadata-complete-uploader>
+         <xmp:rhcc-file-last-modified>2024-07-12T19:40:55.437Z</xmp:rhcc-file-last-modified>
+         <xmp:rhcc-audience>rhcc-audience:internal</xmp:rhcc-audience>
+         <xmp:brand-content-subtype>Icon</xmp:brand-content-subtype>
+         <xmp:rhcc-rights-restricted>no</xmp:rhcc-rights-restricted>
+         <xmp:rhcc-derivative-id>DER44cc02a0-44ad-4d63-8bf0-3c68ff5f7fa6</xmp:rhcc-derivative-id>
+         <xmp:rhcc-uploaded-by>pmeilleu@redhat.com</xmp:rhcc-uploaded-by>
+         <xmp:brand-logo-color>Red</xmp:brand-logo-color>
+         <xmp:rhcc-notify-portal-subscribers-on-change>yes</xmp:rhcc-notify-portal-subscribers-on-change>
+         <dc:format>image/svg+xml</dc:format>
+         <dc:modified>2024-02-09T20:14:05.618Z</dc:modified>
+         <dc:title>
+            <rdf:Alt>
+               <rdf:li xml:lang="x-default">App icon - Red</rdf:li>
+            </rdf:Alt>
+         </dc:title>
+         <dc:description>
+            <rdf:Alt>
+               <rdf:li xml:lang="x-default">application, develop, development, code, square, button, program, software, software and technologies</rdf:li>
+            </rdf:Alt>
+         </dc:description>
+         <cq:lastReplicationAction_scene7>Activate</cq:lastReplicationAction_scene7>
+         <cq:lastReplicationAction_publish>Activate</cq:lastReplicationAction_publish>
+         <cq:lastReplicated_publish>2024-10-02T19:26:43.851Z</cq:lastReplicated_publish>
+         <cq:lastReplicatedBy>workflow-process-service</cq:lastReplicatedBy>
+         <cq:lastReplicationAction>Activate</cq:lastReplicationAction>
+         <cq:lastReplicatedBy_publish>workflow-process-service</cq:lastReplicatedBy_publish>
+         <cq:isDelivered>false</cq:isDelivered>
+         <cq:lastReplicated>2024-10-02T19:26:43.851Z</cq:lastReplicated>
+         <cq:lastReplicatedBy_scene7>workflow-process-service</cq:lastReplicatedBy_scene7>
+         <cq:lastReplicated_scene7>2024-10-02T19:26:43.851Z</cq:lastReplicated_scene7>
+         <tiff:ImageLength>36</tiff:ImageLength>
+         <tiff:ImageWidth>36</tiff:ImageWidth>
+      </rdf:Description>
+   </rdf:RDF>
+</x:xmpmeta>
+                                                                                                    
+                                                                                                    
+                                                                                                    
+                                                                                                    
+                                                                                                    
+                                                                                                    
+                                                                                                    
+                                                                                                    
+        
+<?xpacket end="w"?></metadata>
+<defs>
+    <style>
+      .f4b21bc8-33e8-4ca8-ab45-4310f9a37a49 {
+        fill: #e00;
+      }
+    </style>
+  </defs>
+  <g>
+    <path class="f4b21bc8-33e8-4ca8-ab45-4310f9a37a49" d="M25,8.37a.63.63,0,0,0-.62.63.63.63,0,0,0,1.25,0A.63.63,0,0,0,25,8.37Z"/>
+    <path class="f4b21bc8-33e8-4ca8-ab45-4310f9a37a49" d="M27,8.37a.63.63,0,0,0-.62.63.63.63,0,0,0,1.25,0A.63.63,0,0,0,27,8.37Z"/>
+    <path class="f4b21bc8-33e8-4ca8-ab45-4310f9a37a49" d="M31,4.38H5A.61.61,0,0,0,4.38,5V31a.61.61,0,0,0,.62.62H31a.61.61,0,0,0,.62-.62V5A.61.61,0,0,0,31,4.38Zm-.62,26H5.62V5.62H30.38Z"/>
+  </g>
+</svg>

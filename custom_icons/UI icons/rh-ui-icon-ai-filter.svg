@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg id="AI-filter" xmlns="http://www.w3.org/2000/svg" width="32" height="32" version="1.1" viewBox="0 0 32 32">
+  <!-- Generator: Adobe Illustrator 30.1.0, SVG Export Plug-In . SVG Version: 2.1.1 Build 136)  -->
+  <title>rh-ui-icon-ai-filter</title>
+<metadata><?xpacket begin="﻿" id="W5M0MpCehiHzreSzNTczkc9d"?>
+<x:xmpmeta xmlns:x="adobe:ns:meta/" x:xmptk="Adobe XMP Core 8.0-c001 1.000000, 0000/00/00-00:00:00        ">
+   <rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+      <rdf:Description rdf:about=""
+            xmlns:xmp="http://ns.adobe.com/xap/1.0/"
+            xmlns:dc="http://purl.org/dc/elements/1.1/"
+            xmlns:tiff="http://ns.adobe.com/tiff/1.0/">
+         <xmp:brand-content-type>Icon</xmp:brand-content-type>
+         <xmp:rhcc-rights-restricted>no</xmp:rhcc-rights-restricted>
+         <xmp:brand-content-subtype>UI</xmp:brand-content-subtype>
+         <xmp:rhcc-file-last-modified>2026-01-20T14:37:32.417Z</xmp:rhcc-file-last-modified>
+         <xmp:brand-colorway>
+            <rdf:Bag>
+               <rdf:li>colorway:black</rdf:li>
+            </rdf:Bag>
+         </xmp:brand-colorway>
+         <dc:format>image/svg+xml</dc:format>
+         <dc:modified>2026-01-20T14:41:17.027Z</dc:modified>
+         <dc:title>
+            <rdf:Alt>
+               <rdf:li xml:lang="x-default">rh-ui-icon-ai-filter</rdf:li>
+            </rdf:Alt>
+         </dc:title>
+         <tiff:ImageLength>32</tiff:ImageLength>
+         <tiff:ImageWidth>32</tiff:ImageWidth>
+      </rdf:Description>
+   </rdf:RDF>
+</x:xmpmeta>
+                                                                                                    
+                                                                                                    
+                                                                                                    
+                                                                                                    
+                                                                                                    
+                                                                                                    
+                                                                                                    
+                                                                                                    
+                                                                                                    
+                                                                                                    
+                                                                                                    
+                                                                                                    
+                                                                                                    
+                                                                                                    
+                                                                                                    
+                                                                                                    
+                                                                                                    
+                   
+<?xpacket end="w"?></metadata>
+<defs>
+    <style>
+      .st0 {
+        fill: none;
+      }
+
+      .st1 {
+        fill: #151515;
+      }
+    </style>
+  </defs>
+  <path id="icon" class="st1" d="M30,3.5v3.5c0,.26562-.10547.51953-.29297.70703l-9.70703,9.70703v10.58594c0,.43066-.27539.8125-.68359.94824l-6,2c-.10352.03516-.20996.05176-.31641.05176-.20703,0-.41211-.06445-.58496-.18848-.26074-.18848-.41504-.49023-.41504-.81152v-12.58594l-1.70703-1.70703c-.39062-.39062-.39062-1.02344,0-1.41406s1.02344-.39062,1.41406,0l2,2c.1875.1875.29297.44141.29297.70703v11.6123l4-1.33301v-10.2793c0-.26562.10547-.51953.29297-.70703l9.70703-9.70703v-2.58594h-14c-.55273,0-1-.44727-1-1s.44727-1,1-1h14.5c.82715,0,1.5.67285,1.5,1.5ZM12.50488,7c0-.28906-.20898-.53613-.49805-.58984-2.2334-.4082-4.00879-2.18359-4.41699-4.41699-.05371-.28906-.30078-.49805-.58984-.49805s-.53613.20898-.58984.49805c-.4082,2.2334-2.18359,4.00879-4.41699,4.41699-.28906.05371-.49805.30078-.49805.58984s.20898.53613.49805.58984c2.2334.4082,4.00879,2.18359,4.41699,4.41699.05371.28906.30078.49805.58984.49805s.53613-.20898.58984-.49805c.4082-2.2334,2.18359-4.00879,4.41699-4.41699.28906-.05371.49805-.30078.49805-.58984Z"/>
+  <rect id="Transparent_rectangle" class="st0" width="32" height="32"/>
+</svg>

@@ -56,12 +56,11 @@ else
     echo "✓ Virtual environment created"
 fi
 
-# Activate virtual environment and install dependencies
+# Install dependencies using venv's pip directly
 echo ""
 echo "Installing Python dependencies..."
-source venv/bin/activate
-pip install --upgrade pip -q
-pip install -r requirements.txt -q
+./venv/bin/pip install --upgrade pip -q
+./venv/bin/pip install -r requirements.txt -q
 echo "✓ Dependencies installed"
 
 # Create output directory
@@ -73,7 +72,7 @@ echo "✓ Output directory ready"
 # Test diagram generation
 echo ""
 echo "Testing diagram generation..."
-python3 diagrams/openshift/basic-cluster.py
+./venv/bin/python3 diagrams/openshift/basic-cluster.py
 
 if [ -f "output/openshift-basic-cluster.png" ]; then
     echo "✓ Test diagram generated successfully!"
@@ -89,11 +88,11 @@ echo "✓ Setup complete!"
 echo "========================================="
 echo ""
 echo "Next steps:"
-echo "  1. Activate the virtual environment:"
-echo "     source venv/bin/activate"
-echo ""
-echo "  2. Generate all diagrams:"
+echo "  1. Generate all diagrams:"
 echo "     make generate-all"
+echo ""
+echo "  2. Generate a single diagram:"
+echo "     ./venv/bin/python3 diagrams/openshift/my-diagram.py"
 echo ""
 echo "  3. Create your own diagrams:"
 echo "     cp templates/diagram_template.py diagrams/openshift/my-diagram.py"

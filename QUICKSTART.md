@@ -51,12 +51,6 @@ This script will:
 - Install Python dependencies
 - Generate a test diagram
 
-### 4. Activate Virtual Environment
-
-```bash
-source venv/bin/activate
-```
-
 ## Generate Your First Diagram
 
 ### Option 1: Generate All Diagrams
@@ -68,7 +62,7 @@ make generate-all
 ### Option 2: Generate a Single Diagram
 
 ```bash
-python3 diagrams/openshift/basic-cluster.py
+./venv/bin/python3 diagrams/openshift/basic-cluster.py
 ```
 
 ### Option 3: Create Your Own
@@ -81,7 +75,7 @@ cp templates/diagram_template.py diagrams/openshift/my-cluster.py
 vim diagrams/openshift/my-cluster.py
 
 # Generate it
-python3 diagrams/openshift/my-cluster.py
+./venv/bin/python3 diagrams/openshift/my-cluster.py
 ```
 
 ## View Generated Diagrams
@@ -165,8 +159,8 @@ deactivate
 ## Troubleshooting
 
 ### "ModuleNotFoundError: No module named 'diagrams'"
-- Make sure virtual environment is activated: `source venv/bin/activate`
-- Or reinstall dependencies: `pip install -r requirements.txt`
+- Use the venv's python directly: `./venv/bin/python3 <script>`
+- Or reinstall dependencies: `./venv/bin/pip install -r requirements.txt`
 
 ### "graphviz executables not found"
 - Install Graphviz system package (see step 1)

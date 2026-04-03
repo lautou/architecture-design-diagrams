@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg id="icon297" data-name="icon" xmlns="http://www.w3.org/2000/svg" width="32" height="32" version="1.1" viewBox="0 0 32 32">
+  <!-- Generator: Adobe Illustrator 29.8.2, SVG Export Plug-In . SVG Version: 2.1.1 Build 3)  -->
+  <title>rh-ui-icon-ai-model</title>
+<metadata><?xpacket begin="﻿" id="W5M0MpCehiHzreSzNTczkc9d"?>
+<x:xmpmeta xmlns:x="adobe:ns:meta/" x:xmptk="Adobe XMP Core 8.0-c001 1.000000, 0000/00/00-00:00:00        ">
+   <rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+      <rdf:Description rdf:about=""
+            xmlns:xmp="http://ns.adobe.com/xap/1.0/"
+            xmlns:dc="http://purl.org/dc/elements/1.1/"
+            xmlns:tiff="http://ns.adobe.com/tiff/1.0/">
+         <xmp:brand-content-subtype>UI</xmp:brand-content-subtype>
+         <xmp:rhcc-rights-restricted>no</xmp:rhcc-rights-restricted>
+         <xmp:rhcc-file-last-modified>2025-10-14T20:46:06.439Z</xmp:rhcc-file-last-modified>
+         <xmp:brand-content-type>Icon</xmp:brand-content-type>
+         <xmp:brand-colorway>
+            <rdf:Bag>
+               <rdf:li>colorway:black</rdf:li>
+            </rdf:Bag>
+         </xmp:brand-colorway>
+         <dc:modified>2025-10-14T20:49:47.909Z</dc:modified>
+         <dc:format>image/svg+xml</dc:format>
+         <dc:title>
+            <rdf:Alt>
+               <rdf:li xml:lang="x-default">rh-ui-icon-ai-model</rdf:li>
+            </rdf:Alt>
+         </dc:title>
+         <tiff:ImageLength>32</tiff:ImageLength>
+         <tiff:ImageWidth>32</tiff:ImageWidth>
+      </rdf:Description>
+   </rdf:RDF>
+</x:xmpmeta>
+                                                                                                    
+                                                                                                    
+                                                                                                    
+                                                                                                    
+                                                                                                    
+                                                                                                    
+                                                                                                    
+                                                                                                    
+                                                                                                    
+                                                                                                    
+                                                                                                    
+                                                                                                    
+                                                                                                    
+                                                                                                    
+                                                                                                    
+                                                            
+<?xpacket end="w"?></metadata>
+<defs>
+    <style>
+      .st0 {
+        fill: none;
+      }
+
+      .st1 {
+        fill: #151515;
+      }
+    </style>
+  </defs>
+  <path class="st1" d="M19,14.24l6.24-6.24h3.51c.69,0,1.25-.56,1.25-1.25v-3.5c0-.69-.56-1.25-1.25-1.25h-3.5c-.69,0-1.25.56-1.25,1.25v.87H8v-.87c0-.69-.56-1.25-1.25-1.25h-3.5c-.69,0-1.25.56-1.25,1.25v3.5c0,.69.56,1.25,1.25,1.25h3.51l6.24,6.24v.88h-5v-.87c0-.69-.56-1.25-1.25-1.25h-3.5c-.69,0-1.25.56-1.25,1.25v3.5c0,.69.56,1.25,1.25,1.25h3.5c.69,0,1.25-.56,1.25-1.25v-.87h5v.88l-6.24,6.24h-3.51c-.69,0-1.25.56-1.25,1.25v3.5c0,.69.56,1.25,1.25,1.25h3.5c.69,0,1.25-.56,1.25-1.25v-.87h16v.87c0,.69.56,1.25,1.25,1.25h3.5c.69,0,1.25-.56,1.25-1.25v-3.5c0-.69-.56-1.25-1.25-1.25h-3.51l-6.24-6.24v-.88h5v.87c0,.69.56,1.25,1.25,1.25h3.5c.69,0,1.25-.56,1.25-1.25v-3.5c0-.69-.56-1.25-1.25-1.25h-3.5c-.69,0-1.25.56-1.25,1.25v.87h-5v-.88ZM6,16.88v.12h-2v-2h2v1.88ZM26,15.12v-.12h2v2h-2v-1.88ZM17,16.88v.12h-2v-2h2v1.88ZM26,4h2v2h-2v-2ZM6,6h-2v-2h2v2ZM8,6.77v-.89h16v.89l-6.24,6.23h-3.52l-6.24-6.23ZM6,28h-2v-2h2v2ZM28,26v2h-2v-2h2ZM24,25.23v.89H8v-.89l6.24-6.23h3.52l6.24,6.23Z"/>
+  <rect id="transparent_rectangle" class="st0" width="32" height="32"/>
+</svg>

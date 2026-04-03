@@ -23,6 +23,14 @@ from diagrams.onprem.tracing import Jaeger
 from diagrams.onprem.database import Clickhouse
 from diagrams.onprem.compute import Server
 from diagrams.custom import Custom
+import os
+
+# Get absolute paths for icons
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+PROJECT_ROOT = os.path.join(BASE_DIR, '../../..')
+OPERATOR_ICON = os.path.join(PROJECT_ROOT, "custom_icons/Technology icons/operator/Technology_icon-Red_Hat-operator-Standard-RGB.Large_icon_transparent.png")
+OTEL_ICON = os.path.join(PROJECT_ROOT, "custom_icons/Technology icons/Red Hat build of OpenTelemetry/Technology_icon-Red_Hat-OpenTelemetry-Standard-RGB.Large_icon_transparent.png")
+CLUSTER_OBS_ICON = os.path.join(PROJECT_ROOT, "custom_icons/Technology icons/Cluster observability/Technology_icon-Red_Hat-Cluster_observability_operator-Standard-RGB.Large_icon_transparent.png")
 
 graph_attr = {
     "fontsize": "16",
@@ -40,59 +48,59 @@ with Diagram(
     graph_attr=graph_attr
 ):
 
-    api = APIServer("OpenShift\nAPI Server")
+    api = APIServer("\nOpenShift\nAPI Server")
 
     # ========== LAYER 1: EMBEDDED MONITORING ==========
     with Cluster("LAYER 1: Embedded Monitoring (Built-in)"):
 
         with Cluster("openshift-monitoring"):
             with Cluster("Cluster Monitoring"):
-                cluster_prom = Prometheus("Prometheus\n(Platform Metrics)")
-                cluster_alert = Prometheus("Alertmanager\n(Platform Alerts)")
+                cluster_prom = Prometheus("\nPrometheus\n(Platform Metrics)")
+                cluster_alert = Prometheus("\nAlertmanager\n(Platform Alerts)")
 
         with Cluster("openshift-user-workload-monitoring"):
             with Cluster("User Defined Workload Monitoring"):
-                udwm_prom = Prometheus("Prometheus\n(User Metrics)")
-                thanos = Prometheus("Thanos Querier\n(Unified)")
+                udwm_prom = Prometheus("\nPrometheus\n(User Metrics)")
+                thanos = Prometheus("\nThanos Querier\n(Unified)")
 
     # ========== LAYER 2: ADD-ON OPERATORS ==========
     with Cluster("LAYER 2: Add-on Observability Operators"):
 
         with Cluster("openshift-logging"):
-            logging_operator = Custom("Logging Operator", "custom_icons/Technology icons/operator/Technology_icon-Red_Hat-operator-Standard-RGB.Large_icon_transparent.png")
+            logging_operator = Custom("\nLogging Operator", OPERATOR_ICON)
 
             with Cluster("Log Collection & Storage"):
-                log_collector = Loki("Vector/Fluentd\n(Collector)")
-                loki_stack = Loki("LokiStack\n(Storage)")
+                log_collector = Loki("\nVector/Fluentd\n(Collector)")
+                loki_stack = Loki("\nLokiStack\n(Storage)")
 
         with Cluster("openshift-tempo-operator"):
-            tempo_operator = Custom("Tempo Operator", "custom_icons/Technology icons/operator/Technology_icon-Red_Hat-operator-Standard-RGB.Large_icon_transparent.png")
-            tempo = Jaeger("Tempo\n(Distributed Tracing)")
+            tempo_operator = Custom("\nTempo Operator", OPERATOR_ICON)
+            tempo = Jaeger("\nTempo\n(Distributed Tracing)")
 
         with Cluster("openshift-opentelemetry-operator"):
-            otel_operator = Custom("OpenTelemetry\nOperator", "custom_icons/Technology icons/Red Hat build of OpenTelemetry/Technology_icon-Red_Hat-OpenTelemetry-Standard-RGB.Large_icon_transparent.png")
-            otel_collector = Jaeger("OTel Collector\n(OTLP)")
+            otel_operator = Custom("\nOpenTelemetry\nOperator", OTEL_ICON)
+            otel_collector = Jaeger("\nOTel Collector\n(OTLP)")
 
         with Cluster("openshift-cluster-observability-operator"):
-            cluster_obs_operator = Custom("Cluster Observability\nOperator", "custom_icons/Technology icons/Cluster observability/Technology_icon-Red_Hat-Cluster_observability_operator-Standard-RGB.Large_icon_transparent.png")
+            cluster_obs_operator = Custom("\nCluster Observability\nOperator", CLUSTER_OBS_ICON)
 
         with Cluster("netobserv"):
-            network_obs_operator = Custom("Network Observability\nOperator", "custom_icons/Technology icons/operator/Technology_icon-Red_Hat-operator-Standard-RGB.Large_icon_transparent.png")
-            flow_collector = Clickhouse("Flow Collector\n(eBPF)")
+            network_obs_operator = Custom("\nNetwork Observability\nOperator", OPERATOR_ICON)
+            flow_collector = Clickhouse("\nFlow Collector\n(eBPF)")
 
         with Cluster("openshift-operators (Grafana)"):
-            grafana_operator = Custom("Grafana Operator", "custom_icons/Technology icons/operator/Technology_icon-Red_Hat-operator-Standard-RGB.Large_icon_transparent.png")
-            grafana = Grafana("Grafana\n(Custom Dashboards)")
+            grafana_operator = Custom("\nGrafana Operator", OPERATOR_ICON)
+            grafana = Grafana("\nGrafana\n(Custom Dashboards)")
 
     # ========== APPLICATION WORKLOADS ==========
     with Cluster("Application Workloads"):
-        platform_apps = Server("Platform\nComponents")
-        user_apps = Server("User\nApplications")
+        platform_apps = Server("\nPlatform\nComponents")
+        user_apps = Server("\nUser\nApplications")
 
     # ========== EXTERNAL INTEGRATION ==========
     with Cluster("External Integration"):
-        external_storage = Server("External Storage\n(S3/NFS)")
-        external_siem = Server("External SIEM\n(Splunk, Elastic)")
+        external_storage = Server("\nExternal Storage\n(S3/NFS)")
+        external_siem = Server("\nExternal SIEM\n(Splunk, Elastic)")
 
     # =========================================================
     # CONNECTIONS

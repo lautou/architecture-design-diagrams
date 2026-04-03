@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg id="laptop-fill" xmlns="http://www.w3.org/2000/svg" width="32" height="32" version="1.1" viewBox="0 0 32 32">
+  <!-- Generator: Adobe Illustrator 30.1.0, SVG Export Plug-In . SVG Version: 2.1.1 Build 136)  -->
+  <title>rh-ui-icon-laptop-fill</title>
+<desc>notebook, computer, portable, screen, display, workstation, hardware, technology, macbook, pc, clamshell, electronics, device, remote work, office, digital, folding, keyboard, mobile, tech</desc>
+<metadata><?xpacket begin="﻿" id="W5M0MpCehiHzreSzNTczkc9d"?>
+<x:xmpmeta xmlns:x="adobe:ns:meta/" x:xmptk="Adobe XMP Core 8.0-c001 1.000000, 0000/00/00-00:00:00        ">
+   <rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+      <rdf:Description rdf:about=""
+            xmlns:tiff="http://ns.adobe.com/tiff/1.0/"
+            xmlns:dc="http://purl.org/dc/elements/1.1/"
+            xmlns:xmp="http://ns.adobe.com/xap/1.0/">
+         <tiff:ImageLength>32</tiff:ImageLength>
+         <tiff:ImageWidth>32</tiff:ImageWidth>
+         <dc:format>image/svg+xml</dc:format>
+         <dc:modified>2026-01-20T14:41:19.273Z</dc:modified>
+         <dc:title>
+            <rdf:Alt>
+               <rdf:li xml:lang="x-default">rh-ui-icon-laptop-fill</rdf:li>
+            </rdf:Alt>
+         </dc:title>
+         <dc:description>
+            <rdf:Alt>
+               <rdf:li xml:lang="x-default">notebook, computer, portable, screen, display, workstation, hardware, technology, macbook, pc, clamshell, electronics, device, remote work, office, digital, folding, keyboard, mobile, tech</rdf:li>
+            </rdf:Alt>
+         </dc:description>
+         <xmp:brand-content-type>Icon</xmp:brand-content-type>
+         <xmp:brand-content-subtype>UI</xmp:brand-content-subtype>
+         <xmp:rhcc-rights-restricted>no</xmp:rhcc-rights-restricted>
+         <xmp:rhcc-file-last-modified>2026-01-20T14:37:38.545Z</xmp:rhcc-file-last-modified>
+         <xmp:brand-colorway>
+            <rdf:Bag>
+               <rdf:li>colorway:black</rdf:li>
+            </rdf:Bag>
+         </xmp:brand-colorway>
+      </rdf:Description>
+   </rdf:RDF>
+</x:xmpmeta>
+                                                                                                    
+                                                                                                    
+                                                                                                    
+                                                                                                    
+                                                                                                    
+                                                                                                    
+                                                                                                    
+                                                                                                    
+                                                                                                    
+                                                                                                    
+                                                                                                    
+                                                                                                    
+                                                                                                    
+                                                                                 
+<?xpacket end="w"?></metadata>
+<defs>
+    <style>
+      .st0 {
+        fill: none;
+      }
+
+      .st1 {
+        fill: #151515;
+      }
+    </style>
+  </defs>
+  <path id="icon" class="st1" d="M31,27c0,.55273-.44727,1-1,1H2c-.55273,0-1-.44727-1-1s.44727-1,1-1h28c.55273,0,1,.44727,1,1ZM3,21.5V5.5c0-.82715.67285-1.5,1.5-1.5h23c.82715,0,1.5.67285,1.5,1.5v16c0,.82715-.67285,1.5-1.5,1.5H4.5c-.82715,0-1.5-.67285-1.5-1.5ZM14.25,8.00012c0,.96649.78351,1.75,1.75,1.75s1.75-.78351,1.75-1.75-.78351-1.75-1.75-1.75-1.75.78351-1.75,1.75Z"/>
+  <rect id="Transparent_rectangle" class="st0" width="32" height="32"/>
+</svg>

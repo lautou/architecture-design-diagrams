@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg id="icon83" data-name="icon" xmlns="http://www.w3.org/2000/svg" width="32" height="32" version="1.1" viewBox="0 0 32 32">
+  <!-- Generator: Adobe Illustrator 29.8.2, SVG Export Plug-In . SVG Version: 2.1.1 Build 3)  -->
+  <defs>
+    <style>
+      .st0 {
+        fill: none;
+      }
+
+      .st1 {
+        fill: #151515;
+      }
+    </style>
+  </defs>
+  <path class="st1" d="M10.409,16L1,25.409V6.591l9.409,9.409ZM2.591,5l10.203,10.204s0,0,.001,0,0,0,0,.001l3.203,3.203,3.203-3.203s0,0,0-.001,0,0,.001,0l10.203-10.204H2.591ZM21.591,16l9.409,9.409V6.591l-9.409,9.409ZM20,17.591l-2.851,2.851c-.317.317-.733.475-1.149.475s-.832-.158-1.149-.475l-2.851-2.851L2.591,27h26.817l-9.409-9.409Z"/>
+  <rect class="st0" width="32" height="32"/>
+</svg>

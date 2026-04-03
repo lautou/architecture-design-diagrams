@@ -16,6 +16,8 @@ ENV/
 *.pdf
 !docs/examples/*.png
 !docs/examples/*.svg
+!custom_icons/**/*.png
+!custom_icons/**/*.svg
 
 # IDE
 .vscode/
@@ -31,3 +33,4 @@ Thumbs.db
 # Project specific
 output/
 *.log
+.claude/

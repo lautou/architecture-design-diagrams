@@ -84,12 +84,11 @@ These diagrams serve as **reusable building blocks** for customer engagements. T
 Review these diagrams to understand the complete platform stack:
 ```bash
 # Generate all baseline diagrams
-source venv/bin/activate
-python3 diagrams/baseline-reference/ocp/01-core-infrastructure.py
-python3 diagrams/baseline-reference/ocp/02-observability-stack.py
-python3 diagrams/baseline-reference/ocp/03-developer-cicd-stack.py
-python3 diagrams/baseline-reference/ocp/04-security-servicemesh-stack.py
-python3 diagrams/baseline-reference/rhoai/functional-components.py
+./venv/bin/python3 diagrams/baseline-reference/ocp/01-core-infrastructure.py
+./venv/bin/python3 diagrams/baseline-reference/ocp/02-observability-stack.py
+./venv/bin/python3 diagrams/baseline-reference/ocp/03-developer-cicd-stack.py
+./venv/bin/python3 diagrams/baseline-reference/ocp/04-security-servicemesh-stack.py
+./venv/bin/python3 diagrams/baseline-reference/rhoai/functional-components.py
 ```
 
 ### 2. As Starting Points for Custom Diagrams

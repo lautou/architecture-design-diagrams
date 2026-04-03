@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg id="uuid-38a15400-e4ec-41bf-b080-ad9e1af3fad4" data-name="Icons" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 38 38">
+  <title>operator icon</title>
+<metadata><?xpacket begin="﻿" id="W5M0MpCehiHzreSzNTczkc9d"?>
+<x:xmpmeta xmlns:x="adobe:ns:meta/" x:xmptk="Adobe XMP Core 8.0-c001 1.000000, 0000/00/00-00:00:00        ">
+   <rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+      <rdf:Description rdf:about=""
+            xmlns:xmp="http://ns.adobe.com/xap/1.0/"
+            xmlns:dc="http://purl.org/dc/elements/1.1/"
+            xmlns:tiff="http://ns.adobe.com/tiff/1.0/"
+            xmlns:xmpRights="http://ns.adobe.com/xap/1.0/rights/">
+         <xmp:rhcc-audience>rhcc-audience:internal</xmp:rhcc-audience>
+         <xmp:brand-content-type>Icon</xmp:brand-content-type>
+         <xmp:rhcc-file-last-modified>2025-04-10T14:53:03.316Z</xmp:rhcc-file-last-modified>
+         <xmp:rhcc-rights-restricted>no</xmp:rhcc-rights-restricted>
+         <xmp:rhcc-notify-portal-subscribers-on-change>yes</xmp:rhcc-notify-portal-subscribers-on-change>
+         <xmp:brand-logo-color>Red</xmp:brand-logo-color>
+         <xmp:rhcc-aspect-ratio>square</xmp:rhcc-aspect-ratio>
+         <xmp:brand-content-subtype>Technology</xmp:brand-content-subtype>
+         <xmp:brand-colorway>
+            <rdf:Bag>
+               <rdf:li>colorway:red</rdf:li>
+            </rdf:Bag>
+         </xmp:brand-colorway>
+         <xmp:brand-subtype>
+            <rdf:Bag>
+               <rdf:li>Technology icon</rdf:li>
+            </rdf:Bag>
+         </xmp:brand-subtype>
+         <dc:format>image/svg+xml</dc:format>
+         <dc:modified>2025-04-10T15:11:37.266Z</dc:modified>
+         <dc:title>
+            <rdf:Alt>
+               <rdf:li xml:lang="x-default">operator icon</rdf:li>
+            </rdf:Alt>
+         </dc:title>
+         <tiff:ImageLength>38</tiff:ImageLength>
+         <tiff:ImageWidth>38</tiff:ImageWidth>
+         <xmpRights:UsageTerms>
+            <rdf:Alt>
+               <rdf:li xml:lang="x-default">Use this operator icon to represent operators of an existing Red Hat offering.</rdf:li>
+            </rdf:Alt>
+         </xmpRights:UsageTerms>
+      </rdf:Description>
+   </rdf:RDF>
+</x:xmpmeta>
+                                                                                                    
+                                                                                                    
+                                                                                                    
+                                                                                                    
+                                                                                                    
+                                                                                                    
+                                                                                                    
+                                                                                                    
+                                                                                                    
+                                                                           
+<?xpacket end="w"?></metadata>
+<defs>
+    <style>
+      .uuid-ae47ac63-94e4-4b55-8126-93dfb4242695 {
+        fill: #e00;
+      }
+    </style>
+  </defs>
+  <path class="uuid-ae47ac63-94e4-4b55-8126-93dfb4242695" d="M28,2.25c4.2734,0,7.75,3.4766,7.75,7.75v18c0,4.2734-3.4766,7.75-7.75,7.75H10c-4.2734,0-7.75-3.4766-7.75-7.75V10c0-4.2734,3.4766-7.75,7.75-7.75h18M28,1H10C5.0294,1,1,5.0294,1,10v18c0,4.9706,4.0294,9,9,9h18c4.9706,0,9-4.0294,9-9V10c0-4.9706-4.0294-9-9-9h0Z"/>
+  <path class="uuid-ae47ac63-94e4-4b55-8126-93dfb4242695" d="M18.0444,30.625c-.0444,0-.0898-.0049-.1348-.0146-.2861-.0635-.4902-.3174-.4902-.6104v-8.542h-3.4194c-.2134,0-.4121-.1084-.5269-.2891-.1147-.1797-.1299-.4053-.04-.5986l5.9556-12.8335c.1235-.2656.4165-.4077.7017-.3472.2861.0635.4902.3169.4902.6104v8.542h3.4194c.2129,0,.4121.1084.5264.2891.1152.1797.1309.4053.041.5986l-5.9561,12.833c-.104.2246-.3276.3623-.5669.3623ZM14.979,20.208h3.0654c.3452,0,.625.2803.625.625v6.3359l4.3511-9.377h-3.0649c-.3452,0-.625-.2803-.625-.625v-6.3359l-4.3516,9.377Z"/>
+</svg>

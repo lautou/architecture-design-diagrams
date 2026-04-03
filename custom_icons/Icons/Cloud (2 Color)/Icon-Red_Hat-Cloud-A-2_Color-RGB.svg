@@ -1,0 +1,76 @@
+<svg id="be24fca5-3d21-44f0-a1e2-c5b2ea709503" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 36 36">
+  <title>Cloud with OS icon (2 color) - Standard</title>
+<desc>SaaS, service, access, drive, storage, connection, open, code, development, private, public, upload, download, internet, online, software and technologies, RHEL, Linux, operating system, OS</desc>
+<metadata><?xpacket begin="﻿" id="W5M0MpCehiHzreSzNTczkc9d"?>
+<x:xmpmeta xmlns:x="adobe:ns:meta/" x:xmptk="Adobe XMP Core 8.0-c001 1.000000, 0000/00/00-00:00:00        ">
+   <rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+      <rdf:Description rdf:about=""
+            xmlns:xmp="http://ns.adobe.com/xap/1.0/"
+            xmlns:dc="http://purl.org/dc/elements/1.1/"
+            xmlns:cq="http://www.day.com/jcr/cq/1.0"
+            xmlns:tiff="http://ns.adobe.com/tiff/1.0/">
+         <xmp:rhcc-effective-on>2023-12-08T17:42:21.790Z</xmp:rhcc-effective-on>
+         <xmp:rhcc-metadata-complete-moderator>pending</xmp:rhcc-metadata-complete-moderator>
+         <xmp:rhcc-translation-id>TRA0e044a14-f453-4558-aaac-c82cd8b410d8</xmp:rhcc-translation-id>
+         <xmp:brand-content-type>Icon</xmp:brand-content-type>
+         <xmp:CreateDate>2023-12-08T17:42:21.790Z</xmp:CreateDate>
+         <xmp:rhcc-aspect-ratio>square</xmp:rhcc-aspect-ratio>
+         <xmp:rhcc-effective-on-set-on-upload>true</xmp:rhcc-effective-on-set-on-upload>
+         <xmp:rhcc-metadata-complete-uploader>pending</xmp:rhcc-metadata-complete-uploader>
+         <xmp:rhcc-file-last-modified>2024-07-12T19:22:34.350Z</xmp:rhcc-file-last-modified>
+         <xmp:rhcc-audience>rhcc-audience:internal</xmp:rhcc-audience>
+         <xmp:brand-content-subtype>Icon</xmp:brand-content-subtype>
+         <xmp:rhcc-rights-restricted>no</xmp:rhcc-rights-restricted>
+         <xmp:rhcc-derivative-id>DER0e044a14-f453-4558-aaac-c82cd8b410d8</xmp:rhcc-derivative-id>
+         <xmp:rhcc-uploaded-by>pmeilleu@redhat.com</xmp:rhcc-uploaded-by>
+         <xmp:brand-logo-color>Standard</xmp:brand-logo-color>
+         <xmp:rhcc-notify-portal-subscribers-on-change>yes</xmp:rhcc-notify-portal-subscribers-on-change>
+         <dc:format>image/svg+xml</dc:format>
+         <dc:modified>2024-02-09T20:15:04.247Z</dc:modified>
+         <dc:title>
+            <rdf:Alt>
+               <rdf:li xml:lang="x-default">Cloud with OS icon (2 color) - Standard</rdf:li>
+            </rdf:Alt>
+         </dc:title>
+         <dc:description>
+            <rdf:Alt>
+               <rdf:li xml:lang="x-default">SaaS, service, access, drive, storage, connection, open, code, development, private, public, upload, download, internet, online, software and technologies, RHEL, Linux, operating system, OS</rdf:li>
+            </rdf:Alt>
+         </dc:description>
+         <cq:lastReplicationAction_scene7>Activate</cq:lastReplicationAction_scene7>
+         <cq:lastReplicationAction_publish>Activate</cq:lastReplicationAction_publish>
+         <cq:lastReplicated_publish>2024-10-02T19:30:27.755Z</cq:lastReplicated_publish>
+         <cq:lastReplicatedBy>workflow-process-service</cq:lastReplicatedBy>
+         <cq:lastReplicationAction>Activate</cq:lastReplicationAction>
+         <cq:lastReplicatedBy_publish>workflow-process-service</cq:lastReplicatedBy_publish>
+         <cq:isDelivered>false</cq:isDelivered>
+         <cq:lastReplicated>2024-10-02T19:30:27.755Z</cq:lastReplicated>
+         <cq:lastReplicatedBy_scene7>workflow-process-service</cq:lastReplicatedBy_scene7>
+         <cq:lastReplicated_scene7>2024-10-02T19:30:27.755Z</cq:lastReplicated_scene7>
+         <tiff:ImageLength>36</tiff:ImageLength>
+         <tiff:ImageWidth>36</tiff:ImageWidth>
+      </rdf:Description>
+   </rdf:RDF>
+</x:xmpmeta>
+                                                                                                    
+                                                                                                    
+                                                                                                    
+                                                                                                    
+                                                                                                    
+                                                                                                    
+                                                                                                    
+                                                                                                    
+                                                                                                 
+<?xpacket end="w"?></metadata>
+<defs>
+    <style>
+      .a9d0d644-eb4a-41f7-8cf6-1555fda1693f {
+        fill: #e00;
+      }
+    </style>
+  </defs>
+  <g>
+    <path d="M27.5,25.625h-17a7.124,7.124,0,1,1,.836-14.2A9.124,9.124,0,0,1,28.625,15.5v.022a5.113,5.113,0,0,1-1.125,10.1Zm-17-13a5.875,5.875,0,0,0,0,11.75h17a3.863,3.863,0,0,0,.407-7.706.624.624,0,0,1-.558-.661l.007-.112c.009-.132.019-.263.019-.4a7.874,7.874,0,0,0-15.1-3.135.624.624,0,0,1-.689.365A5.959,5.959,0,0,0,10.5,12.625Z"/>
+    <path class="a9d0d644-eb4a-41f7-8cf6-1555fda1693f" d="M31,29.625H5a.625.625,0,0,1,0-1.25H31a.625.625,0,0,1,0,1.25Z"/>
+  </g>
+</svg>

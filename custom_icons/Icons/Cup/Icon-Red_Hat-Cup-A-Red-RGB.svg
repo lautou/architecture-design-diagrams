@@ -1,0 +1,77 @@
+<svg id="f669af4f-0cea-4686-9ea2-91ecf91b7cab" data-name="Icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 36 36">
+  <title>Cup icon - Red</title>
+<desc>drink, beverage, water, soda, coffee, tea, restaurant, food and drink</desc>
+<metadata><?xpacket begin="﻿" id="W5M0MpCehiHzreSzNTczkc9d"?>
+<x:xmpmeta xmlns:x="adobe:ns:meta/" x:xmptk="Adobe XMP Core 8.0-c001 1.000000, 0000/00/00-00:00:00        ">
+   <rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+      <rdf:Description rdf:about=""
+            xmlns:xmp="http://ns.adobe.com/xap/1.0/"
+            xmlns:dc="http://purl.org/dc/elements/1.1/"
+            xmlns:cq="http://www.day.com/jcr/cq/1.0"
+            xmlns:tiff="http://ns.adobe.com/tiff/1.0/">
+         <xmp:rhcc-effective-on>2023-12-08T17:45:35.051Z</xmp:rhcc-effective-on>
+         <xmp:rhcc-metadata-complete-moderator>pending</xmp:rhcc-metadata-complete-moderator>
+         <xmp:rhcc-translation-id>TRA4b912243-3f87-4ac1-b89c-70a5a4db043f</xmp:rhcc-translation-id>
+         <xmp:brand-content-type>Icon</xmp:brand-content-type>
+         <xmp:CreateDate>2023-12-08T17:45:35.051Z</xmp:CreateDate>
+         <xmp:rhcc-aspect-ratio>square</xmp:rhcc-aspect-ratio>
+         <xmp:rhcc-effective-on-set-on-upload>true</xmp:rhcc-effective-on-set-on-upload>
+         <xmp:rhcc-published-asset-email-sent>true</xmp:rhcc-published-asset-email-sent>
+         <xmp:rhcc-metadata-complete-uploader>pending</xmp:rhcc-metadata-complete-uploader>
+         <xmp:rhcc-file-last-modified>2024-07-12T22:58:40.348Z</xmp:rhcc-file-last-modified>
+         <xmp:rhcc-audience>rhcc-audience:internal</xmp:rhcc-audience>
+         <xmp:brand-content-subtype>Icon</xmp:brand-content-subtype>
+         <xmp:rhcc-rights-restricted>no</xmp:rhcc-rights-restricted>
+         <xmp:rhcc-derivative-id>DER4b912243-3f87-4ac1-b89c-70a5a4db043f</xmp:rhcc-derivative-id>
+         <xmp:rhcc-uploaded-by>pmeilleu@redhat.com</xmp:rhcc-uploaded-by>
+         <xmp:brand-logo-color>Red</xmp:brand-logo-color>
+         <xmp:rhcc-notify-portal-subscribers-on-change>yes</xmp:rhcc-notify-portal-subscribers-on-change>
+         <dc:format>image/svg+xml</dc:format>
+         <dc:modified>2024-02-09T20:36:17.369Z</dc:modified>
+         <dc:title>
+            <rdf:Alt>
+               <rdf:li xml:lang="x-default">Cup icon - Red</rdf:li>
+            </rdf:Alt>
+         </dc:title>
+         <dc:description>
+            <rdf:Alt>
+               <rdf:li xml:lang="x-default">drink, beverage, water, soda, coffee, tea, restaurant, food and drink</rdf:li>
+            </rdf:Alt>
+         </dc:description>
+         <cq:lastReplicationAction_scene7>Activate</cq:lastReplicationAction_scene7>
+         <cq:lastReplicationAction_publish>Activate</cq:lastReplicationAction_publish>
+         <cq:lastReplicated_publish>2024-10-02T19:32:36.196Z</cq:lastReplicated_publish>
+         <cq:lastReplicatedBy>workflow-process-service</cq:lastReplicatedBy>
+         <cq:lastReplicationAction>Activate</cq:lastReplicationAction>
+         <cq:lastReplicatedBy_publish>workflow-process-service</cq:lastReplicatedBy_publish>
+         <cq:isDelivered>false</cq:isDelivered>
+         <cq:lastReplicated>2024-10-02T19:32:36.196Z</cq:lastReplicated>
+         <cq:lastReplicatedBy_scene7>workflow-process-service</cq:lastReplicatedBy_scene7>
+         <cq:lastReplicated_scene7>2024-10-02T19:32:36.196Z</cq:lastReplicated_scene7>
+         <tiff:ImageLength>36</tiff:ImageLength>
+         <tiff:ImageWidth>36</tiff:ImageWidth>
+      </rdf:Description>
+   </rdf:RDF>
+</x:xmpmeta>
+                                                                                                    
+                                                                                                    
+                                                                                                    
+                                                                                                    
+                                                                                                    
+                                                                                                    
+                                                                                                    
+                                                                                                    
+        
+<?xpacket end="w"?></metadata>
+<defs>
+    <style>
+      .e6731478-9904-415e-a5b0-7bdd8ee1f161 {
+        fill: #e00;
+      }
+    </style>
+  </defs>
+  <g>
+    <path class="e6731478-9904-415e-a5b0-7bdd8ee1f161" d="M26,13.38H10a.63.63,0,0,0-.62.73l3,17a.63.63,0,0,0,.62.51H23a.63.63,0,0,0,.62-.51l3-17A.63.63,0,0,0,26,13.38Zm-3.52,17h-9L10.75,14.62h14.5Z"/>
+    <path class="e6731478-9904-415e-a5b0-7bdd8ee1f161" d="M27,10.38H18.62V6.33l2.73-1.81a.63.63,0,0,0-.7-1l-3,2a.63.63,0,0,0-.27.52v4.38H9a.62.62,0,0,0,0,1.24H27A.62.62,0,0,0,27,10.38Z"/>
+  </g>
+</svg>

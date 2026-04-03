@@ -22,6 +22,15 @@ from diagrams.programming.language import Python
 from diagrams.onprem.client import Users
 from diagrams.onprem.compute import Server
 from diagrams.custom import Custom
+import os
+
+# Get absolute paths for icons
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+PROJECT_ROOT = os.path.join(BASE_DIR, '../../..')
+OPERATOR_ICON = os.path.join(PROJECT_ROOT, "custom_icons/Technology icons/operator/Technology_icon-Red_Hat-operator-Standard-RGB.Large_icon_transparent.png")
+GITOPS_ICON = os.path.join(PROJECT_ROOT, "custom_icons/Technology icons/Red Hat OpenShift GitOps/Technology_icon-Red_Hat-OpenShift_GitOps-Standard-RGB.Large_icon_transparent.png")
+PIPELINES_ICON = os.path.join(PROJECT_ROOT, "custom_icons/Technology icons/Red Hat OpenShift Pipelines/Technology_icon-Red_Hat-OpenShift_Pipelines-Standard-RGB.Large_icon_transparent.png")
+BUILDS_ICON = os.path.join(PROJECT_ROOT, "custom_icons/Technology icons/Builds for Red Hat OpenShift/Technology_icon-Red_Hat-OpenShift_Builds-Standard-RGB.Large_icon_transparent.png")
 
 graph_attr = {
     "fontsize": "16",
@@ -41,68 +50,68 @@ with Diagram(
 
     # ========== PERSONAS ==========
     with Cluster("Users"):
-        developer = Users("Developer")
-        platform_engineer = Users("Platform Engineer")
+        developer = Users("\nDeveloper")
+        platform_engineer = Users("\nPlatform Engineer")
 
     # ========== EXTERNAL ==========
     with Cluster("External Systems"):
-        source_repo = Github("Source Repository\n(GitHub/GitLab)")
-        config_repo = Gitlab("Config Repository\n(GitOps)")
-        external_registry = Server("External Registry\n(Quay, Harbor)")
+        source_repo = Github("\nSource Repository\n(GitHub/GitLab)")
+        config_repo = Gitlab("\nConfig Repository\n(GitOps)")
+        external_registry = Server("\nExternal Registry\n(Quay, Harbor)")
 
-    api = APIServer("OpenShift\nAPI Server")
+    api = APIServer("\nOpenShift\nAPI Server")
 
     # ========== GITOPS - CONTINUOUS DELIVERY ==========
     with Cluster("GitOps - Continuous Delivery"):
 
         with Cluster("openshift-gitops-operator"):
-            gitops_operator = Custom("GitOps Operator", "custom_icons/Technology icons/Red Hat OpenShift GitOps/Technology_icon-Red_Hat-OpenShift_GitOps-Standard-RGB.Large_icon_transparent.png")
+            gitops_operator = Custom("\nGitOps Operator", GITOPS_ICON)
 
         with Cluster("openshift-gitops"):
-            argocd_server = Custom("ArgoCD Server", "custom_icons/Technology icons/Red Hat OpenShift GitOps/Technology_icon-Red_Hat-OpenShift_GitOps-Standard-RGB.Large_icon_transparent.png")
-            argocd_apps = Server("ArgoCD Applications\n(App of Apps)")
-            argocd_appsets = Server("ApplicationSets")
+            argocd_server = Custom("\nArgoCD Server", GITOPS_ICON)
+            argocd_apps = Server("\nArgoCD Applications\n(App of Apps)")
+            argocd_appsets = Server("\nApplicationSets")
 
     # ========== PIPELINES - CONTINUOUS INTEGRATION ==========
     with Cluster("Pipelines - Continuous Integration"):
 
         with Cluster("openshift-pipelines"):
-            pipelines_operator = Custom("Pipelines Operator\n(Tekton)", "custom_icons/Technology icons/Red Hat OpenShift Pipelines/Technology_icon-Red_Hat-OpenShift_Pipelines-Standard-RGB.Large_icon_transparent.png")
+            pipelines_operator = Custom("\nPipelines Operator\n(Tekton)", PIPELINES_ICON)
 
             with Cluster("Pipeline Execution"):
-                tekton_pipeline = Custom("Tekton Pipeline", "custom_icons/Technology icons/Red Hat OpenShift Pipelines/Technology_icon-Red_Hat-OpenShift_Pipelines-Standard-RGB.Large_icon_transparent.png")
-                event_listener = Server("EventListener\n(Webhooks)")
-                pipeline_runs = Server("PipelineRuns")
+                tekton_pipeline = Custom("\nTekton Pipeline", PIPELINES_ICON)
+                event_listener = Server("\nEventListener\n(Webhooks)")
+                pipeline_runs = Server("\nPipelineRuns")
 
     # ========== BUILDS ==========
     with Cluster("Image Builds"):
 
         with Cluster("openshift-builds"):
-            builds_operator = Custom("Builds Operator\n(Shipwright)", "custom_icons/Technology icons/Builds for Red Hat OpenShift/Technology_icon-Red_Hat-OpenShift_Builds-Standard-RGB.Large_icon_transparent.png")
+            builds_operator = Custom("\nBuilds Operator\n(Shipwright)", BUILDS_ICON)
 
             with Cluster("Build Strategies"):
-                s2i_build = Server("Source-to-Image")
-                buildah_build = Server("Buildah\n(Dockerfile)")
-                buildpacks = Server("Cloud Native\nBuildpacks")
+                s2i_build = Server("\nSource-to-Image")
+                buildah_build = Server("\nBuildah\n(Dockerfile)")
+                buildpacks = Server("\nCloud Native\nBuildpacks")
 
     # ========== DEVELOPER WORKSPACE ==========
     with Cluster("Developer Workspace"):
 
         with Cluster("openshift-operators"):
-            devworkspace_operator = Custom("DevWorkspace\nOperator", "custom_icons/Technology icons/operator/Technology_icon-Red_Hat-operator-Standard-RGB.Large_icon_transparent.png")
-            web_terminal_operator = Custom("Web Terminal\nOperator", "custom_icons/Technology icons/operator/Technology_icon-Red_Hat-operator-Standard-RGB.Large_icon_transparent.png")
+            devworkspace_operator = Custom("\nDevWorkspace\nOperator", OPERATOR_ICON)
+            web_terminal_operator = Custom("\nWeb Terminal\nOperator", OPERATOR_ICON)
 
             with Cluster("Developer Tools"):
-                cloud_ide = Python("Cloud IDE\n(DevSpaces)")
-                web_terminal = Python("Web Terminal")
+                cloud_ide = Python("\nCloud IDE\n(DevSpaces)")
+                web_terminal = Python("\nWeb Terminal")
 
     # ========== REGISTRY ==========
     with Cluster("openshift-image-registry"):
-        internal_registry = Server("Internal Registry")
+        internal_registry = Server("\nInternal Registry")
 
     # ========== APPLICATION DEPLOYMENTS ==========
     with Cluster("User Namespaces"):
-        applications = Server("Applications\n(Deployments)")
+        applications = Server("\nApplications\n(Deployments)")
 
     # =========================================================
     # CONNECTIONS

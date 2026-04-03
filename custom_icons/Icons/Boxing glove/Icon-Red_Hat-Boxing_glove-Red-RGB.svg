@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg id="uuid-60d8038e-46b0-44f1-b698-0f8b89ecf680" data-name="Icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 36 36">
+  <metadata><?xpacket begin="﻿" id="W5M0MpCehiHzreSzNTczkc9d"?>
+<x:xmpmeta xmlns:x="adobe:ns:meta/" x:xmptk="Adobe XMP Core 8.0-c001 1.000000, 0000/00/00-00:00:00        ">
+   <rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+      <rdf:Description rdf:about=""
+            xmlns:xmp="http://ns.adobe.com/xap/1.0/"
+            xmlns:dc="http://purl.org/dc/elements/1.1/"
+            xmlns:cq="http://www.day.com/jcr/cq/1.0"
+            xmlns:tiff="http://ns.adobe.com/tiff/1.0/">
+         <xmp:rhcc-effective-on>2023-12-08T17:35:25.148Z</xmp:rhcc-effective-on>
+         <xmp:rhcc-metadata-complete-moderator>pending</xmp:rhcc-metadata-complete-moderator>
+         <xmp:rhcc-translation-id>TRA96ba041e-ff7b-4c1f-a4b3-b4bd6d308613</xmp:rhcc-translation-id>
+         <xmp:CreateDate>2023-12-08T17:35:25.148Z</xmp:CreateDate>
+         <xmp:rhcc-aspect-ratio>square</xmp:rhcc-aspect-ratio>
+         <xmp:rhcc-effective-on-set-on-upload>true</xmp:rhcc-effective-on-set-on-upload>
+         <xmp:rhcc-published-asset-email-sent>true</xmp:rhcc-published-asset-email-sent>
+         <xmp:rhcc-metadata-complete-uploader>pending</xmp:rhcc-metadata-complete-uploader>
+         <xmp:rhcc-file-last-modified>2024-07-12T22:04:34.390Z</xmp:rhcc-file-last-modified>
+         <xmp:rhcc-audience>rhcc-audience:internal</xmp:rhcc-audience>
+         <xmp:rhcc-rights-restricted>no</xmp:rhcc-rights-restricted>
+         <xmp:rhcc-derivative-id>DER96ba041e-ff7b-4c1f-a4b3-b4bd6d308613</xmp:rhcc-derivative-id>
+         <xmp:rhcc-uploaded-by>pmeilleu@redhat.com</xmp:rhcc-uploaded-by>
+         <xmp:rhcc-notify-portal-subscribers-on-change>yes</xmp:rhcc-notify-portal-subscribers-on-change>
+         <dc:format>image/svg+xml</dc:format>
+         <dc:modified>2024-02-09T20:29:42.200Z</dc:modified>
+         <cq:lastReplicationAction_scene7>Activate</cq:lastReplicationAction_scene7>
+         <cq:lastReplicationAction_publish>Activate</cq:lastReplicationAction_publish>
+         <cq:lastReplicated_publish>2024-10-02T19:29:12.310Z</cq:lastReplicated_publish>
+         <cq:lastReplicatedBy>workflow-process-service</cq:lastReplicatedBy>
+         <cq:lastReplicationAction>Activate</cq:lastReplicationAction>
+         <cq:lastReplicatedBy_publish>workflow-process-service</cq:lastReplicatedBy_publish>
+         <cq:isDelivered>false</cq:isDelivered>
+         <cq:lastReplicated>2024-10-02T19:29:12.310Z</cq:lastReplicated>
+         <cq:lastReplicatedBy_scene7>workflow-process-service</cq:lastReplicatedBy_scene7>
+         <cq:lastReplicated_scene7>2024-10-02T19:29:12.310Z</cq:lastReplicated_scene7>
+         <tiff:ImageLength>36</tiff:ImageLength>
+         <tiff:ImageWidth>36</tiff:ImageWidth>
+      </rdf:Description>
+   </rdf:RDF>
+</x:xmpmeta>
+                                                                                                    
+                                                                                                    
+                                                                                                    
+                                                                                                    
+                                                                                                    
+                                                                                                    
+                                                                                                    
+                                                                                                    
+        
+<?xpacket end="w"?></metadata>
+<defs>
+    <style>
+      .uuid-c89eb773-f50c-4b95-adcf-0578bc424dbe {
+        fill: #e00;
+      }
+    </style>
+  </defs>
+  <path class="uuid-c89eb773-f50c-4b95-adcf-0578bc424dbe" d="M26,4.38H11.5c-2.27,0-4.12,1.85-4.12,4.12,0,1.47,.78,2.77,1.94,3.5-1.17,.73-1.94,2.03-1.94,3.5v6c0,2.23,1.78,4.04,4,4.11v5.39c0,.34,.28,.62,.62,.62h13c.35,0,.62-.28,.62-.62v-5.55c1.73-.49,3-2.07,3-3.95V7c0-1.45-1.18-2.62-2.62-2.62Zm-1.62,23H12.62v-1.75h11.75v1.75Zm0,3H12.62v-1.75h11.75v1.75Zm3-8.88c0,1.58-1.29,2.88-2.88,2.88H11.5c-1.59,0-2.88-1.29-2.88-2.88v-6c0-1.58,1.29-2.88,2.88-2.88h6c1.59,0,2.88,1.29,2.88,2.88s-1.29,2.88-2.88,2.88h-4.5c-.35,0-.62,.28-.62,.62s.28,.62,.62,.62h4.5c2.27,0,4.12-1.85,4.12-4.12,0-1.12-.45-2.13-1.17-2.88h1.04c2.27,0,4.12-1.85,4.12-4.12,0-.34-.28-.62-.62-.62s-.62,.28-.62,.62c0,1.58-1.29,2.88-2.88,2.88H11.5c-1.59,0-2.88-1.29-2.88-2.88s1.29-2.88,2.88-2.88h14.5c.76,0,1.38,.62,1.38,1.38v14.5Z"/>
+</svg>

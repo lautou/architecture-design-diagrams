@@ -1,0 +1,75 @@
+<svg id="b3d62687-fb59-4883-8c49-9db387dc9c0a" data-name="Icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 36 36">
+  <title>No icon - Red</title>
+<desc>no, x, ex, cancel, stop, close</desc>
+<metadata><?xpacket begin="﻿" id="W5M0MpCehiHzreSzNTczkc9d"?>
+<x:xmpmeta xmlns:x="adobe:ns:meta/" x:xmptk="Adobe XMP Core 8.0-c001 1.000000, 0000/00/00-00:00:00        ">
+   <rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+      <rdf:Description rdf:about=""
+            xmlns:xmp="http://ns.adobe.com/xap/1.0/"
+            xmlns:tiff="http://ns.adobe.com/tiff/1.0/"
+            xmlns:dc="http://purl.org/dc/elements/1.1/">
+         <xmp:rhcc-effective-on>2024-03-14T13:11:30.356Z</xmp:rhcc-effective-on>
+         <xmp:rhcc-rights-restricted>no</xmp:rhcc-rights-restricted>
+         <xmp:brand-content-subtype>Icon</xmp:brand-content-subtype>
+         <xmp:rhcc-metadata-complete-moderator>pending</xmp:rhcc-metadata-complete-moderator>
+         <xmp:rhcc-translation-id>TRA6bcc072d-8c49-4792-9c0f-06ff72186a25</xmp:rhcc-translation-id>
+         <xmp:brand-content-type>Icon</xmp:brand-content-type>
+         <xmp:CreateDate>2024-03-14T13:11:30.356Z</xmp:CreateDate>
+         <xmp:rhcc-aspect-ratio>square</xmp:rhcc-aspect-ratio>
+         <xmp:rhcc-derivative-id>DER6bcc072d-8c49-4792-9c0f-06ff72186a25</xmp:rhcc-derivative-id>
+         <xmp:rhcc-effective-on-set-on-upload>true</xmp:rhcc-effective-on-set-on-upload>
+         <xmp:rhcc-uploaded-by>llevi@redhat.com</xmp:rhcc-uploaded-by>
+         <xmp:brand-logo-color>Red</xmp:brand-logo-color>
+         <xmp:rhcc-metadata-complete-uploader>pending</xmp:rhcc-metadata-complete-uploader>
+         <xmp:rhcc-file-last-modified>2024-07-12T23:36:59.175Z</xmp:rhcc-file-last-modified>
+         <xmp:rhcc-audience>rhcc-audience:internal</xmp:rhcc-audience>
+         <xmp:rhcc-notify-portal-subscribers-on-change>yes</xmp:rhcc-notify-portal-subscribers-on-change>
+         <xmp:brand-colorway>
+            <rdf:Bag>
+               <rdf:li>colorway:red</rdf:li>
+            </rdf:Bag>
+         </xmp:brand-colorway>
+         <tiff:ImageLength>36</tiff:ImageLength>
+         <tiff:ImageWidth>36</tiff:ImageWidth>
+         <dc:format>image/svg+xml</dc:format>
+         <dc:modified>2024-03-14T13:12:24.966Z</dc:modified>
+         <dc:description>
+            <rdf:Alt>
+               <rdf:li xml:lang="x-default">no, x, ex, cancel, stop, close</rdf:li>
+            </rdf:Alt>
+         </dc:description>
+         <dc:title>
+            <rdf:Alt>
+               <rdf:li xml:lang="x-default">No icon - Red</rdf:li>
+            </rdf:Alt>
+         </dc:title>
+      </rdf:Description>
+   </rdf:RDF>
+</x:xmpmeta>
+                                                                                                    
+                                                                                                    
+                                                                                                    
+                                                                                                    
+                                                                                                    
+                                                                                                    
+                                                                                                    
+                                                                                                    
+                                                                                                    
+                                                                                                    
+                                                                                                    
+                                                                                                    
+                                                                                                    
+                                                                                       
+<?xpacket end="w"?></metadata>
+<defs>
+    <style>
+      .afe54809-bf75-48cb-8662-3729500ce7e9 {
+        fill: #e00;
+      }
+    </style>
+  </defs>
+  <g>
+    <path class="afe54809-bf75-48cb-8662-3729500ce7e9" d="M23.44,12.56a.61.61,0,0,0-.88,0L18,17.12l-4.56-4.56a.62.62,0,0,0-.88.88L17.12,18l-4.56,4.56a.62.62,0,0,0,.88.88L18,18.88l4.56,4.56a.62.62,0,0,0,.88-.88L18.88,18l4.56-4.56A.61.61,0,0,0,23.44,12.56Z"/>
+    <path class="afe54809-bf75-48cb-8662-3729500ce7e9" d="M18,3.38A14.64,14.64,0,0,0,3.38,18c.8,19.4,28.44,19.4,29.25,0A14.65,14.65,0,0,0,18,3.38Zm0,28A13.39,13.39,0,0,1,4.62,18C5.36.26,30.64.26,31.38,18A13.39,13.39,0,0,1,18,31.38Z"/>
+  </g>
+</svg>

@@ -23,6 +23,15 @@ from diagrams.onprem.security import Vault
 from diagrams.onprem.client import Users
 from diagrams.onprem.compute import Server
 from diagrams.custom import Custom
+import os
+
+# Get absolute paths for icons
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+PROJECT_ROOT = os.path.join(BASE_DIR, '../../..')
+OPERATOR_ICON = os.path.join(PROJECT_ROOT, "custom_icons/Technology icons/operator/Technology_icon-Red_Hat-operator-Standard-RGB.Large_icon_transparent.png")
+KEYCLOAK_ICON = os.path.join(PROJECT_ROOT, "custom_icons/Technology icons/Red Hat build of Keycloak/Technology_icon-Red_Hat-Keycloak-Standard-RGB.Large_icon_transparent.png")
+SERVICE_MESH_ICON = os.path.join(PROJECT_ROOT, "custom_icons/Technology icons/Red Hat OpenShift Service Mesh/Technology_icon-Red_Hat-OpenShift_Service_Mesh-Standard-RGB.Large_icon_transparent.png")
+CONNECTIVITY_ICON = os.path.join(PROJECT_ROOT, "custom_icons/Technology icons/Red Hat Connectivity Link/Technology_icon-Red_Hat-Connectivity_Link-Standard-RGB.Large_icon_transparent.png")
 
 graph_attr = {
     "fontsize": "16",
@@ -41,83 +50,83 @@ with Diagram(
 ):
 
     # ========== PERSONAS ==========
-    end_users = Users("End Users")
+    end_users = Users("\nEnd Users")
 
     # ========== EXTERNAL ==========
     with Cluster("External Security Services"):
-        corporate_idp = Server("Corporate IDP\n(LDAP/AD/OIDC)")
-        enterprise_pki = Vault("Enterprise PKI\n(CA)")
+        corporate_idp = Server("\nCorporate IDP\n(LDAP/AD/OIDC)")
+        enterprise_pki = Vault("\nEnterprise PKI\n(CA)")
 
-    api = APIServer("OpenShift\nAPI Server")
-    router = Ingress("OpenShift Router")
+    api = APIServer("\nOpenShift\nAPI Server")
+    router = Ingress("\nOpenShift Router")
 
     # ========== IDENTITY & ACCESS MANAGEMENT ==========
     with Cluster("Identity & Access Management"):
 
         with Cluster("rhsso-operator"):
-            keycloak_operator = Custom("Keycloak Operator", "custom_icons/Technology icons/Red Hat build of Keycloak/Technology_icon-Red_Hat-Keycloak-Standard-RGB.Large_icon_transparent.png")
+            keycloak_operator = Custom("\nKeycloak Operator", KEYCLOAK_ICON)
 
         with Cluster("keycloak (instance namespace)"):
-            keycloak_server = Custom("Keycloak Server\n(Red Hat build)", "custom_icons/Technology icons/Red Hat build of Keycloak/Technology_icon-Red_Hat-Keycloak-Standard-RGB.Large_icon_transparent.png")
-            keycloak_realms = Vault("Realms & Clients\n(OIDC/SAML)")
+            keycloak_server = Custom("\nKeycloak Server\n(Red Hat build)", KEYCLOAK_ICON)
+            keycloak_realms = Vault("\nRealms & Clients\n(OIDC/SAML)")
 
         with Cluster("authorino-operator"):
-            authorino_operator = Custom("Authorino Operator", "custom_icons/Technology icons/operator/Technology_icon-Red_Hat-operator-Standard-RGB.Large_icon_transparent.png")
+            authorino_operator = Custom("\nAuthorino Operator", OPERATOR_ICON)
 
         with Cluster("authorino-instances"):
-            authorino_service = Vault("Authorino\n(API Authorization)")
+            authorino_service = Vault("\nAuthorino\n(API Authorization)")
 
     # ========== CERTIFICATE MANAGEMENT ==========
     with Cluster("Certificate Management"):
 
         with Cluster("openshift-cert-manager-operator"):
-            certmanager_operator = Custom("cert-manager\nOperator", "custom_icons/Technology icons/operator/Technology_icon-Red_Hat-operator-Standard-RGB.Large_icon_transparent.png")
+            certmanager_operator = Custom("\ncert-manager\nOperator", OPERATOR_ICON)
 
         with Cluster("openshift-cert-manager"):
             with Cluster("Certificate Issuers"):
-                ca_issuer = Vault("CA Issuer")
-                acme_issuer = Vault("ACME Issuer\n(Let's Encrypt)")
-                cert_manager = Vault("cert-manager\nController")
+                ca_issuer = Vault("\nCA Issuer")
+                acme_issuer = Vault("\nACME Issuer\n(Let's Encrypt)")
+                cert_manager = Vault("\ncert-manager\nController")
 
     # ========== SERVICE MESH ==========
     with Cluster("Service Mesh"):
 
         with Cluster("openshift-operators (Service Mesh)"):
-            servicemesh_operator = Custom("Service Mesh\nOperator", "custom_icons/Technology icons/Red Hat OpenShift Service Mesh/Technology_icon-Red_Hat-OpenShift_Service_Mesh-Standard-RGB.Large_icon_transparent.png")
+            servicemesh_operator = Custom("\nService Mesh\nOperator", SERVICE_MESH_ICON)
 
         with Cluster("istio-system"):
-            istiod = Custom("Istiod\n(Control Plane)", "custom_icons/Technology icons/Red Hat OpenShift Service Mesh/Technology_icon-Red_Hat-OpenShift_Service_Mesh-Standard-RGB.Large_icon_transparent.png")
+            istiod = Custom("\nIstiod\n(Control Plane)", SERVICE_MESH_ICON)
 
             with Cluster("Mesh Features"):
-                mtls_enforcement = Server("mTLS Enforcement")
-                traffic_management = Server("Traffic Management\n(VirtualServices)")
-                mesh_observability = Server("Mesh Telemetry\n(Traces)")
+                mtls_enforcement = Server("\nmTLS Enforcement")
+                traffic_management = Server("\nTraffic Management\n(VirtualServices)")
+                mesh_observability = Server("\nMesh Telemetry\n(Traces)")
 
     # ========== RATE LIMITING ==========
     with Cluster("Rate Limiting & Traffic Control"):
 
         with Cluster("openshift-operators (Limitador)"):
-            limitador_operator = Custom("Limitador Operator", "custom_icons/Technology icons/operator/Technology_icon-Red_Hat-operator-Standard-RGB.Large_icon_transparent.png")
+            limitador_operator = Custom("\nLimitador Operator", OPERATOR_ICON)
 
         with Cluster("limitador-system"):
-            limitador_service = Server("Limitador\n(Rate Limiting)")
+            limitador_service = Server("\nLimitador\n(Rate Limiting)")
 
     # ========== CONNECTIVITY ==========
     with Cluster("Hybrid Cloud Connectivity"):
 
         with Cluster("openshift-operators (Connectivity)"):
-            connectivity_operator = Custom("Connectivity Link\nOperator", "custom_icons/Technology icons/Red Hat Connectivity Link/Technology_icon-Red_Hat-Connectivity_Link-Standard-RGB.Large_icon_transparent.png")
+            connectivity_operator = Custom("\nConnectivity Link\nOperator", CONNECTIVITY_ICON)
 
         with Cluster("skupper-site-controller"):
-            connectivity_service = Custom("Skupper\n(Service Interconnect)", "custom_icons/Technology icons/Red Hat Connectivity Link/Technology_icon-Red_Hat-Connectivity_Link-Standard-RGB.Large_icon_transparent.png")
+            connectivity_service = Custom("\nSkupper\n(Service Interconnect)", CONNECTIVITY_ICON)
 
     # ========== APPLICATION SERVICES ==========
     with Cluster("Application Services"):
-        mesh_applications = Server("Service Mesh\nApplications")
-        standard_applications = Server("Standard\nApplications")
+        mesh_applications = Server("\nService Mesh\nApplications")
+        standard_applications = Server("\nStandard\nApplications")
 
     with Cluster("Remote Services"):
-        remote_services = Server("On-Premise/Cloud\nServices")
+        remote_services = Server("\nOn-Premise/Cloud\nServices")
 
     # =========================================================
     # CONNECTIONS
@@ -175,7 +184,7 @@ with Diagram(
     router >> Edge(style="dashed", label="direct") >> standard_applications
 
     # --- OBSERVABILITY INTEGRATION ---
-    mesh_observability >> Edge(style="dotted", label="export traces") >> Server("Tempo/Jaeger")
+    mesh_observability >> Edge(style="dotted", label="export traces") >> Server("\nTempo/Jaeger")
 
     # --- HYBRID CONNECTIVITY (Purple = secure tunnel) ---
     connectivity_service >> Edge(color="purple", style="dotted", label="secure tunnel") >> remote_services
