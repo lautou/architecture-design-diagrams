@@ -14,9 +14,15 @@ AI Project namespaces (user-created, Kubernetes naming convention):
 - dev-ai-project-z: VS Code Workbench
 - mlops-pipeline-project-y: Data Science Pipeline Server + Ray Cluster
 - prod-ai-project-x: Secured Model Server (KServe + TrustyAI Agent) + TrustyAI Service
-- prod-ai-project-z: Secured Model Server (KServe + Guardrail Detector + Gateway) + Guardrail Orchestrator
+- prod-ai-project-y: Model Servers (embeddings + llama 3.2 8b with Guardrails) + LlamaStack
+- prod-ai-project-z: Secured Model Server (KServe + Guardrail Detector + Gateway) + Guardrail Orchestrator + LLM Router
 
-Layout: 5x3 grid for redhat-ods-applications, structured rows for other namespaces
+Layout Technique:
+- Two-area vertical stacking: Platform Components (top) + AI Projects (bottom)
+- 5x3 grid in applications using vertical-only edges (no horizontal edges)
+- 8 distributed anchor points across width to force clean vertical alignment
+- Vertical stacking within namespaces to save horizontal space
+- See CLAUDE.md "Complex Multi-Cluster Layouts" section for pattern details
 """
 
 from diagrams import Diagram, Cluster, Edge
@@ -45,13 +51,14 @@ GUARDRAILS_SMALL_ICON = os.path.join(PROJECT_ROOT, "custom_icons/Icons/Guardrail
 CATALOG_ICON = os.path.join(PROJECT_ROOT, "custom_icons/Icons/Catalog/Icon-Red_Hat-Catalog-A-Red-RGB.Large_icon_transparent.png")
 POSTGRESQL_ICON = os.path.join(PROJECT_ROOT, "custom_icons/Icons/PostgreSQL/postgresql-400x400.png")
 LLMD_ICON = os.path.join(PROJECT_ROOT, "custom_icons/Icons/LLMD/llmd-400x400.png")
+LLAMASTACK_ICON = os.path.join(PROJECT_ROOT, "custom_icons/Icons/LlamaStack/llamastack-400x400.png")
 
 graph_attr = {
     "fontsize": "9",
     "bgcolor": "white",
     "pad": "0.5",
     "nodesep": "1.0",
-    "ranksep": "0.5",
+    "ranksep": "1.0",
     "dpi": "300"
 }
 
@@ -69,7 +76,7 @@ with Diagram(
 ):
 
     # ========== RED HAT OPENSHIFT AI PLATFORM ==========
-    with Cluster("Red Hat OpenShift AI", graph_attr={"margin": "20", "bgcolor": "lightblue"}):
+    with Cluster("Red Hat OpenShift AI Platform Components", graph_attr={"margin": "20", "bgcolor": "lightblue"}):
 
         # redhat-ods-applications namespace (out-of-the-box)
         with Cluster("redhat-ods-applications", graph_attr={"margin": "15", "bgcolor": "lightgray"}):
@@ -94,16 +101,20 @@ with Diagram(
             trustyai_operator = Custom("\nTrustyAI\nService Operator\nController Manager", OPERATOR_ICON)
             maas_api = Custom("\nMaaS API", OPERATOR_ICON)
 
-            # Horizontal edges for rows
-            dashboard - Edge(style="invis") - rhoai_operator - Edge(style="invis") - kubeflow_notebook - Edge(style="invis") - odh_notebook - Edge(style="invis") - kserve_controller
-            odh_model_controller - Edge(style="invis") - modelreg_controller - Edge(style="invis") - dsp_operator - Edge(style="invis") - training_operator - Edge(style="invis") - kuberay_operator
-            mlflow_operator - Edge(style="invis") - llamastack_operator - Edge(style="invis") - feast_operator - Edge(style="invis") - trustyai_operator - Edge(style="invis") - maas_api
-
-            # Vertical edges to stack rows
+            # Vertical columns (no horizontal edges) - Graphviz will place columns side-by-side naturally
+            # Column 1
             dashboard >> Edge(style="invis") >> odh_model_controller >> Edge(style="invis") >> mlflow_operator
+
+            # Column 2
             rhoai_operator >> Edge(style="invis") >> modelreg_controller >> Edge(style="invis") >> llamastack_operator
+
+            # Column 3
             kubeflow_notebook >> Edge(style="invis") >> dsp_operator >> Edge(style="invis") >> feast_operator
+
+            # Column 4
             odh_notebook >> Edge(style="invis") >> training_operator >> Edge(style="invis") >> trustyai_operator
+
+            # Column 5
             kserve_controller >> Edge(style="invis") >> kuberay_operator >> Edge(style="invis") >> maas_api
 
         # redhat-ods-monitoring namespace (out-of-the-box)
@@ -137,6 +148,9 @@ with Diagram(
 
             model_registry_a - Edge(style="invis") - model_registry_b - Edge(style="invis") - model_catalog - Edge(style="invis") - postgres_db
 
+    # ========== USER WORKLOADS ==========
+    with Cluster("AI Project Environments (User Workloads)", graph_attr={"margin": "20", "bgcolor": "honeydew"}):
+
         # AI Project 1: Development with Jupyter
         with Cluster("dev-ai-project-x", graph_attr={"margin": "10"}):
             workbench_jupyter = Custom("\nJupyter\nWorkbench", JUPYTER_ICON)
@@ -155,31 +169,50 @@ with Diagram(
 
         # AI Project 4: Production serving with TrustyAI
         with Cluster("prod-ai-project-x", graph_attr={"margin": "10"}):
-            # Secured Model Server with TrustyAI agent
             with Cluster("Secured Model Server", graph_attr={"margin": "8", "bgcolor": "lightyellow", "style": "rounded"}):
                 model_server_trusty = Custom("\nKServe\nModel Server", AI_MODEL_ICON)
                 trustyai_agent = Custom("\nTrustyAI\nAgent", TRUSTYAI_ICON)
                 model_server_trusty - Edge(style="invis") - trustyai_agent
-
-            # TrustyAI Service (outside the pod)
             trustyai_service = Custom("\nTrustyAI Service", TRUSTYAI_ICON)
 
         # AI Project 5: Production with Guardrails
         with Cluster("prod-ai-project-z", graph_attr={"margin": "10"}):
-            # Secured Model Server with Guardrails
             with Cluster("Secured Model Server", graph_attr={"margin": "8", "bgcolor": "lightyellow", "style": "rounded"}):
                 model_server_guardrails = Custom("\nKServe\nModel Server", AI_MODEL_ICON)
                 guardrail_detector = Custom("\nGuardrail\nBuilt-in Detector", GUARDRAILS_ICON)
                 guardrail_gateway = Custom("\nGuardrail\nGateway", GUARDRAILS_ICON)
                 model_server_guardrails - Edge(style="invis") - guardrail_detector - Edge(style="invis") - guardrail_gateway
-
-            # Guardrail Orchestrator (outside the pod)
             guardrail_orchestrator = Custom("\nGuardrail\nOrchestrator", GUARDRAILS_ICON)
-
-            # LLM Router Scheduler
             llm_router = Custom("\nLLM KServe\nRouter Scheduler", LLMD_ICON)
+
+            # Stack vertically to save space
+            guardrail_orchestrator >> Edge(style="invis") >> llm_router
+
+        # AI Project 6: Production with LlamaStack
+        with Cluster("prod-ai-project-y", graph_attr={"margin": "10"}):
+            model_server_embeddings = Custom("\nKServe\nModel Server\n(embeddings)", AI_MODEL_ICON)
+            with Cluster("Secured Model Server", graph_attr={"margin": "8", "bgcolor": "lightyellow", "style": "rounded"}):
+                model_server_llama = Custom("\nKServe\nModel Server\n(llama 3.2 8b)", AI_MODEL_ICON)
+                guardrail_detector_llama = Custom("\nGuardrail\nBuilt-in Detector", GUARDRAILS_ICON)
+                model_server_llama - Edge(style="invis") - guardrail_detector_llama
+            guardrail_orchestrator_y = Custom("\nGuardrail\nOrchestrator", GUARDRAILS_ICON)
+            llamastack = Custom("\nLlamaStack\nServer", LLAMASTACK_ICON)
+
+            # Stack vertically to save space
+            model_server_embeddings >> Edge(style="invis") >> guardrail_orchestrator_y >> Edge(style="invis") >> llamastack
+
+    # Force vertical alignment: Platform Components on top, AI Projects on bottom
+    # Multiple connections across the entire width to force clean vertical stacking
+    mlflow_operator >> Edge(style="invis") >> workbench_jupyter
+    llamastack_operator >> Edge(style="invis") >> model_server_x
+    feast_operator >> Edge(style="invis") >> workbench_vscode
+    trustyai_operator >> Edge(style="invis") >> pipeline_server
+    maas_api >> Edge(style="invis") >> ray_cluster
+    tempo_ds >> Edge(style="invis") >> model_server_trusty
+    workbench_default2 >> Edge(style="invis") >> trustyai_service
+    postgres_db >> Edge(style="invis") >> model_server_embeddings
 
 print("✓ Generated: output/baseline-rhoai-functional-components.png")
 print("  → Platform namespaces (gray): redhat-ods-applications + redhat-ods-monitoring + rhods-notebooks + rhoai-model-registries")
-print("  → AI Project namespaces: dev-ai-project-x/z + mlops-pipeline-project-y + prod-ai-project-x + prod-ai-project-z")
-print("  → Components: 15 operators + 5 monitoring + 2 workbenches + 4 model registry components + 5 AI projects")
+print("  → AI Project namespaces: dev-ai-project-x/z + mlops-pipeline-project-y + prod-ai-project-x/y/z")
+print("  → Components: 15 operators + 5 monitoring + 2 workbenches + 4 model registry components + 6 AI projects")

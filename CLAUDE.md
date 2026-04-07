@@ -78,16 +78,25 @@ Location: `diagrams/baseline-reference/`
    - Service Mesh: Istio
    - Rate Limiting: Limitador
 
-**Red Hat OpenShift AI (1 comprehensive diagram):**
+**Red Hat OpenShift AI (2 diagrams):**
 
 5. **`rhoai/functional-components.py`**
    - All DataScienceCluster CR components
    - Organized by namespace (redhat-ods-operator, redhat-ods-applications, AI Projects)
    - Shows full ML/AI workflow
 
+6. **`integration/rhoai-ocp-integration.py`**
+   - RHOAI platform running on OCP with dependencies on OCP services
+   - 5 OCP service categories: Compute & Acceleration, Observability, Security & Identity Services, Developer Services, Storage Services
+   - Shows which OCP platform operators RHOAI requires (GPU, Kueue, LWS, ODF, RHCL)
+   - 3-row layout: OCP services (row 1-2) + RHOAI platform (row 3)
+   - Each operator shown in its deployment namespace as white rounded rectangle
+
 **Why layered for OCP?** 22+ operators would be overwhelming in one diagram. Functional layers serve different stakeholder audiences.
 
-**Why comprehensive for RHOAI?** RHOAI is more cohesive as a single product; one diagram shows the complete AI platform capability.
+**Why comprehensive for RHOAI functional?** RHOAI is more cohesive as a single product; one diagram shows the complete AI platform capability.
+
+**Why integration diagram?** Shows how RHOAI depends on OCP platform services, critical for understanding deployment prerequisites and operator dependencies.
 
 ### Engagement-Specific Diagrams
 
@@ -265,6 +274,154 @@ mlops_engineer >> Edge(color="green") >> model_registry
 ```
 
 **Why?** Consulting engagements need to show value for different user roles.
+
+---
+
+## Complex Multi-Cluster Layouts
+
+### Two-Area Vertical Stacking
+
+For diagrams with distinct logical areas (e.g., Platform Components vs User Workloads), use **separate top-level clusters** and **distributed anchor points** to force clean vertical alignment.
+
+#### Architecture
+
+```python
+with Diagram(...):
+    # TOP AREA: Platform/Infrastructure
+    with Cluster("Platform Components", graph_attr={"bgcolor": "lightblue"}):
+        # Multiple namespaces at same level
+        with Cluster("namespace-1"):
+            component_a = ...
+        with Cluster("namespace-2"):
+            component_b = ...
+    
+    # BOTTOM AREA: User Workloads (separate cluster, NOT nested)
+    with Cluster("User Workloads", graph_attr={"bgcolor": "honeydew"}):
+        with Cluster("project-1"):
+            workload_a = ...
+        with Cluster("project-2"):
+            workload_b = ...
+    
+    # CRITICAL: Distributed anchor points to force vertical stacking
+    # Connect bottom nodes from top area to top nodes in bottom area
+    # Use 6-8 connections distributed across the full width
+    component_a >> Edge(style="invis") >> workload_a
+    component_b >> Edge(style="invis") >> workload_b
+    # ... add more anchors across the width
+```
+
+**Why this works:**
+- Separate top-level clusters prevent Graphviz from mixing areas
+- Multiple invisible edges create a "vertical constraint grid"
+- Distribution across full width prevents staircase placement
+- Each anchor pulls its local region into vertical alignment
+
+**Common mistake:** Using only 1-2 anchor points creates staircase effect. Need 6-8 distributed anchors.
+
+#### Graph Attributes for Multi-Cluster
+
+```python
+graph_attr = {
+    "ranksep": "1.0",    # Vertical spacing between ranks
+    "nodesep": "1.0",    # Horizontal spacing between nodes
+    "dpi": "300",        # High resolution for presentations
+    "direction": "TB"    # Top-to-bottom flow
+}
+```
+
+**Avoid:**
+- `newrank="true"` - Can cause instability with many clusters
+- Small `ranksep` (<0.8) - Clusters overlap
+- Horizontal edges between top-level clusters - Creates staircase
+
+### Grid Layouts (5x3, 4x4, etc.)
+
+Use **vertical-only edges** to create clean grids. Horizontal edges cause diagonal staircase layouts.
+
+```python
+with Cluster("Components Grid"):
+    # Define all nodes
+    row1_col1 = Custom("Component 1", icon)
+    row1_col2 = Custom("Component 2", icon)
+    row2_col1 = Custom("Component 3", icon)
+    row2_col2 = Custom("Component 4", icon)
+    
+    # ONLY vertical edges - Graphviz places columns side-by-side naturally
+    # Column 1
+    row1_col1 >> Edge(style="invis") >> row2_col1
+    
+    # Column 2
+    row1_col2 >> Edge(style="invis") >> row2_col2
+    
+    # DO NOT add horizontal edges (row1_col1 - row1_col2)
+```
+
+**Why:** Graphviz's ranking algorithm places unconnected vertical chains side-by-side. Horizontal edges confuse this and create staircase layouts.
+
+### Vertical Stacking to Save Space
+
+Stack components vertically within a namespace to reduce diagram width:
+
+```python
+with Cluster("my-namespace"):
+    component_a = Custom("Service A", icon)
+    component_b = Custom("Service B", icon)
+    component_c = Custom("Service C", icon)
+    
+    # Stack vertically
+    component_a >> Edge(style="invis") >> component_b >> Edge(style="invis") >> component_c
+```
+
+**Use case:** When a namespace has many independent components that don't need to show relationships.
+
+### What to Avoid
+
+❌ **Invisible wrapper clusters** - Don't wrap related clusters in invisible containers. This breaks Graphviz's layout algorithm.
+
+```python
+# DON'T DO THIS
+with Cluster("", graph_attr={"style": "invis"}):
+    with Cluster("namespace-1"):
+        ...
+    with Cluster("namespace-2"):
+        ...
+```
+
+❌ **Horizontal edges between clusters** - Creates staircase placement instead of vertical stacking.
+
+```python
+# DON'T DO THIS
+cluster_a_node - Edge(style="invis") - cluster_b_node  # Staircase!
+```
+
+❌ **Mixed horizontal + vertical edges in grids** - Pick one direction (vertical) and stick to it.
+
+```python
+# DON'T DO THIS
+row1_col1 - row1_col2  # Horizontal
+row1_col1 >> row2_col1  # Vertical
+# Results in diagonal staircase
+```
+
+### Known Trade-offs
+
+**Icon centering vs layout constraints:** Single-node namespace clusters may show slight left-alignment when using distributed anchor points for multi-row layouts. This is a Graphviz constraint solver behavior - the invisible vertical edges needed for stable row layouts interfere with horizontal centering. In isolation (no anchor edges), icons center perfectly. In complex layouts, accept minor misalignment as a trade-off for stable multi-row structure. Workarounds (spacer nodes, reduced anchors) typically break the overall layout.
+
+**When to accept:** If NVIDIA GPU operator or similar icons center well, the cluster settings are correct. Variable centering across nodes is expected behavior, not a bug.
+
+### Real-World Examples
+
+**RHOAI Functional Components** - `diagrams/baseline-reference/rhoai/functional-components.py`:
+- Two areas: Platform Components (top) + AI Projects (bottom)
+- 5×3 grid in applications namespace using vertical-only edges
+- 8 distributed anchor points for clean vertical stacking
+- Vertical stacking within namespaces to save space
+
+**RHOAI-OCP Integration** - `diagrams/baseline-reference/integration/rhoai-ocp-integration.py`:
+- 3-row layout: OCP services (rows 1-2) + RHOAI platform (row 3)
+- 8 distributed anchor points across full width
+- Each operator in deployment namespace (white rounded rectangle)
+- Demonstrates icon centering trade-off with distributed anchors
 
 ---
 
