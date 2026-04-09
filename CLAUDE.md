@@ -54,38 +54,15 @@ These diagrams serve consulting engagements for AI platform deployments. They mu
 
 Location: `diagrams/baseline-reference/`
 
-**OpenShift Container Platform (4 layered diagrams):**
+**Red Hat OpenShift AI (3 diagrams):**
 
-1. **`ocp/01-core-infrastructure.py`**
-   - Control plane (openshift-kube-apiserver, openshift-etcd, etc.)
-   - Compute (CPU workers, GPU workers)
-   - Storage (OpenShift Data Foundation)
-   - Networking (DNS, Ingress)
-
-2. **`ocp/02-observability-stack.py`**
-   - Embedded: Cluster Monitoring, User Defined Workload Monitoring (UDWM)
-   - Add-ons: Logging, OpenTelemetry, Tempo, Network Observability, Grafana
-
-3. **`ocp/03-developer-cicd-stack.py`**
-   - GitOps (openshift-gitops)
-   - Pipelines (openshift-pipelines)
-   - Builds (openshift-builds)
-   - Developer Workspaces
-
-4. **`ocp/04-security-servicemesh-stack.py`**
-   - Identity: Keycloak, Authorino
-   - Certificates: cert-manager
-   - Service Mesh: Istio
-   - Rate Limiting: Limitador
-
-**Red Hat OpenShift AI (2 diagrams):**
-
-5. **`rhoai/functional-components.py`**
+1. **`rhoai/functional-components.py`**
    - All DataScienceCluster CR components
-   - Organized by namespace (redhat-ods-operator, redhat-ods-applications, AI Projects)
-   - Shows full ML/AI workflow
+   - Organized by namespace (redhat-ods-applications, redhat-ods-monitoring, rhods-notebooks, AI Projects)
+   - Shows full ML/AI workflow with 5×3 operator grid
+   - Platform components + AI project environments
 
-6. **`integration/rhoai-ocp-integration.py`**
+2. **`integration/rhoai-ocp-integration.py`**
    - RHOAI platform running on OCP with dependencies on OCP services
    - 6 OCP service categories: Compute & Acceleration, Observability, Security & Identity Services, Developer Services, Storage Services, Core Components
    - Shows which OCP platform operators RHOAI requires (GPU, Kueue, LWS, ODF, RHCL)
@@ -96,11 +73,19 @@ Location: `diagrams/baseline-reference/`
    - OCP Services (rows 2-3) use white rounded rectangles with specific operator/component icons
    - Simplified from 50 namespaces to 20 essential components for integration diagram clarity
 
-**Why layered for OCP?** 22+ operators would be overwhelming in one diagram. Functional layers serve different stakeholder audiences.
+3. **`integration/rhoai-external-integration.py`**
+   - Simplified external services integration
+   - Central AI Platform with user personas (Data Scientists, MLOps Engineers, Developers)
+   - External services: Identity Provider, Database Services, Storage Services
+   - Shows high-level integration points with external systems
 
-**Why comprehensive for RHOAI functional?** RHOAI is more cohesive as a single product; one diagram shows the complete AI platform capability.
+**Why RHOAI-focused?** These diagrams serve AI platform consulting engagements. RHOAI is the primary focus, with OCP shown as the underlying platform in the integration diagram.
 
-**Why integration diagram?** Shows how RHOAI depends on OCP platform services, critical for understanding deployment prerequisites and operator dependencies.
+**Why functional components?** RHOAI is cohesive as a single product; one comprehensive diagram shows the complete AI platform capability with all DataScienceCluster components.
+
+**Why integration diagrams?** 
+- **OCP integration**: Shows RHOAI dependencies on OCP platform services, critical for deployment prerequisites
+- **External integration**: Shows high-level integration with external identity, data, and storage services
 
 ### Engagement-Specific Diagrams
 
@@ -130,7 +115,7 @@ engagement-ai-platform/
 
 ### OCP Operator Stack (22 operators)
 
-All OCP baseline diagrams must include:
+The RHOAI-OCP integration diagram shows these OCP platform operators required for AI workloads:
 
 **Security & Identity:**
 - cert-manager for Red Hat OpenShift
@@ -475,7 +460,8 @@ All baseline diagrams now use direct Graphviz with HTML table labels:
 make generate-all
 
 # Generate single diagram
-./venv/bin/python3 diagrams/baseline-reference/ocp/01-core-infrastructure.py
+./venv/bin/python3 diagrams/baseline-reference/rhoai/functional-components.py
+./venv/bin/python3 diagrams/baseline-reference/integration/rhoai-ocp-integration.py
 ```
 
 ### Output Location

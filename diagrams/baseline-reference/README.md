@@ -11,55 +11,7 @@ These diagrams serve as **reusable building blocks** for customer engagements. T
 
 ## Structure
 
-### OpenShift Container Platform (OCP) - 4 Layered Diagrams
-
-#### 01 - Core Infrastructure
-**File:** `ocp/01-core-infrastructure.py`
-**Shows:**
-- Control Plane (API Server, Scheduler, Controller Manager, etcd)
-- Worker Nodes (Standard CPU and GPU compute)
-- OpenShift Data Foundation (ODF) with storage classes
-- Node Feature Discovery and NVIDIA GPU Operator
-- Machine API and autoscaling
-- Integration points: Load Balancer, DNS, External Storage
-
-**Use when:** Discussing cluster architecture, compute resources, storage strategy
-
-#### 02 - Observability Stack
-**File:** `ocp/02-observability-stack.py`
-**Shows:**
-- **Embedded Monitoring:** Cluster Monitoring, User Defined Workload Monitoring (UDWM)
-- **Add-on Operators:** Logging, OpenTelemetry, Tempo, Network Observability, Grafana
-- Metrics, logs, and traces data flows
-- Integration with external SIEM and storage
-
-**Use when:** Discussing monitoring, logging, compliance, observability requirements
-
-#### 03 - Developer & CI/CD Stack
-**File:** `ocp/03-developer-cicd-stack.py`
-**Shows:**
-- OpenShift GitOps (ArgoCD) for continuous delivery
-- OpenShift Pipelines (Tekton) for continuous integration
-- Builds for OpenShift (Shipwright) - S2I, Buildah, Buildpacks
-- Developer Workspaces (DevWorkspace Operator, Web Terminal)
-- Internal and external image registries
-- Git integration and image promotion flows
-
-**Use when:** Discussing developer experience, CI/CD pipelines, GitOps, build strategies
-
-#### 04 - Security & Service Mesh Stack
-**File:** `ocp/04-security-servicemesh-stack.py`
-**Shows:**
-- Identity & Access: Keycloak (SSO), Authorino (API security)
-- Certificate Management: cert-manager with CA and ACME issuers
-- Service Mesh: Istio-based mesh with mTLS, traffic management, observability
-- Rate Limiting: Limitador Operator
-- Connectivity: Red Hat Connectivity Link for hybrid cloud
-- Integration with external IDP and PKI
-
-**Use when:** Discussing security, zero-trust architecture, service mesh, hybrid connectivity
-
-### Red Hat OpenShift AI (RHOAI) - Single Comprehensive Diagram
+### Red Hat OpenShift AI (RHOAI) - 3 Diagrams
 
 #### RHOAI Functional Components
 **File:** `rhoai/functional-components.py`
@@ -108,29 +60,39 @@ These diagrams serve as **reusable building blocks** for customer engagements. T
 
 **Use when:** Showing RHOAI platform dependencies on OCP services, discussing deployment prerequisites, understanding essential OCP components required for RHOAI
 
+#### RHOAI External Integration
+**File:** `integration/rhoai-external-integration.py`
+**Shows:**
+- Central AI Platform (Red Hat AI icon)
+- **User Personas:** Data Scientists, MLOps Engineers, Developers
+- **External Services:**
+  - Identity Provider (authentication)
+  - Database Services (training data)
+  - Storage Services (models & artifacts)
+- High-level integration points with external systems
+
+**Use when:** Discussing external system integration, identity federation, data sources, model storage strategies
+
 ## How to Use These Diagrams
 
 ### 1. As Reference Material
-Review these diagrams to understand the complete platform stack:
+Review these diagrams to understand the complete RHOAI platform:
 ```bash
 # Generate all baseline diagrams
-./venv/bin/python3 diagrams/baseline-reference/ocp/01-core-infrastructure.py
-./venv/bin/python3 diagrams/baseline-reference/ocp/02-observability-stack.py
-./venv/bin/python3 diagrams/baseline-reference/ocp/03-developer-cicd-stack.py
-./venv/bin/python3 diagrams/baseline-reference/ocp/04-security-servicemesh-stack.py
 ./venv/bin/python3 diagrams/baseline-reference/rhoai/functional-components.py
 ./venv/bin/python3 diagrams/baseline-reference/integration/rhoai-ocp-integration.py
+./venv/bin/python3 diagrams/baseline-reference/integration/rhoai-external-integration.py
 ```
 
 ### 2. As Starting Points for Custom Diagrams
 Copy a baseline diagram and adapt for customer needs:
 ```bash
-# Example: Create customer-specific observability diagram
-cp diagrams/baseline-reference/ocp/02-observability-stack.py \
-   diagrams/engagement-ai-platform/01-production/observability-prod.py
+# Example: Create customer-specific external integration diagram
+cp diagrams/baseline-reference/integration/rhoai-external-integration.py \
+   diagrams/engagement-ai-platform/01-production/external-integration-prod.py
 
-# Edit to add customer-specific integrations
-vim diagrams/engagement-ai-platform/01-production/observability-prod.py
+# Edit to add customer-specific integrations (specific IDP, databases, storage vendors)
+vim diagrams/engagement-ai-platform/01-production/external-integration-prod.py
 ```
 
 ### 3. For Customer Presentations
