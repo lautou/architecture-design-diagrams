@@ -87,10 +87,14 @@ Location: `diagrams/baseline-reference/`
 
 6. **`integration/rhoai-ocp-integration.py`**
    - RHOAI platform running on OCP with dependencies on OCP services
-   - 5 OCP service categories: Compute & Acceleration, Observability, Security & Identity Services, Developer Services, Storage Services
+   - 6 OCP service categories: Compute & Acceleration, Observability, Security & Identity Services, Developer Services, Storage Services, Core Components
    - Shows which OCP platform operators RHOAI requires (GPU, Kueue, LWS, ODF, RHCL)
-   - 3-row layout: OCP services (row 1-2) + RHOAI platform (row 3)
-   - Each operator shown in its deployment namespace as white rounded rectangle
+   - 4-row layout: RHOAI platform (row 1) + OCP Compute/Observability (row 2) + OCP Security/Developer/Storage (row 3) + Core Components (row 4 in 2-row grid)
+   - 11 RHOAI namespaces: redhat-ods-applications, redhat-ods-monitoring, rhods-notebooks (Jupyter + Code Server workbenches), ai-project-A through ai-project-H
+   - 20 Core Components (simplified): Control Plane (5), Networking (4), Management (4), Storage/Registry (2), Infrastructure (3), Security (2)
+   - Core Components use OpenShift icon only (no namespace rectangles) in 2-row grid (10 + 10) for compact display
+   - OCP Services (rows 2-3) use white rounded rectangles with specific operator/component icons
+   - Simplified from 50 namespaces to 20 essential components for integration diagram clarity
 
 **Why layered for OCP?** 22+ operators would be overwhelming in one diagram. Functional layers serve different stakeholder audiences.
 
@@ -405,11 +409,28 @@ row1_col1 >> row2_col1  # Vertical
 
 ### Known Trade-offs
 
-**Icon centering vs layout constraints:** Single-node namespace clusters may show slight left-alignment when using distributed anchor points for multi-row layouts. This is a Graphviz constraint solver behavior - the invisible vertical edges needed for stable row layouts interfere with horizontal centering. In isolation (no anchor edges), icons center perfectly. In complex layouts, accept minor misalignment as a trade-off for stable multi-row structure. Workarounds (spacer nodes, reduced anchors) typically break the overall layout.
+**Icon centering with long cluster labels (ROOT CAUSE IDENTIFIED - Apr 2026):** Single-node namespace clusters show left-alignment when cluster labels are long (e.g., "openshift-apiserver-operator"). This is a **Graphviz layout engine limitation**, not incorrect cluster settings or anchor edge issues.
 
-**When to accept:** If NVIDIA GPU operator or similar icons center well, the cluster settings are correct. Variable centering across nodes is expected behavior, not a bug.
+**Root cause:** Long cluster label names interfere with Graphviz's node centering algorithm. Testing confirms:
+- Short cluster labels (e.g., "ns-1", "ns-2"): nodes center perfectly ✓
+- Long cluster labels (e.g., "openshift-apiserver-operator"): nodes left-align ✗
+- This occurs even with NO anchor edges and correct cluster attributes (`margin=10, bgcolor=white, style=rounded, labeljust=c`)
+
+**Enhancement request filed:** https://gitlab.com/graphviz/graphviz/-/work_items/2832
+
+**Trade-off decision:**
+- **For accuracy**: Use full namespace names, accept variable centering (recommended for documentation)
+- **For perfect centering**: Use abbreviated cluster labels, lose namespace clarity
+
+**When to accept:** If test diagrams with short labels show perfect centering, the cluster settings are correct. Variable centering with long labels is a known Graphviz limitation (verified on v13.1.2), not a configuration error. Workarounds (spacer nodes, reduced anchors, margin adjustments) don't fix the root cause.
 
 ### Real-World Examples
+
+**Icon Centering Test Cases** - `diagrams/test-core-components.py`:
+- Demonstrates long vs short cluster label centering behavior
+- Shows that 2 namespaces don't center, but 3+ do (when labels are short)
+- Confirms root cause: cluster label length, not icon type or node label length
+- Reference for reproducing the Graphviz limitation
 
 **RHOAI Functional Components** - `diagrams/baseline-reference/rhoai/functional-components.py`:
 - Two areas: Platform Components (top) + AI Projects (bottom)
@@ -418,10 +439,17 @@ row1_col1 >> row2_col1  # Vertical
 - Vertical stacking within namespaces to save space
 
 **RHOAI-OCP Integration** - `diagrams/baseline-reference/integration/rhoai-ocp-integration.py`:
-- 3-row layout: OCP services (rows 1-2) + RHOAI platform (row 3)
-- 8 distributed anchor points across full width
-- Each operator in deployment namespace (white rounded rectangle)
-- Demonstrates icon centering trade-off with distributed anchors
+- 4-row layout: RHOAI platform (row 1) + OCP Compute/Observability (row 2) + OCP Security/Developer/Storage (row 3) + Core Components (row 4)
+- Distributed anchor points (8 from Row 3→Core Components) for clean vertical stacking
+- 11 RHOAI namespaces in Row 1: redhat-ods-applications, redhat-ods-monitoring, rhods-notebooks (Jupyter + Code Server workbenches), ai-project-A through ai-project-H
+- 20 Core Components (simplified): Control Plane (5), Networking (4), Management (4), Storage/Registry (2), Infrastructure (3), Security (2)
+- Core Components use 2-row grid layout (10 + 10) with internal vertical edges for compact display
+- Row 4.1 (10): Control Plane + Networking + Console
+- Row 4.2 (10): Management + Storage + Infrastructure + Security
+- Core Components use OpenShift icon only (no namespace rectangles) for visual simplicity
+- OCP Services (rows 2-3) use white rounded rectangles with specific operator/component icons
+- Row 3 ordered largest to smallest: Security & Identity (6), Developer (3), Storage (1)
+- Simplified from 50 namespaces to 20 essential components for integration diagram clarity
 
 ---
 

@@ -78,6 +78,36 @@ These diagrams serve as **reusable building blocks** for customer engagements. T
 
 **Use when:** Explaining RHOAI platform capabilities, ML workflows, AI/ML architecture
 
+### RHOAI-OCP Integration Architecture
+
+#### RHOAI on OCP Integration
+**File:** `integration/rhoai-ocp-integration.py`
+**Shows:**
+- RHOAI platform running on OpenShift Container Platform (4-row layout)
+- **Row 1 - RHOAI Platform namespaces (11):**
+  - redhat-ods-applications: RHOAI operator
+  - redhat-ods-monitoring: RHOAI monitoring stack
+  - rhods-notebooks: Jupyter workbench, Code Server workbench
+  - ai-project-A through ai-project-H: Sample AI workloads
+- **Row 2 - OCP Compute & Observability:**
+  - **Compute And Acceleration Services (4):** NVIDIA GPU Operator, Node Feature Discovery, Kueue, Leader Worker Set
+  - **Observability Services (9):** Cluster Monitoring, UDWM, Grafana, Cluster Observability, Logging, Loki, OpenTelemetry, Tempo, Network Observability
+- **Row 3 - OCP Security, Developer & Storage (ordered largest to smallest):**
+  - **Security & Identity Services (6):** cert-manager, Authorino, Limitador, DNS, Red Hat Connectivity Link, OpenShift Service Mesh
+  - **Developer Services (3):** Builds, Pipelines, GitOps
+  - **Storage Services (1):** OpenShift Data Foundation
+- **Row 4 - Core Components (20 essential components in 2-row grid):**
+  - **Row 4.1 (10):** Control Plane (API Server, Authentication, Etcd, Controller, Scheduler) + Networking (DNS, Ingress, OVN, Multus) + Console
+  - **Row 4.2 (10):** Management (OLM, Insights, Marketplace) + Storage/Registry (Image Registry, Cluster Storage) + Infrastructure (Machine API, Machine Config, Tuned) + Security (Service CA, Cloud Credential)
+
+**Icons:** 
+- RHOAI namespaces (Row 1) use white rounded rectangles with specific component icons
+- OCP Services (Rows 2-3) use white rounded rectangles with specific operator/component icons
+- Core Components (Row 4) use OpenShift icon only (no namespace rectangles) arranged in 2-row grid for compact display
+- Simplified from 50 namespaces to 20 essential components for integration diagram clarity
+
+**Use when:** Showing RHOAI platform dependencies on OCP services, discussing deployment prerequisites, understanding essential OCP components required for RHOAI
+
 ## How to Use These Diagrams
 
 ### 1. As Reference Material
@@ -89,6 +119,7 @@ Review these diagrams to understand the complete platform stack:
 ./venv/bin/python3 diagrams/baseline-reference/ocp/03-developer-cicd-stack.py
 ./venv/bin/python3 diagrams/baseline-reference/ocp/04-security-servicemesh-stack.py
 ./venv/bin/python3 diagrams/baseline-reference/rhoai/functional-components.py
+./venv/bin/python3 diagrams/baseline-reference/integration/rhoai-ocp-integration.py
 ```
 
 ### 2. As Starting Points for Custom Diagrams
@@ -136,6 +167,15 @@ When adapting for customer engagements:
 - Not all components may be deployed in every environment
 - Use the engagement-specific diagrams to show actual customer deployments
 - Update these baselines as new operators/features become available
+
+### Known Limitation: Icon Centering
+
+Some icons may appear left-aligned within their namespace rectangles due to a **Graphviz layout engine limitation** with long cluster label names. This is not a diagram error:
+- **Root cause**: Long cluster labels (e.g., "openshift-apiserver-operator") interfere with Graphviz's node centering algorithm
+- **Verified**: Graphviz v13.1.2, diagrams v0.25.1 (latest versions as of Apr 2026)
+- **Enhancement request**: https://gitlab.com/graphviz/graphviz/-/work_items/2832
+- **Trade-off**: We use accurate namespace names for clarity, accepting variable centering
+- **Test cases**: See `../test-core-components.py` for reproduction examples
 
 ## Related Documentation
 
