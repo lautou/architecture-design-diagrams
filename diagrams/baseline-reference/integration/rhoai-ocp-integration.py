@@ -1,7 +1,8 @@
 """
-RHOAI on OCP - Integration Architecture
+RHOAI on OCP - Integration Architecture (Direct Graphviz with HTML Tables)
 
 Shows RHOAI platform running on OpenShift Container Platform with OCP services.
+Uses direct Graphviz with HTML table labels for perfect icon centering.
 
 Structure:
 - OpenShift Container Platform (outer cluster)
@@ -11,38 +12,33 @@ Structure:
     - Security & Identity Services: cert-manager, Authorino, Limitador, DNS, RHCL (kuadrant-system), OpenShift Service Mesh
     - Developer Services: Builds, Pipelines, GitOps
     - Storage Services: OpenShift Data Foundation
-    - Core Components (20 essential OpenShift components in 2-row grid):
-      * Row 1 (10): Control Plane (API Server, Authentication, Etcd, Controller, Scheduler) + Networking (DNS, Ingress, OVN, Multus) + Console
-      * Row 2 (10): Management (OLM, Insights, Marketplace) + Storage/Registry (Image Registry, Cluster Storage) + Infrastructure (Machine API, Machine Config, Tuned) + Security (Service CA, Cloud Credential)
+    - Core Components (20 essential OpenShift components in 2-row grid)
   - Red Hat OpenShift AI Platform (runs on OCP):
     - redhat-ods-applications: RHOAI operator
     - redhat-ods-monitoring: RHOAI monitoring stack
     - rhods-notebooks: Jupyter workbench, Code Server workbench
     - ai-project-A through ai-project-H: Sample AI workloads
 
-Core Components are simplified to show only essential dependencies for RHOAI integration.
-All icons use OpenShift icon (no operator/namespace rectangles in Core Components).
-
-Layout: 4-row layout with distributed anchor points:
-- Row 1: RHOAI Platform (11 namespaces with white rounded rectangles)
+Layout: 4-row layout with distributed anchor points
+- Row 1: RHOAI Platform (11 namespaces)
 - Row 2: Compute And Acceleration Services (4), Observability Services (9)
-- Row 3: Security & Identity Services (6), Developer Services (3), Storage Services (1) - ordered largest to smallest
+- Row 3: Security & Identity Services (6), Developer Services (3), Storage Services (1)
 - Row 4: Core Components (20 components in 2-row grid: 10 + 10)
 
 Technical Notes:
-- Uses distributed invisible vertical edges to force row layout
-- Core Components use internal vertical edges to create 2-row grid (10 items per row)
-- Simplified from 50 namespaces to 20 essential components for integration diagram clarity
-- SVG icons not supported (use PNG instead to avoid massive rendering)
+- Uses direct graphviz.Digraph() instead of diagrams library
+- HTML table labels for perfect icon centering with long cluster labels
+- All icons perfectly centered regardless of cluster label length
 """
 
-from diagrams import Diagram, Cluster, Edge
-from diagrams.custom import Custom
+from graphviz import Digraph
 import os
 
 # Calculate absolute paths for custom icons
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 PROJECT_ROOT = os.path.join(BASE_DIR, '../../..')
+
+# Icon paths
 OPERATOR_ICON = os.path.join(PROJECT_ROOT, "custom_icons/Technology icons/operator/Technology_icon-Red_Hat-operator-Standard-RGB.Large_icon_transparent.png")
 MONITORING_ICON = os.path.join(PROJECT_ROOT, "custom_icons/UI icons/rh-ui-icon-monitoring-fill.Large_icon_transparent.png")
 BUILDS_ICON = os.path.join(PROJECT_ROOT, "custom_icons/Technology icons/Builds for Red Hat OpenShift/Technology_icon-Red_Hat-builds_for_Red_Hat_OpenShift-Standard-RGB.Large_icon_transparent.png")
@@ -72,224 +68,263 @@ CLUSTER_OBSERVABILITY_ICON = os.path.join(PROJECT_ROOT, "custom_icons/Technology
 JUPYTER_ICON = os.path.join(PROJECT_ROOT, "custom_icons/Icons/Jupyter/jupyter-400x400.png")
 VSCODE_ICON = os.path.join(PROJECT_ROOT, "custom_icons/Icons/VSCode/vscode-400x400.png")
 OPENSHIFT_ICON = os.path.join(PROJECT_ROOT, "custom_icons/Technology icons/Red Hat OpenShift/Technology_icon-Red_Hat-OpenShift-Standard-RGB.Large_icon_transparent.png")
-OPERATOR_BLACK_ICON = os.path.join(PROJECT_ROOT, "custom_icons/Technology icons/operator/Technology_icon-Red_Hat-operator-Black-RGB.Large_icon_transparent.png")
 
-graph_attr = {
-    "fontsize": "9",
-    "bgcolor": "white",
-    "pad": "0.5",
-    "nodesep": "1.0",
-    "ranksep": "1.0",
-    "dpi": "300"
-}
+# Helper function to create HTML table label for nodes
+def html_node(icon_path, label_text):
+    """Create HTML table label for perfect centering"""
+    return f'''<<table border="0">
+<tr><td><img src="{icon_path}"/></td></tr>
+<tr><td>{label_text}</td></tr>
+</table>>'''
 
-node_attr = {
-    "margin": "0.5,0.3"
-}
+# Create diagram
+dot = Digraph("RHOAI_on_OCP_Integration", filename="output/rhoai-ocp-integration")
+dot.attr(rankdir="TB")
+dot.attr(fontsize="9", bgcolor="white", pad="0.5", nodesep="1.0", ranksep="1.0", dpi="300")
 
-with Diagram(
-    "RHOAI on OCP Integration",
-    show=False,
-    direction="TB",
-    filename="output/rhoai-ocp-integration",
-    graph_attr=graph_attr,
-    node_attr=node_attr
-):
+# Main cluster: OpenShift Container Platform
+with dot.subgraph(name='cluster_ocp') as ocp:
+    ocp.attr(label='OpenShift Container Platform', margin='20', bgcolor='lightgray')
 
-    # ========== OCP PLATFORM ==========
-    with Cluster("OpenShift Container Platform", graph_attr={"margin": "20", "bgcolor": "lightgray"}):
+    # OCP Platform Services
+    with ocp.subgraph(name='cluster_ocp_services') as services:
+        services.attr(label='OCP Platform Services', margin='15', bgcolor='lightgreen')
 
-        # OCP Platform Services
-        with Cluster("OCP Platform Services", graph_attr={"margin": "15", "bgcolor": "lightgreen"}):
+        # Compute And Acceleration Services
+        with services.subgraph(name='cluster_compute') as compute:
+            compute.attr(label='Compute And Acceleration Services', margin='10', bgcolor='lightyellow')
 
-            # Compute And Acceleration Services
-            with Cluster("Compute And Acceleration Services", graph_attr={"margin": "10", "bgcolor": "lightyellow"}):
-                with Cluster("NVIDIA GPU\nOperator", graph_attr={"margin": "10", "bgcolor": "white", "style": "rounded", "labeljust": "c"}):
-                    gpu_operator = Custom("\nNVIDIA GPU\nOperator", NVIDIA_ICON)
+            with compute.subgraph(name='cluster_gpu') as gpu_cluster:
+                gpu_cluster.attr(label='NVIDIA GPU\nOperator', margin='10', bgcolor='white', style='rounded', labeljust='c')
+                gpu_cluster.node('gpu_operator', label=html_node(NVIDIA_ICON, 'NVIDIA GPU<br/>Operator'), shape='none')
 
-                with Cluster("OpenShift\nNFD", graph_attr={"margin": "10", "bgcolor": "white", "style": "rounded", "labeljust": "c"}):
-                    nfd = Custom("\nNode Feature\nDiscovery Operator", NFD_ICON)
+            with compute.subgraph(name='cluster_nfd') as nfd_cluster:
+                nfd_cluster.attr(label='OpenShift\nNFD', margin='10', bgcolor='white', style='rounded', labeljust='c')
+                nfd_cluster.node('nfd', label=html_node(NFD_ICON, 'Node Feature<br/>Discovery Operator'), shape='none')
 
-                with Cluster("OpenShift\nKueue\nOperator", graph_attr={"margin": "10", "bgcolor": "white", "style": "rounded", "labeljust": "c"}):
-                    kueue = Custom("\nRed Hat Build Of\nKueue Operator", KUEUE_ICON)
+            with compute.subgraph(name='cluster_kueue') as kueue_cluster:
+                kueue_cluster.attr(label='OpenShift\nKueue\nOperator', margin='10', bgcolor='white', style='rounded', labeljust='c')
+                kueue_cluster.node('kueue', label=html_node(KUEUE_ICON, 'Red Hat Build Of<br/>Kueue Operator'), shape='none')
 
-                with Cluster("OpenShift\nLeader Worker Set\nOperator", graph_attr={"margin": "10", "bgcolor": "white", "style": "rounded", "labeljust": "c"}):
-                    lws = Custom("\nRed Hat Build Of\nLeader Worker Set\nOperator", LWS_ICON)
+            with compute.subgraph(name='cluster_lws') as lws_cluster:
+                lws_cluster.attr(label='OpenShift\nLeader Worker Set\nOperator', margin='10', bgcolor='white', style='rounded', labeljust='c')
+                lws_cluster.node('lws', label=html_node(LWS_ICON, 'Red Hat Build Of<br/>Leader Worker Set<br/>Operator'), shape='none')
 
-            # Observability
-            with Cluster("Observability Services", graph_attr={"margin": "10", "bgcolor": "lightyellow"}):
-                with Cluster("OpenShift\nMonitoring", graph_attr={"margin": "10", "bgcolor": "white", "style": "rounded", "labeljust": "c"}):
-                    cluster_monitoring = Custom("\nCluster Monitoring", MONITORING_ICON)
+        # Observability Services
+        with services.subgraph(name='cluster_observability') as obs:
+            obs.attr(label='Observability Services', margin='10', bgcolor='lightyellow')
 
-                with Cluster("OpenShift User\nWorkload\nMonitoring", graph_attr={"margin": "10", "bgcolor": "white", "style": "rounded", "labeljust": "c"}):
-                    udwm = Custom("\nUser Defined\nWorkload Monitoring", MONITORING_ICON)
+            with obs.subgraph(name='cluster_monitoring') as monitoring_cluster:
+                monitoring_cluster.attr(label='OpenShift\nMonitoring', margin='10', bgcolor='white', style='rounded', labeljust='c')
+                monitoring_cluster.node('cluster_monitoring', label=html_node(MONITORING_ICON, 'Cluster Monitoring'), shape='none')
 
-                with Cluster("Grafana\nOperator", graph_attr={"margin": "10", "bgcolor": "white", "style": "rounded", "labeljust": "c"}):
-                    grafana = Custom("\nGrafana\nOperator", GRAFANA_ICON)
+            with obs.subgraph(name='cluster_udwm') as udwm_cluster:
+                udwm_cluster.attr(label='OpenShift User\nWorkload\nMonitoring', margin='10', bgcolor='white', style='rounded', labeljust='c')
+                udwm_cluster.node('udwm', label=html_node(MONITORING_ICON, 'User Defined<br/>Workload Monitoring'), shape='none')
 
-                with Cluster("OpenShift\nObservability\nOperator", graph_attr={"margin": "10", "bgcolor": "white", "style": "rounded", "labeljust": "c"}):
-                    cluster_observability = Custom("\nCluster Observability\nOperator", CLUSTER_OBSERVABILITY_ICON)
+            with obs.subgraph(name='cluster_grafana') as grafana_cluster:
+                grafana_cluster.attr(label='Grafana\nOperator', margin='10', bgcolor='white', style='rounded', labeljust='c')
+                grafana_cluster.node('grafana', label=html_node(GRAFANA_ICON, 'Grafana<br/>Operator'), shape='none')
 
-                with Cluster("OpenShift\nLogging", graph_attr={"margin": "10", "bgcolor": "white", "style": "rounded", "labeljust": "c"}):
-                    openshift_logging = Custom("\nOpenShift\nLogging Operator", LOGGING_ICON)
+            with obs.subgraph(name='cluster_cluster_obs') as cluster_obs_cluster:
+                cluster_obs_cluster.attr(label='OpenShift\nObservability\nOperator', margin='10', bgcolor='white', style='rounded', labeljust='c')
+                cluster_obs_cluster.node('cluster_observability', label=html_node(CLUSTER_OBSERVABILITY_ICON, 'Cluster Observability<br/>Operator'), shape='none')
 
-                with Cluster("OpenShift\nOperators\nRedHat", graph_attr={"margin": "10", "bgcolor": "white", "style": "rounded", "labeljust": "c"}):
-                    loki = Custom("\nLoki\nOperator", LOKI_ICON)
+            with obs.subgraph(name='cluster_logging') as logging_cluster:
+                logging_cluster.attr(label='OpenShift\nLogging', margin='10', bgcolor='white', style='rounded', labeljust='c')
+                logging_cluster.node('openshift_logging', label=html_node(LOGGING_ICON, 'OpenShift<br/>Logging Operator'), shape='none')
 
-                with Cluster("OpenShift\nOpenTelemetry\nOperator", graph_attr={"margin": "10", "bgcolor": "white", "style": "rounded", "labeljust": "c"}):
-                    opentelemetry = Custom("\nRed Hat Build Of\nOpenTelemetry", OPENTELEMETRY_ICON)
+            with obs.subgraph(name='cluster_loki') as loki_cluster:
+                loki_cluster.attr(label='OpenShift\nOperators\nRedHat', margin='10', bgcolor='white', style='rounded', labeljust='c')
+                loki_cluster.node('loki', label=html_node(LOKI_ICON, 'Loki<br/>Operator'), shape='none')
 
-                with Cluster("OpenShift\nTempo Operator", graph_attr={"margin": "10", "bgcolor": "white", "style": "rounded", "labeljust": "c"}):
-                    tempo = Custom("\nTempo\nOperator", TEMPO_ICON)
+            with obs.subgraph(name='cluster_otel') as otel_cluster:
+                otel_cluster.attr(label='OpenShift\nOpenTelemetry\nOperator', margin='10', bgcolor='white', style='rounded', labeljust='c')
+                otel_cluster.node('opentelemetry', label=html_node(OPENTELEMETRY_ICON, 'Red Hat Build Of<br/>OpenTelemetry'), shape='none')
 
-                with Cluster("OpenShift\nNetObserv\nOperator", graph_attr={"margin": "10", "bgcolor": "white", "style": "rounded", "labeljust": "c"}):
-                    netobserv = Custom("\nNetwork\nObservability\nOperator", NETWORK_OBSERVABILITY_ICON)
+            with obs.subgraph(name='cluster_tempo') as tempo_cluster:
+                tempo_cluster.attr(label='OpenShift\nTempo Operator', margin='10', bgcolor='white', style='rounded', labeljust='c')
+                tempo_cluster.node('tempo', label=html_node(TEMPO_ICON, 'Tempo<br/>Operator'), shape='none')
 
-            # Security & Identity Services (moved first - largest section with 6 items)
-            with Cluster("Security & Identity Services", graph_attr={"margin": "10", "bgcolor": "lightyellow"}):
-                with Cluster("Cert Manager\nOperator", graph_attr={"margin": "10", "bgcolor": "white", "style": "rounded", "labeljust": "c"}):
-                    cert_manager = Custom("\nCert Manager For\nRed Hat OpenShift", CERT_MANAGER_ICON)
+            with obs.subgraph(name='cluster_netobserv') as netobserv_cluster:
+                netobserv_cluster.attr(label='OpenShift\nNetObserv\nOperator', margin='10', bgcolor='white', style='rounded', labeljust='c')
+                netobserv_cluster.node('netobserv', label=html_node(NETWORK_OBSERVABILITY_ICON, 'Network<br/>Observability<br/>Operator'), shape='none')
 
-                with Cluster("Kuadrant\nSystem", graph_attr={"margin": "10", "bgcolor": "white", "style": "rounded", "labeljust": "c"}):
-                    authorino = Custom("\nAuthorino\nOperator", AUTHORINO_ICON)
-                    limitador = Custom("\nLimitador\nOperator", LIMITADOR_ICON)
-                    dns = Custom("\nDNS\nOperator", DNS_ICON)
-                    connectivity_link = Custom("\nRed Hat\nConnectivity Link\nOperator", RHCL_ICON)
+        # Security & Identity Services
+        with services.subgraph(name='cluster_security') as security:
+            security.attr(label='Security & Identity Services', margin='10', bgcolor='lightyellow')
 
-                with Cluster("OpenShift\nOperators", graph_attr={"margin": "10", "bgcolor": "white", "style": "rounded", "labeljust": "c"}):
-                    ossm = Custom("\nOpenShift\nService Mesh", OSSM_ICON)
+            with security.subgraph(name='cluster_cert_manager') as cert_cluster:
+                cert_cluster.attr(label='Cert Manager\nOperator', margin='10', bgcolor='white', style='rounded', labeljust='c')
+                cert_cluster.node('cert_manager', label=html_node(CERT_MANAGER_ICON, 'Cert Manager For<br/>Red Hat OpenShift'), shape='none')
 
-            # Developer Services
-            with Cluster("Developer Services", graph_attr={"margin": "10", "bgcolor": "lightyellow"}):
-                with Cluster("OpenShift\nBuilds", graph_attr={"margin": "10", "bgcolor": "white", "style": "rounded", "labeljust": "c"}):
-                    builds = Custom("\nBuilds For\nRed Hat OpenShift", BUILDS_ICON)
+            with security.subgraph(name='cluster_kuadrant') as kuadrant_cluster:
+                kuadrant_cluster.attr(label='Kuadrant\nSystem', margin='10', bgcolor='white', style='rounded', labeljust='c')
+                kuadrant_cluster.node('authorino', label=html_node(AUTHORINO_ICON, 'Authorino<br/>Operator'), shape='none')
+                kuadrant_cluster.node('limitador', label=html_node(LIMITADOR_ICON, 'Limitador<br/>Operator'), shape='none')
+                kuadrant_cluster.node('dns', label=html_node(DNS_ICON, 'DNS<br/>Operator'), shape='none')
+                kuadrant_cluster.node('connectivity_link', label=html_node(RHCL_ICON, 'Red Hat<br/>Connectivity Link<br/>Operator'), shape='none')
 
-                with Cluster("OpenShift\nPipelines", graph_attr={"margin": "10", "bgcolor": "white", "style": "rounded", "labeljust": "c"}):
-                    pipelines = Custom("\nOpenShift\nPipelines Operator", PIPELINES_ICON)
+            with security.subgraph(name='cluster_ossm') as ossm_cluster:
+                ossm_cluster.attr(label='OpenShift\nOperators', margin='10', bgcolor='white', style='rounded', labeljust='c')
+                ossm_cluster.node('ossm', label=html_node(OSSM_ICON, 'OpenShift<br/>Service Mesh'), shape='none')
 
-                with Cluster("OpenShift\nGitOps\nOperator", graph_attr={"margin": "10", "bgcolor": "white", "style": "rounded", "labeljust": "c"}):
-                    gitops = Custom("\nOpenShift\nGitOps Operator", GITOPS_ICON)
+        # Developer Services
+        with services.subgraph(name='cluster_developer') as developer:
+            developer.attr(label='Developer Services', margin='10', bgcolor='lightyellow')
 
-            # Storage Services
-            with Cluster("Storage Services", graph_attr={"margin": "10", "bgcolor": "lightyellow"}):
-                with Cluster("OpenShift\nStorage", graph_attr={"margin": "10", "bgcolor": "white", "style": "rounded", "labeljust": "c"}):
-                    odf = Custom("\nOpenShift Data\nFoundation\nOperator", ODF_ICON)
+            with developer.subgraph(name='cluster_builds') as builds_cluster:
+                builds_cluster.attr(label='OpenShift\nBuilds', margin='10', bgcolor='white', style='rounded', labeljust='c')
+                builds_cluster.node('builds', label=html_node(BUILDS_ICON, 'Builds For<br/>Red Hat OpenShift'), shape='none')
 
-            # Core Components (simplified - 20 essential components in 2 rows)
-            with Cluster("Core Components", graph_attr={"margin": "10", "bgcolor": "lightyellow"}):
-                # Row 1: Control Plane + Networking (10 items)
-                api_server = Custom("\nAPI Server", OPENSHIFT_ICON)
-                authentication = Custom("\nAuthentication", OPENSHIFT_ICON)
-                etcd = Custom("\nEtcd", OPENSHIFT_ICON)
-                controller = Custom("\nController", OPENSHIFT_ICON)
-                scheduler = Custom("\nScheduler", OPENSHIFT_ICON)
-                dns_core = Custom("\nDNS", OPENSHIFT_ICON)
-                ingress = Custom("\nIngress", OPENSHIFT_ICON)
-                ovn = Custom("\nOVN", OPENSHIFT_ICON)
-                multus = Custom("\nMultus", OPENSHIFT_ICON)
-                console = Custom("\nConsole", OPENSHIFT_ICON)
+            with developer.subgraph(name='cluster_pipelines') as pipelines_cluster:
+                pipelines_cluster.attr(label='OpenShift\nPipelines', margin='10', bgcolor='white', style='rounded', labeljust='c')
+                pipelines_cluster.node('pipelines', label=html_node(PIPELINES_ICON, 'OpenShift<br/>Pipelines Operator'), shape='none')
 
-                # Row 2: Management + Storage + Infrastructure + Security (10 items)
-                olm = Custom("\nOLM", OPENSHIFT_ICON)
-                insights = Custom("\nInsights", OPENSHIFT_ICON)
-                marketplace = Custom("\nMarketplace", OPENSHIFT_ICON)
-                image_registry = Custom("\nImage Registry", OPENSHIFT_ICON)
-                cluster_storage = Custom("\nCluster Storage", OPENSHIFT_ICON)
-                machine_api = Custom("\nMachine API", OPENSHIFT_ICON)
-                machine_config = Custom("\nMachine Config", OPENSHIFT_ICON)
-                tuned = Custom("\nTuned", OPENSHIFT_ICON)
-                service_ca = Custom("\nService CA", OPENSHIFT_ICON)
-                cloud_credential = Custom("\nCloud Credential", OPENSHIFT_ICON)
+            with developer.subgraph(name='cluster_gitops') as gitops_cluster:
+                gitops_cluster.attr(label='OpenShift\nGitOps\nOperator', margin='10', bgcolor='white', style='rounded', labeljust='c')
+                gitops_cluster.node('gitops', label=html_node(GITOPS_ICON, 'OpenShift<br/>GitOps Operator'), shape='none')
 
-                # Stack Row 2 below Row 1 using vertical edges
-                api_server >> Edge(style="invis") >> olm
-                authentication >> Edge(style="invis") >> insights
-                etcd >> Edge(style="invis") >> marketplace
-                controller >> Edge(style="invis") >> image_registry
-                scheduler >> Edge(style="invis") >> cluster_storage
-                dns_core >> Edge(style="invis") >> machine_api
-                ingress >> Edge(style="invis") >> machine_config
-                ovn >> Edge(style="invis") >> tuned
-                multus >> Edge(style="invis") >> service_ca
-                console >> Edge(style="invis") >> cloud_credential
+        # Storage Services
+        with services.subgraph(name='cluster_storage') as storage:
+            storage.attr(label='Storage Services', margin='10', bgcolor='lightyellow')
 
-        # RHOAI Platform (runs on OCP)
-        with Cluster("Red Hat OpenShift AI Platform", graph_attr={"margin": "15", "bgcolor": "lightblue"}):
-            with Cluster("RedHat ODS\nApplications", graph_attr={"margin": "10", "bgcolor": "white", "style": "rounded", "labeljust": "c"}):
-                rhoai_platform = Custom("\nRed Hat\nOpenShift AI", RHOAI_ICON)
+            with storage.subgraph(name='cluster_odf') as odf_cluster:
+                odf_cluster.attr(label='OpenShift\nStorage', margin='10', bgcolor='white', style='rounded', labeljust='c')
+                odf_cluster.node('odf', label=html_node(ODF_ICON, 'OpenShift Data<br/>Foundation<br/>Operator'), shape='none')
 
-            with Cluster("RedHat ODS\nMonitoring", graph_attr={"margin": "10", "bgcolor": "white", "style": "rounded", "labeljust": "c"}):
-                rhoai_monitoring = Custom("\nRHOAI\nMonitoring", CLUSTER_OBSERVABILITY_ICON)
+        # Core Components (20 essential components - no namespace rectangles, just icons)
+        with services.subgraph(name='cluster_core') as core:
+            core.attr(label='Core Components', margin='10', bgcolor='lightyellow')
 
-            with Cluster("RHODS\nNotebooks", graph_attr={"margin": "10", "bgcolor": "white", "style": "rounded", "labeljust": "c"}):
-                jupyter_workbench = Custom("\nJupyter\nWorkbench", JUPYTER_ICON)
-                vscode_workbench = Custom("\nCode Server\nWorkbench", VSCODE_ICON)
+            # Row 1: Control Plane + Networking (10 items)
+            core.node('api_server', label=html_node(OPENSHIFT_ICON, 'API Server'), shape='none')
+            core.node('authentication', label=html_node(OPENSHIFT_ICON, 'Authentication'), shape='none')
+            core.node('etcd', label=html_node(OPENSHIFT_ICON, 'Etcd'), shape='none')
+            core.node('controller', label=html_node(OPENSHIFT_ICON, 'Controller'), shape='none')
+            core.node('scheduler', label=html_node(OPENSHIFT_ICON, 'Scheduler'), shape='none')
+            core.node('dns_core', label=html_node(OPENSHIFT_ICON, 'DNS'), shape='none')
+            core.node('ingress', label=html_node(OPENSHIFT_ICON, 'Ingress'), shape='none')
+            core.node('ovn', label=html_node(OPENSHIFT_ICON, 'OVN'), shape='none')
+            core.node('multus', label=html_node(OPENSHIFT_ICON, 'Multus'), shape='none')
+            core.node('console', label=html_node(OPENSHIFT_ICON, 'Console'), shape='none')
 
-            with Cluster("AI Project A", graph_attr={"margin": "10", "bgcolor": "white", "style": "rounded", "labeljust": "c"}):
-                ai_workload_a = Custom("\nAI\nWorkload", AI_MODEL_ICON)
+            # Row 2: Management + Storage + Infrastructure + Security (10 items)
+            core.node('olm', label=html_node(OPENSHIFT_ICON, 'OLM'), shape='none')
+            core.node('insights', label=html_node(OPENSHIFT_ICON, 'Insights'), shape='none')
+            core.node('marketplace', label=html_node(OPENSHIFT_ICON, 'Marketplace'), shape='none')
+            core.node('image_registry', label=html_node(OPENSHIFT_ICON, 'Image Registry'), shape='none')
+            core.node('cluster_storage', label=html_node(OPENSHIFT_ICON, 'Cluster Storage'), shape='none')
+            core.node('machine_api', label=html_node(OPENSHIFT_ICON, 'Machine API'), shape='none')
+            core.node('machine_config', label=html_node(OPENSHIFT_ICON, 'Machine Config'), shape='none')
+            core.node('tuned', label=html_node(OPENSHIFT_ICON, 'Tuned'), shape='none')
+            core.node('service_ca', label=html_node(OPENSHIFT_ICON, 'Service CA'), shape='none')
+            core.node('cloud_credential', label=html_node(OPENSHIFT_ICON, 'Cloud Credential'), shape='none')
 
-            with Cluster("AI Project B", graph_attr={"margin": "10", "bgcolor": "white", "style": "rounded", "labeljust": "c"}):
-                ai_workload_b = Custom("\nAI\nWorkload", AI_MODEL_ICON)
+            # Stack Row 2 below Row 1 using vertical edges
+            core.edge('api_server', 'olm', style='invis')
+            core.edge('authentication', 'insights', style='invis')
+            core.edge('etcd', 'marketplace', style='invis')
+            core.edge('controller', 'image_registry', style='invis')
+            core.edge('scheduler', 'cluster_storage', style='invis')
+            core.edge('dns_core', 'machine_api', style='invis')
+            core.edge('ingress', 'machine_config', style='invis')
+            core.edge('ovn', 'tuned', style='invis')
+            core.edge('multus', 'service_ca', style='invis')
+            core.edge('console', 'cloud_credential', style='invis')
 
-            with Cluster("AI Project C", graph_attr={"margin": "10", "bgcolor": "white", "style": "rounded", "labeljust": "c"}):
-                ai_workload_c = Custom("\nAI\nWorkload", AI_MODEL_ICON)
+    # RHOAI Platform (runs on OCP)
+    with ocp.subgraph(name='cluster_rhoai') as rhoai:
+        rhoai.attr(label='Red Hat OpenShift AI Platform', margin='15', bgcolor='lightblue')
 
-            with Cluster("AI Project D", graph_attr={"margin": "10", "bgcolor": "white", "style": "rounded", "labeljust": "c"}):
-                ai_workload_d = Custom("\nAI\nWorkload", AI_MODEL_ICON)
+        with rhoai.subgraph(name='cluster_rhoai_apps') as apps:
+            apps.attr(label='RedHat ODS\nApplications', margin='10', bgcolor='white', style='rounded', labeljust='c')
+            apps.node('rhoai_platform', label=html_node(RHOAI_ICON, 'Red Hat<br/>OpenShift AI'), shape='none')
 
-            with Cluster("AI Project E", graph_attr={"margin": "10", "bgcolor": "white", "style": "rounded", "labeljust": "c"}):
-                ai_workload_e = Custom("\nAI\nWorkload", AI_MODEL_ICON)
+        with rhoai.subgraph(name='cluster_rhoai_mon') as mon:
+            mon.attr(label='RedHat ODS\nMonitoring', margin='10', bgcolor='white', style='rounded', labeljust='c')
+            mon.node('rhoai_monitoring', label=html_node(CLUSTER_OBSERVABILITY_ICON, 'RHOAI<br/>Monitoring'), shape='none')
 
-            with Cluster("AI Project F", graph_attr={"margin": "10", "bgcolor": "white", "style": "rounded", "labeljust": "c"}):
-                ai_workload_f = Custom("\nAI\nWorkload", AI_MODEL_ICON)
+        with rhoai.subgraph(name='cluster_notebooks') as notebooks:
+            notebooks.attr(label='RHODS\nNotebooks', margin='10', bgcolor='white', style='rounded', labeljust='c')
+            notebooks.node('jupyter_workbench', label=html_node(JUPYTER_ICON, 'Jupyter<br/>Workbench'), shape='none')
+            notebooks.node('vscode_workbench', label=html_node(VSCODE_ICON, 'Code Server<br/>Workbench'), shape='none')
 
-            with Cluster("AI Project G", graph_attr={"margin": "10", "bgcolor": "white", "style": "rounded", "labeljust": "c"}):
-                ai_workload_g = Custom("\nAI\nWorkload", AI_MODEL_ICON)
+        with rhoai.subgraph(name='cluster_project_a') as proj_a:
+            proj_a.attr(label='AI Project A', margin='10', bgcolor='white', style='rounded', labeljust='c')
+            proj_a.node('ai_workload_a', label=html_node(AI_MODEL_ICON, 'AI<br/>Workload'), shape='none')
 
-            with Cluster("AI Project H", graph_attr={"margin": "10", "bgcolor": "white", "style": "rounded", "labeljust": "c"}):
-                ai_workload_h = Custom("\nAI\nWorkload", AI_MODEL_ICON)
+        with rhoai.subgraph(name='cluster_project_b') as proj_b:
+            proj_b.attr(label='AI Project B', margin='10', bgcolor='white', style='rounded', labeljust='c')
+            proj_b.node('ai_workload_b', label=html_node(AI_MODEL_ICON, 'AI<br/>Workload'), shape='none')
 
-    # Force 6-row layout with distributed anchor points
+        with rhoai.subgraph(name='cluster_project_c') as proj_c:
+            proj_c.attr(label='AI Project C', margin='10', bgcolor='white', style='rounded', labeljust='c')
+            proj_c.node('ai_workload_c', label=html_node(AI_MODEL_ICON, 'AI<br/>Workload'), shape='none')
 
-    # Force Row 2 (OCP Compute & Observability) below Row 1 (RHOAI)
-    rhoai_platform >> Edge(style="invis") >> gpu_operator
-    rhoai_monitoring >> Edge(style="invis") >> nfd
-    jupyter_workbench >> Edge(style="invis") >> kueue
-    vscode_workbench >> Edge(style="invis") >> lws
-    ai_workload_a >> Edge(style="invis") >> cluster_monitoring
-    ai_workload_b >> Edge(style="invis") >> udwm
-    ai_workload_c >> Edge(style="invis") >> grafana
-    ai_workload_d >> Edge(style="invis") >> cluster_observability
-    ai_workload_e >> Edge(style="invis") >> openshift_logging
-    ai_workload_f >> Edge(style="invis") >> loki
-    ai_workload_g >> Edge(style="invis") >> opentelemetry
-    ai_workload_h >> Edge(style="invis") >> tempo
+        with rhoai.subgraph(name='cluster_project_d') as proj_d:
+            proj_d.attr(label='AI Project D', margin='10', bgcolor='white', style='rounded', labeljust='c')
+            proj_d.node('ai_workload_d', label=html_node(AI_MODEL_ICON, 'AI<br/>Workload'), shape='none')
 
-    # Force Row 3 (OCP Security/Developer/Storage) below Row 2
-    gpu_operator >> Edge(style="invis") >> cert_manager
-    nfd >> Edge(style="invis") >> authorino
-    kueue >> Edge(style="invis") >> builds
-    lws >> Edge(style="invis") >> pipelines
-    cluster_monitoring >> Edge(style="invis") >> gitops
-    udwm >> Edge(style="invis") >> odf
-    grafana >> Edge(style="invis") >> ossm
-    netobserv >> Edge(style="invis") >> connectivity_link
+        with rhoai.subgraph(name='cluster_project_e') as proj_e:
+            proj_e.attr(label='AI Project E', margin='10', bgcolor='white', style='rounded', labeljust='c')
+            proj_e.node('ai_workload_e', label=html_node(AI_MODEL_ICON, 'AI<br/>Workload'), shape='none')
 
-    # Force Row 4 (Core Components) below Row 3 - distributed anchors
-    cert_manager >> Edge(style="invis") >> api_server
-    authorino >> Edge(style="invis") >> authentication
-    limitador >> Edge(style="invis") >> etcd
-    builds >> Edge(style="invis") >> controller
-    pipelines >> Edge(style="invis") >> scheduler
-    gitops >> Edge(style="invis") >> dns_core
-    odf >> Edge(style="invis") >> ingress
-    ossm >> Edge(style="invis") >> console
+        with rhoai.subgraph(name='cluster_project_f') as proj_f:
+            proj_f.attr(label='AI Project F', margin='10', bgcolor='white', style='rounded', labeljust='c')
+            proj_f.node('ai_workload_f', label=html_node(AI_MODEL_ICON, 'AI<br/>Workload'), shape='none')
 
-print("✓ Generated: output/rhoai-ocp-integration.png")
+        with rhoai.subgraph(name='cluster_project_g') as proj_g:
+            proj_g.attr(label='AI Project G', margin='10', bgcolor='white', style='rounded', labeljust='c')
+            proj_g.node('ai_workload_g', label=html_node(AI_MODEL_ICON, 'AI<br/>Workload'), shape='none')
+
+        with rhoai.subgraph(name='cluster_project_h') as proj_h:
+            proj_h.attr(label='AI Project H', margin='10', bgcolor='white', style='rounded', labeljust='c')
+            proj_h.node('ai_workload_h', label=html_node(AI_MODEL_ICON, 'AI<br/>Workload'), shape='none')
+
+# Force 4-row layout with distributed anchor points
+
+# Force Row 2 (OCP Compute & Observability) below Row 1 (RHOAI)
+dot.edge('rhoai_platform', 'gpu_operator', style='invis')
+dot.edge('rhoai_monitoring', 'nfd', style='invis')
+dot.edge('jupyter_workbench', 'kueue', style='invis')
+dot.edge('vscode_workbench', 'lws', style='invis')
+dot.edge('ai_workload_a', 'cluster_monitoring', style='invis')
+dot.edge('ai_workload_b', 'udwm', style='invis')
+dot.edge('ai_workload_c', 'grafana', style='invis')
+dot.edge('ai_workload_d', 'cluster_observability', style='invis')
+dot.edge('ai_workload_e', 'openshift_logging', style='invis')
+dot.edge('ai_workload_f', 'loki', style='invis')
+dot.edge('ai_workload_g', 'opentelemetry', style='invis')
+dot.edge('ai_workload_h', 'tempo', style='invis')
+
+# Force Row 3 (OCP Security/Developer/Storage) below Row 2
+dot.edge('gpu_operator', 'cert_manager', style='invis')
+dot.edge('nfd', 'authorino', style='invis')
+dot.edge('kueue', 'builds', style='invis')
+dot.edge('lws', 'pipelines', style='invis')
+dot.edge('cluster_monitoring', 'gitops', style='invis')
+dot.edge('udwm', 'odf', style='invis')
+dot.edge('grafana', 'ossm', style='invis')
+dot.edge('netobserv', 'connectivity_link', style='invis')
+
+# Force Row 4 (Core Components) below Row 3 - distributed anchors
+dot.edge('cert_manager', 'api_server', style='invis')
+dot.edge('authorino', 'authentication', style='invis')
+dot.edge('limitador', 'etcd', style='invis')
+dot.edge('builds', 'controller', style='invis')
+dot.edge('pipelines', 'scheduler', style='invis')
+dot.edge('gitops', 'dns_core', style='invis')
+dot.edge('odf', 'ingress', style='invis')
+dot.edge('ossm', 'console', style='invis')
+
+# Render diagram
+dot.render(format='png', view=False, quiet=True)
+
+print("✓ Generated: output/rhoai-ocp-integration.png (Direct Graphviz with HTML tables)")
 print("  → 4-row layout: RHOAI Platform (Row 1) + OCP Services (Rows 2-4)")
-print("  → Row 1: RHOAI (11 namespaces) - redhat-ods-applications, redhat-ods-monitoring, rhods-notebooks, ai-project-A through ai-project-H")
+print("  → Row 1: RHOAI (11 namespaces)")
 print("  → Row 2: Compute & Acceleration (4), Observability (9)")
 print("  → Row 3: Security & Identity (6), Developer (3), Storage (1)")
 print("  → Row 4: Core Components (20 essential components in 2-row grid)")
-print("  →   Row 4.1 (10): Control Plane + Networking + Console")
-print("  →   Row 4.2 (10): Management + Storage + Infrastructure + Security")
+print("  → All icons perfectly centered with HTML table labels!")

@@ -1,176 +1,72 @@
 """
-OpenShift Container Platform - Developer & CI/CD Stack Baseline
-
-Namespace-based layered architecture for developer experience:
-- GitOps Operators (openshift-gitops-operator, openshift-gitops)
-- Pipeline Operators (openshift-pipelines, openshift-builds)
-- Developer Workspaces (openshift-operators)
-
-Color-coded connections:
-- Orange: Operator management
-- Green: Git/source code flows
-- Blue: Image/artifact flows
-- Purple: Deployment flows
-
-Note: Shows actual namespace organization
+OpenShift Container Platform - Developer & CI/CD Stack (Direct Graphviz)
+Uses HTML table labels for perfect icon centering
 """
-
-from diagrams import Diagram, Cluster, Edge
-from diagrams.k8s.controlplane import APIServer
-from diagrams.onprem.vcs import Github, Gitlab
-from diagrams.programming.language import Python
-from diagrams.onprem.client import Users
-from diagrams.onprem.compute import Server
-from diagrams.custom import Custom
+from graphviz import Digraph
 import os
 
-# Get absolute paths for icons
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 PROJECT_ROOT = os.path.join(BASE_DIR, '../../..')
+
+# Icons
 OPERATOR_ICON = os.path.join(PROJECT_ROOT, "custom_icons/Technology icons/operator/Technology_icon-Red_Hat-operator-Standard-RGB.Large_icon_transparent.png")
 GITOPS_ICON = os.path.join(PROJECT_ROOT, "custom_icons/Technology icons/Red Hat OpenShift GitOps/Technology_icon-Red_Hat-OpenShift_GitOps-Standard-RGB.Large_icon_transparent.png")
 PIPELINES_ICON = os.path.join(PROJECT_ROOT, "custom_icons/Technology icons/Red Hat OpenShift Pipelines/Technology_icon-Red_Hat-OpenShift_Pipelines-Standard-RGB.Large_icon_transparent.png")
-BUILDS_ICON = os.path.join(PROJECT_ROOT, "custom_icons/Technology icons/Builds for Red Hat OpenShift/Technology_icon-Red_Hat-OpenShift_Builds-Standard-RGB.Large_icon_transparent.png")
+BUILDS_ICON = os.path.join(PROJECT_ROOT, "custom_icons/Technology icons/Builds for Red Hat OpenShift/Technology_icon-Red_Hat-builds_for_Red_Hat_OpenShift-Standard-RGB.Large_icon_transparent.png")
+OPENSHIFT_ICON = os.path.join(PROJECT_ROOT, "custom_icons/Technology icons/Red Hat OpenShift/Technology_icon-Red_Hat-OpenShift-Standard-RGB.Large_icon_transparent.png")
 
-graph_attr = {
-    "fontsize": "16",
-    "bgcolor": "white",
-    "pad": "0.5",
-    "nodesep": "1.0",
-    "ranksep": "1.8"
-}
+def html_node(icon, label):
+    return f'<<table border="0"><tr><td><img src="{icon}"/></td></tr><tr><td>{label}</td></tr></table>>'
 
-with Diagram(
-    "OCP Baseline - Developer & CI/CD Stack (Namespace-Based)",
-    show=False,
-    direction="LR",
-    filename="output/baseline-ocp-03-developer-cicd-stack",
-    graph_attr=graph_attr
-):
+dot = Digraph("OCP_Developer_CICD", filename="output/baseline-ocp-03-developer-cicd-stack")
+dot.attr(rankdir="LR", fontsize="16", bgcolor="white", pad="0.5", nodesep="1.0", ranksep="1.8")
 
-    # ========== PERSONAS ==========
-    with Cluster("Users"):
-        developer = Users("\nDeveloper")
-        platform_engineer = Users("\nPlatform Engineer")
+# Personas
+dot.node('developer', label=html_node(OPENSHIFT_ICON, 'Developer'), shape='none')
+dot.node('git_repo', label=html_node(OPENSHIFT_ICON, 'Git Repository<br/>(GitHub/GitLab)'), shape='none')
 
-    # ========== EXTERNAL ==========
-    with Cluster("External Systems"):
-        source_repo = Github("\nSource Repository\n(GitHub/GitLab)")
-        config_repo = Gitlab("\nConfig Repository\n(GitOps)")
-        external_registry = Server("\nExternal Registry\n(Quay, Harbor)")
+# API
+dot.node('api', label=html_node(OPENSHIFT_ICON, 'OpenShift<br/>API Server'), shape='none')
 
-    api = APIServer("\nOpenShift\nAPI Server")
+# GitOps
+with dot.subgraph(name='cluster_gitops') as gitops:
+    gitops.attr(label='openshift-gitops-operator + openshift-gitops')
+    gitops.node('gitops_operator', label=html_node(OPERATOR_ICON, 'GitOps Operator'), shape='none')
+    gitops.node('argocd', label=html_node(GITOPS_ICON, 'Argo CD<br/>(GitOps Controller)'), shape='none')
 
-    # ========== GITOPS - CONTINUOUS DELIVERY ==========
-    with Cluster("GitOps - Continuous Delivery"):
+# Pipelines  
+with dot.subgraph(name='cluster_pipelines') as pipes:
+    pipes.attr(label='openshift-pipelines')
+    pipes.node('pipelines_operator', label=html_node(OPERATOR_ICON, 'Pipelines Operator'), shape='none')
+    pipes.node('tekton', label=html_node(PIPELINES_ICON, 'Tekton<br/>(CI/CD Engine)'), shape='none')
 
-        with Cluster("openshift-gitops-operator"):
-            gitops_operator = Custom("\nGitOps Operator", GITOPS_ICON)
+# Builds
+with dot.subgraph(name='cluster_builds') as builds:
+    builds.attr(label='openshift-builds')
+    builds.node('builds_operator', label=html_node(OPERATOR_ICON, 'Builds Operator'), shape='none')
+    builds.node('shipwright', label=html_node(BUILDS_ICON, 'Shipwright<br/>(Build Framework)'), shape='none')
 
-        with Cluster("openshift-gitops"):
-            argocd_server = Custom("\nArgoCD Server", GITOPS_ICON)
-            argocd_apps = Server("\nArgoCD Applications\n(App of Apps)")
-            argocd_appsets = Server("\nApplicationSets")
+# Workloads
+with dot.subgraph(name='cluster_workloads') as workloads:
+    workloads.attr(label='Application Deployments')
+    workloads.node('app_deploy', label=html_node(OPENSHIFT_ICON, 'Application<br/>Deployments'), shape='none')
 
-    # ========== PIPELINES - CONTINUOUS INTEGRATION ==========
-    with Cluster("Pipelines - Continuous Integration"):
+# Connections
+dot.edge('developer', 'git_repo', color='green', label='commits')
+dot.edge('git_repo', 'argocd', color='green', style='dotted', label='sync')
+dot.edge('git_repo', 'tekton', color='blue', style='dotted', label='webhook')
 
-        with Cluster("openshift-pipelines"):
-            pipelines_operator = Custom("\nPipelines Operator\n(Tekton)", PIPELINES_ICON)
+dot.edge('api', 'gitops_operator', color='orange')
+dot.edge('api', 'pipelines_operator', color='orange')
+dot.edge('api', 'builds_operator', color='orange')
 
-            with Cluster("Pipeline Execution"):
-                tekton_pipeline = Custom("\nTekton Pipeline", PIPELINES_ICON)
-                event_listener = Server("\nEventListener\n(Webhooks)")
-                pipeline_runs = Server("\nPipelineRuns")
+dot.edge('gitops_operator', 'argocd', color='orange')
+dot.edge('pipelines_operator', 'tekton', color='orange')
+dot.edge('builds_operator', 'shipwright', color='orange')
 
-    # ========== BUILDS ==========
-    with Cluster("Image Builds"):
+dot.edge('tekton', 'shipwright', color='blue', label='trigger build')
+dot.edge('shipwright', 'app_deploy', color='blue', label='push image')
+dot.edge('argocd', 'app_deploy', color='purple', label='deploy', style='bold')
 
-        with Cluster("openshift-builds"):
-            builds_operator = Custom("\nBuilds Operator\n(Shipwright)", BUILDS_ICON)
-
-            with Cluster("Build Strategies"):
-                s2i_build = Server("\nSource-to-Image")
-                buildah_build = Server("\nBuildah\n(Dockerfile)")
-                buildpacks = Server("\nCloud Native\nBuildpacks")
-
-    # ========== DEVELOPER WORKSPACE ==========
-    with Cluster("Developer Workspace"):
-
-        with Cluster("openshift-operators"):
-            devworkspace_operator = Custom("\nDevWorkspace\nOperator", OPERATOR_ICON)
-            web_terminal_operator = Custom("\nWeb Terminal\nOperator", OPERATOR_ICON)
-
-            with Cluster("Developer Tools"):
-                cloud_ide = Python("\nCloud IDE\n(DevSpaces)")
-                web_terminal = Python("\nWeb Terminal")
-
-    # ========== REGISTRY ==========
-    with Cluster("openshift-image-registry"):
-        internal_registry = Server("\nInternal Registry")
-
-    # ========== APPLICATION DEPLOYMENTS ==========
-    with Cluster("User Namespaces"):
-        applications = Server("\nApplications\n(Deployments)")
-
-    # =========================================================
-    # CONNECTIONS
-    # =========================================================
-
-    # --- OPERATOR MANAGEMENT (Orange) ---
-    api >> Edge(color="orange") >> gitops_operator
-    api >> Edge(color="orange") >> pipelines_operator
-    api >> Edge(color="orange") >> builds_operator
-    api >> Edge(color="orange") >> devworkspace_operator
-    api >> Edge(color="orange") >> web_terminal_operator
-
-    gitops_operator >> Edge(color="orange") >> argocd_server
-    pipelines_operator >> Edge(color="orange") >> [tekton_pipeline, event_listener]
-    builds_operator >> Edge(color="orange") >> [s2i_build, buildah_build, buildpacks]
-    devworkspace_operator >> Edge(color="orange") >> cloud_ide
-    web_terminal_operator >> Edge(color="orange") >> web_terminal
-
-    # --- USER ACCESS (Green) ---
-    developer >> Edge(color="green", label="access") >> cloud_ide
-    developer >> Edge(color="green", label="access") >> web_terminal
-    platform_engineer >> Edge(color="green", label="configure") >> argocd_server
-
-    # --- GITOPS FLOW (Purple = Deployment) ---
-    config_repo >> Edge(color="purple", label="1. poll/webhook") >> argocd_server
-    argocd_server >> argocd_apps
-    argocd_server >> argocd_appsets
-    argocd_apps >> Edge(color="purple", label="2. sync") >> api
-    api >> Edge(color="purple", label="3. deploy") >> applications
-
-    # --- CI PIPELINE FLOW ---
-    # Trigger
-    source_repo >> Edge(color="green", label="1. webhook") >> event_listener
-    event_listener >> Edge(label="2. trigger") >> tekton_pipeline
-    tekton_pipeline >> pipeline_runs
-
-    # Build process
-    pipeline_runs >> Edge(color="green", label="3. clone") >> source_repo
-    pipeline_runs >> Edge(label="4. build") >> [s2i_build, buildah_build, buildpacks]
-
-    # Image push
-    s2i_build >> Edge(color="blue", label="5. push") >> internal_registry
-    buildah_build >> Edge(color="blue", label="5. push") >> internal_registry
-    buildpacks >> Edge(color="blue", label="5. push") >> internal_registry
-
-    # External registry option
-    pipeline_runs >> Edge(color="blue", style="dashed", label="push") >> external_registry
-
-    # --- IMAGE TRIGGER ---
-    internal_registry >> Edge(color="purple", label="6. image change") >> argocd_apps
-
-    # --- DEVELOPER WORKFLOW ---
-    cloud_ide >> Edge(color="green", label="commit") >> source_repo
-    cloud_ide >> Edge(color="green", label="test deploy") >> api
-    web_terminal >> Edge(color="green", label="oc/kubectl") >> api
-
-    # --- REGISTRY SYNC ---
-    internal_registry >> Edge(style="dotted", label="mirror") >> external_registry
-
-print("✓ Generated: output/baseline-ocp-03-developer-cicd-stack.png")
-print("  → Namespace-based: openshift-gitops → openshift-pipelines → openshift-builds")
-print("  → Color-coded: Orange=management, Green=source, Blue=images, Purple=deployment")
+dot.render(format='png', view=False, quiet=True)
+print("✓ Generated: output/baseline-ocp-03-developer-cicd-stack.png (Graphviz HTML)")

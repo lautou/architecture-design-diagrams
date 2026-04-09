@@ -1,5 +1,5 @@
 """
-OpenShift Container Platform - Observability Stack Baseline
+OpenShift Container Platform - Observability Stack Baseline (Direct Graphviz)
 
 Namespace-based layered architecture for observability:
 - LAYER 1: Embedded Monitoring (openshift-monitoring, openshift-user-workload-monitoring)
@@ -13,149 +13,178 @@ Color-coded connections:
 - Red: Alerts
 
 Note: Shows actual OpenShift observability namespaces
+Uses direct Graphviz with HTML table labels for perfect icon centering
 """
 
-from diagrams import Diagram, Cluster, Edge
-from diagrams.k8s.controlplane import APIServer
-from diagrams.onprem.monitoring import Prometheus, Grafana
-from diagrams.onprem.logging import Loki
-from diagrams.onprem.tracing import Jaeger
-from diagrams.onprem.database import Clickhouse
-from diagrams.onprem.compute import Server
-from diagrams.custom import Custom
+from graphviz import Digraph
 import os
 
 # Get absolute paths for icons
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 PROJECT_ROOT = os.path.join(BASE_DIR, '../../..')
+
+# Icon paths
 OPERATOR_ICON = os.path.join(PROJECT_ROOT, "custom_icons/Technology icons/operator/Technology_icon-Red_Hat-operator-Standard-RGB.Large_icon_transparent.png")
-OTEL_ICON = os.path.join(PROJECT_ROOT, "custom_icons/Technology icons/Red Hat build of OpenTelemetry/Technology_icon-Red_Hat-OpenTelemetry-Standard-RGB.Large_icon_transparent.png")
-CLUSTER_OBS_ICON = os.path.join(PROJECT_ROOT, "custom_icons/Technology icons/Cluster observability/Technology_icon-Red_Hat-Cluster_observability_operator-Standard-RGB.Large_icon_transparent.png")
+OTEL_ICON = os.path.join(PROJECT_ROOT, "custom_icons/Technology icons/Red Hat build of OpenTelemetry/Technology_icon-Red_Hat-build_of_OpenTelemetry-Standard-RGB.Large_icon_transparent.png")
+CLUSTER_OBS_ICON = os.path.join(PROJECT_ROOT, "custom_icons/Technology icons/Cluster observability/Technology_icon-Red_Hat-cluster_observability-Standard-RGB.Large_icon_transparent.png")
+MONITORING_ICON = os.path.join(PROJECT_ROOT, "custom_icons/UI icons/rh-ui-icon-monitoring-fill.Large_icon_transparent.png")
+GRAFANA_ICON = os.path.join(PROJECT_ROOT, "custom_icons/Icons/Grafana/grafana-400x400.png")
+LOKI_ICON = os.path.join(PROJECT_ROOT, "custom_icons/Icons/Loki/loki-400x400.png")
+TEMPO_ICON = os.path.join(PROJECT_ROOT, "custom_icons/Icons/Tempo/tempo-400x400.png")
+OPENSHIFT_ICON = os.path.join(PROJECT_ROOT, "custom_icons/Technology icons/Red Hat OpenShift/Technology_icon-Red_Hat-OpenShift-Standard-RGB.Large_icon_transparent.png")
 
-graph_attr = {
-    "fontsize": "16",
-    "bgcolor": "white",
-    "pad": "0.5",
-    "nodesep": "1.0",
-    "ranksep": "1.8"
-}
+# Helper function
+def html_node(icon_path, label_text):
+    """Create HTML table label for perfect centering"""
+    return f'''<<table border="0">
+<tr><td><img src="{icon_path}"/></td></tr>
+<tr><td>{label_text}</td></tr>
+</table>>'''
 
-with Diagram(
-    "OCP Baseline - Observability Stack (Namespace-Based)",
-    show=False,
-    direction="TB",
-    filename="output/baseline-ocp-02-observability-stack",
-    graph_attr=graph_attr
-):
+# Create diagram
+dot = Digraph("OCP_Observability_Stack", filename="output/baseline-ocp-02-observability-stack")
+dot.attr(rankdir="TB")
+dot.attr(fontsize="16", bgcolor="white", pad="0.5", nodesep="1.0", ranksep="1.8")
 
-    api = APIServer("\nOpenShift\nAPI Server")
+# API Server
+dot.node('api', label=html_node(OPENSHIFT_ICON, 'OpenShift<br/>API Server'), shape='none')
 
-    # ========== LAYER 1: EMBEDDED MONITORING ==========
-    with Cluster("LAYER 1: Embedded Monitoring (Built-in)"):
+# ========== LAYER 1: EMBEDDED MONITORING ==========
+with dot.subgraph(name='cluster_layer1') as layer1:
+    layer1.attr(label='LAYER 1: Embedded Monitoring (Built-in)')
 
-        with Cluster("openshift-monitoring"):
-            with Cluster("Cluster Monitoring"):
-                cluster_prom = Prometheus("\nPrometheus\n(Platform Metrics)")
-                cluster_alert = Prometheus("\nAlertmanager\n(Platform Alerts)")
+    # openshift-monitoring
+    with layer1.subgraph(name='cluster_monitoring') as monitoring:
+        monitoring.attr(label='openshift-monitoring')
 
-        with Cluster("openshift-user-workload-monitoring"):
-            with Cluster("User Defined Workload Monitoring"):
-                udwm_prom = Prometheus("\nPrometheus\n(User Metrics)")
-                thanos = Prometheus("\nThanos Querier\n(Unified)")
+        with monitoring.subgraph(name='cluster_cluster_monitoring') as cm:
+            cm.attr(label='Cluster Monitoring')
+            cm.node('cluster_prom', label=html_node(MONITORING_ICON, 'Prometheus<br/>(Platform Metrics)'), shape='none')
+            cm.node('cluster_alert', label=html_node(MONITORING_ICON, 'Alertmanager<br/>(Platform Alerts)'), shape='none')
 
-    # ========== LAYER 2: ADD-ON OPERATORS ==========
-    with Cluster("LAYER 2: Add-on Observability Operators"):
+    # openshift-user-workload-monitoring
+    with layer1.subgraph(name='cluster_udwm') as udwm_cluster:
+        udwm_cluster.attr(label='openshift-user-workload-monitoring')
 
-        with Cluster("openshift-logging"):
-            logging_operator = Custom("\nLogging Operator", OPERATOR_ICON)
+        with udwm_cluster.subgraph(name='cluster_udwm_inner') as udwm:
+            udwm.attr(label='User Defined Workload Monitoring')
+            udwm.node('udwm_prom', label=html_node(MONITORING_ICON, 'Prometheus<br/>(User Metrics)'), shape='none')
+            udwm.node('thanos', label=html_node(MONITORING_ICON, 'Thanos Querier<br/>(Unified)'), shape='none')
 
-            with Cluster("Log Collection & Storage"):
-                log_collector = Loki("\nVector/Fluentd\n(Collector)")
-                loki_stack = Loki("\nLokiStack\n(Storage)")
+# ========== LAYER 2: ADD-ON OPERATORS ==========
+with dot.subgraph(name='cluster_layer2') as layer2:
+    layer2.attr(label='LAYER 2: Add-on Observability Operators')
 
-        with Cluster("openshift-tempo-operator"):
-            tempo_operator = Custom("\nTempo Operator", OPERATOR_ICON)
-            tempo = Jaeger("\nTempo\n(Distributed Tracing)")
+    # openshift-logging
+    with layer2.subgraph(name='cluster_logging') as logging:
+        logging.attr(label='openshift-logging')
+        logging.node('logging_operator', label=html_node(OPERATOR_ICON, 'Logging Operator'), shape='none')
 
-        with Cluster("openshift-opentelemetry-operator"):
-            otel_operator = Custom("\nOpenTelemetry\nOperator", OTEL_ICON)
-            otel_collector = Jaeger("\nOTel Collector\n(OTLP)")
+        with logging.subgraph(name='cluster_log_collection') as log_collect:
+            log_collect.attr(label='Log Collection & Storage')
+            log_collect.node('log_collector', label=html_node(LOKI_ICON, 'Vector/Fluentd<br/>(Collector)'), shape='none')
+            log_collect.node('loki_stack', label=html_node(LOKI_ICON, 'LokiStack<br/>(Storage)'), shape='none')
 
-        with Cluster("openshift-cluster-observability-operator"):
-            cluster_obs_operator = Custom("\nCluster Observability\nOperator", CLUSTER_OBS_ICON)
+    # openshift-tempo-operator
+    with layer2.subgraph(name='cluster_tempo') as tempo_cluster:
+        tempo_cluster.attr(label='openshift-tempo-operator')
+        tempo_cluster.node('tempo_operator', label=html_node(OPERATOR_ICON, 'Tempo Operator'), shape='none')
+        tempo_cluster.node('tempo', label=html_node(TEMPO_ICON, 'Tempo<br/>(Distributed Tracing)'), shape='none')
 
-        with Cluster("netobserv"):
-            network_obs_operator = Custom("\nNetwork Observability\nOperator", OPERATOR_ICON)
-            flow_collector = Clickhouse("\nFlow Collector\n(eBPF)")
+    # openshift-opentelemetry-operator
+    with layer2.subgraph(name='cluster_otel') as otel_cluster:
+        otel_cluster.attr(label='openshift-opentelemetry-operator')
+        otel_cluster.node('otel_operator', label=html_node(OTEL_ICON, 'OpenTelemetry<br/>Operator'), shape='none')
+        otel_cluster.node('otel_collector', label=html_node(OTEL_ICON, 'OTel Collector<br/>(OTLP)'), shape='none')
 
-        with Cluster("openshift-operators (Grafana)"):
-            grafana_operator = Custom("\nGrafana Operator", OPERATOR_ICON)
-            grafana = Grafana("\nGrafana\n(Custom Dashboards)")
+    # openshift-cluster-observability-operator
+    with layer2.subgraph(name='cluster_cluster_obs') as cluster_obs:
+        cluster_obs.attr(label='openshift-cluster-observability-operator')
+        cluster_obs.node('cluster_obs_operator', label=html_node(CLUSTER_OBS_ICON, 'Cluster Observability<br/>Operator'), shape='none')
 
-    # ========== APPLICATION WORKLOADS ==========
-    with Cluster("Application Workloads"):
-        platform_apps = Server("\nPlatform\nComponents")
-        user_apps = Server("\nUser\nApplications")
+    # netobserv
+    with layer2.subgraph(name='cluster_netobserv') as netobserv:
+        netobserv.attr(label='netobserv')
+        netobserv.node('network_obs_operator', label=html_node(OPERATOR_ICON, 'Network Observability<br/>Operator'), shape='none')
+        netobserv.node('flow_collector', label=html_node(OPENSHIFT_ICON, 'Flow Collector<br/>(eBPF)'), shape='none')
 
-    # ========== EXTERNAL INTEGRATION ==========
-    with Cluster("External Integration"):
-        external_storage = Server("\nExternal Storage\n(S3/NFS)")
-        external_siem = Server("\nExternal SIEM\n(Splunk, Elastic)")
+    # openshift-operators (Grafana)
+    with layer2.subgraph(name='cluster_grafana') as grafana_cluster:
+        grafana_cluster.attr(label='openshift-operators (Grafana)')
+        grafana_cluster.node('grafana_operator', label=html_node(OPERATOR_ICON, 'Grafana Operator'), shape='none')
+        grafana_cluster.node('grafana', label=html_node(GRAFANA_ICON, 'Grafana<br/>(Custom Dashboards)'), shape='none')
 
-    # =========================================================
-    # CONNECTIONS
-    # =========================================================
+# ========== APPLICATION WORKLOADS ==========
+with dot.subgraph(name='cluster_apps') as apps:
+    apps.attr(label='Application Workloads')
+    apps.node('platform_apps', label=html_node(OPENSHIFT_ICON, 'Platform<br/>Components'), shape='none')
+    apps.node('user_apps', label=html_node(OPENSHIFT_ICON, 'User<br/>Applications'), shape='none')
 
-    # --- OPERATOR MANAGEMENT (Orange) ---
-    api >> Edge(color="orange") >> logging_operator
-    api >> Edge(color="orange") >> tempo_operator
-    api >> Edge(color="orange") >> otel_operator
-    api >> Edge(color="orange") >> network_obs_operator
-    api >> Edge(color="orange") >> grafana_operator
-    api >> Edge(color="orange") >> cluster_obs_operator
+# ========== EXTERNAL INTEGRATION ==========
+with dot.subgraph(name='cluster_external') as external:
+    external.attr(label='External Integration')
+    external.node('external_storage', label=html_node(OPENSHIFT_ICON, 'External Storage<br/>(S3/NFS)'), shape='none')
+    external.node('external_siem', label=html_node(OPENSHIFT_ICON, 'External SIEM<br/>(Splunk, Elastic)'), shape='none')
 
-    logging_operator >> Edge(color="orange") >> [log_collector, loki_stack]
-    tempo_operator >> Edge(color="orange") >> tempo
-    otel_operator >> Edge(color="orange") >> otel_collector
-    network_obs_operator >> Edge(color="orange") >> flow_collector
-    grafana_operator >> Edge(color="orange") >> grafana
+# =========================================================
+# CONNECTIONS
+# =========================================================
 
-    # --- EMBEDDED MONITORING FLOW (Purple) ---
-    cluster_prom >> Edge(color="purple") >> cluster_alert
-    udwm_prom >> Edge(color="purple") >> thanos
-    cluster_prom >> Edge(color="purple") >> thanos
+# --- OPERATOR MANAGEMENT (Orange) ---
+dot.edge('api', 'logging_operator', color='orange')
+dot.edge('api', 'tempo_operator', color='orange')
+dot.edge('api', 'otel_operator', color='orange')
+dot.edge('api', 'network_obs_operator', color='orange')
+dot.edge('api', 'grafana_operator', color='orange')
+dot.edge('api', 'cluster_obs_operator', color='orange')
 
-    # --- DATA COLLECTION (Blue) ---
-    platform_apps >> Edge(color="blue", style="dotted", label="platform metrics") >> cluster_prom
-    user_apps >> Edge(color="blue", style="dotted", label="user metrics") >> udwm_prom
-    user_apps >> Edge(color="blue", style="dotted", label="logs") >> log_collector
-    user_apps >> Edge(color="blue", style="dotted", label="traces") >> otel_collector
+dot.edge('logging_operator', 'log_collector', color='orange')
+dot.edge('logging_operator', 'loki_stack', color='orange')
+dot.edge('tempo_operator', 'tempo', color='orange')
+dot.edge('otel_operator', 'otel_collector', color='orange')
+dot.edge('network_obs_operator', 'flow_collector', color='orange')
+dot.edge('grafana_operator', 'grafana', color='orange')
 
-    # Log flow
-    log_collector >> Edge(color="blue", label="forward") >> loki_stack
+# --- EMBEDDED MONITORING FLOW (Purple) ---
+dot.edge('cluster_prom', 'cluster_alert', color='purple')
+dot.edge('udwm_prom', 'thanos', color='purple')
+dot.edge('cluster_prom', 'thanos', color='purple')
 
-    # OTel distribution
-    otel_collector >> Edge(color="purple", label="traces") >> tempo
-    otel_collector >> Edge(color="purple", label="metrics") >> udwm_prom
-    otel_collector >> Edge(color="purple", label="logs") >> loki_stack
+# --- DATA COLLECTION (Blue) ---
+dot.edge('platform_apps', 'cluster_prom', color='blue', style='dotted', label='platform metrics')
+dot.edge('user_apps', 'udwm_prom', color='blue', style='dotted', label='user metrics')
+dot.edge('user_apps', 'log_collector', color='blue', style='dotted', label='logs')
+dot.edge('user_apps', 'otel_collector', color='blue', style='dotted', label='traces')
 
-    # --- VISUALIZATION (Purple queries) ---
-    grafana >> Edge(color="purple", style="dashed", label="query") >> thanos
-    grafana >> Edge(color="purple", style="dashed", label="query") >> loki_stack
-    grafana >> Edge(color="purple", style="dashed", label="query") >> tempo
-    grafana >> Edge(color="purple", style="dashed", label="query") >> flow_collector
+# Log flow
+dot.edge('log_collector', 'loki_stack', color='blue', label='forward')
 
-    # --- EXTERNAL INTEGRATION ---
-    loki_stack >> Edge(style="dotted", label="export") >> external_storage
-    log_collector >> Edge(style="dotted", label="forward") >> external_siem
+# OTel distribution
+dot.edge('otel_collector', 'tempo', color='purple', label='traces')
+dot.edge('otel_collector', 'udwm_prom', color='purple', label='metrics')
+dot.edge('otel_collector', 'loki_stack', color='purple', label='logs')
 
-    # --- CLUSTER OBSERVABILITY COORDINATION ---
-    cluster_obs_operator >> Edge(color="orange", style="dashed", label="configure") >> grafana
-    cluster_obs_operator >> Edge(color="orange", style="dashed", label="configure") >> thanos
+# --- VISUALIZATION (Purple queries) ---
+dot.edge('grafana', 'thanos', color='purple', style='dashed', label='query')
+dot.edge('grafana', 'loki_stack', color='purple', style='dashed', label='query')
+dot.edge('grafana', 'tempo', color='purple', style='dashed', label='query')
+dot.edge('grafana', 'flow_collector', color='purple', style='dashed', label='query')
 
-    # --- ALERTS (Red) ---
-    cluster_alert >> Edge(color="red", style="bold", label="platform alerts") >> external_siem
+# --- EXTERNAL INTEGRATION ---
+dot.edge('loki_stack', 'external_storage', style='dotted', label='export')
+dot.edge('log_collector', 'external_siem', style='dotted', label='forward')
 
-print("✓ Generated: output/baseline-ocp-02-observability-stack.png")
+# --- CLUSTER OBSERVABILITY COORDINATION ---
+dot.edge('cluster_obs_operator', 'grafana', color='orange', style='dashed', label='configure')
+dot.edge('cluster_obs_operator', 'thanos', color='orange', style='dashed', label='configure')
+
+# --- ALERTS (Red) ---
+dot.edge('cluster_alert', 'external_siem', color='red', style='bold', label='platform alerts')
+
+# Render diagram
+dot.render(format='png', view=False, quiet=True)
+
+print("✓ Generated: output/baseline-ocp-02-observability-stack.png (Direct Graphviz with HTML tables)")
 print("  → Namespace-based: openshift-monitoring → openshift-logging → netobserv")
 print("  → Color-coded: Orange=management, Purple=observability, Blue=data, Red=alerts")
+print("  → All icons perfectly centered!")

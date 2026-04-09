@@ -1,195 +1,79 @@
 """
-OpenShift Container Platform - Security & Service Mesh Stack Baseline
-
-Namespace-based layered architecture for security:
-- Identity & Access (rhsso-operator, authorino-operator)
-- Certificate Management (openshift-cert-manager-operator)
-- Service Mesh (openshift-operators, istio-system)
-- Rate Limiting & Connectivity
-
-Color-coded connections:
-- Orange: Operator management
-- Green: User/API traffic
-- Red: Security enforcement
-- Purple: mTLS/encrypted traffic
-
-Note: Shows actual namespace organization for security stack
+OpenShift Container Platform - Security & Service Mesh Stack (Direct Graphviz)
+Uses HTML table labels for perfect icon centering
 """
-
-from diagrams import Diagram, Cluster, Edge
-from diagrams.k8s.controlplane import APIServer
-from diagrams.k8s.network import Ingress
-from diagrams.onprem.security import Vault
-from diagrams.onprem.client import Users
-from diagrams.onprem.compute import Server
-from diagrams.custom import Custom
+from graphviz import Digraph
 import os
 
-# Get absolute paths for icons
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 PROJECT_ROOT = os.path.join(BASE_DIR, '../../..')
+
 OPERATOR_ICON = os.path.join(PROJECT_ROOT, "custom_icons/Technology icons/operator/Technology_icon-Red_Hat-operator-Standard-RGB.Large_icon_transparent.png")
-KEYCLOAK_ICON = os.path.join(PROJECT_ROOT, "custom_icons/Technology icons/Red Hat build of Keycloak/Technology_icon-Red_Hat-Keycloak-Standard-RGB.Large_icon_transparent.png")
-SERVICE_MESH_ICON = os.path.join(PROJECT_ROOT, "custom_icons/Technology icons/Red Hat OpenShift Service Mesh/Technology_icon-Red_Hat-OpenShift_Service_Mesh-Standard-RGB.Large_icon_transparent.png")
-CONNECTIVITY_ICON = os.path.join(PROJECT_ROOT, "custom_icons/Technology icons/Red Hat Connectivity Link/Technology_icon-Red_Hat-Connectivity_Link-Standard-RGB.Large_icon_transparent.png")
+CERT_MANAGER_ICON = os.path.join(PROJECT_ROOT, "custom_icons/Icons/CertManager/cert-manager-400x400.png")
+AUTHORINO_ICON = os.path.join(PROJECT_ROOT, "custom_icons/Icons/Authorino/authorino-400x400.png")
+LIMITADOR_ICON = os.path.join(PROJECT_ROOT, "custom_icons/Icons/Limitador/limitador-400x400.png")
+OSSM_ICON = os.path.join(PROJECT_ROOT, "custom_icons/Icons/OSSM/ossm-400x400.png")
+OPENSHIFT_ICON = os.path.join(PROJECT_ROOT, "custom_icons/Technology icons/Red Hat OpenShift/Technology_icon-Red_Hat-OpenShift-Standard-RGB.Large_icon_transparent.png")
 
-graph_attr = {
-    "fontsize": "16",
-    "bgcolor": "white",
-    "pad": "0.5",
-    "nodesep": "1.0",
-    "ranksep": "1.8"
-}
+def html_node(icon, label):
+    return f'<<table border="0"><tr><td><img src="{icon}"/></td></tr><tr><td>{label}</td></tr></table>>'
 
-with Diagram(
-    "OCP Baseline - Security & Service Mesh Stack (Namespace-Based)",
-    show=False,
-    direction="TB",
-    filename="output/baseline-ocp-04-security-servicemesh-stack",
-    graph_attr=graph_attr
-):
+dot = Digraph("OCP_Security_ServiceMesh", filename="output/baseline-ocp-04-security-servicemesh-stack")
+dot.attr(rankdir="TB", fontsize="16", bgcolor="white", pad="0.5", nodesep="1.0", ranksep="1.8")
 
-    # ========== PERSONAS ==========
-    end_users = Users("\nEnd Users")
+# API
+dot.node('api', label=html_node(OPENSHIFT_ICON, 'OpenShift<br/>API Server'), shape='none')
 
-    # ========== EXTERNAL ==========
-    with Cluster("External Security Services"):
-        corporate_idp = Server("\nCorporate IDP\n(LDAP/AD/OIDC)")
-        enterprise_pki = Vault("\nEnterprise PKI\n(CA)")
+# Identity
+with dot.subgraph(name='cluster_identity') as identity:
+    identity.attr(label='Identity & Auth')
+    with identity.subgraph(name='cluster_keycloak') as keycloak:
+        keycloak.attr(label='keycloak-system')
+        keycloak.node('keycloak_operator', label=html_node(OPERATOR_ICON, 'Keycloak Operator'), shape='none')
+        keycloak.node('keycloak', label=html_node(OPENSHIFT_ICON, 'Keycloak<br/>(SSO)'), shape='none')
 
-    api = APIServer("\nOpenShift\nAPI Server")
-    router = Ingress("\nOpenShift Router")
+# Certificate Management
+with dot.subgraph(name='cluster_certs') as certs:
+    certs.attr(label='Certificate Management')
+    with certs.subgraph(name='cluster_certmgr') as certmgr:
+        certmgr.attr(label='cert-manager-operator')
+        certmgr.node('certmgr_operator', label=html_node(OPERATOR_ICON, 'cert-manager Operator'), shape='none')
+        certmgr.node('certmgr', label=html_node(CERT_MANAGER_ICON, 'cert-manager'), shape='none')
 
-    # ========== IDENTITY & ACCESS MANAGEMENT ==========
-    with Cluster("Identity & Access Management"):
+# Service Mesh
+with dot.subgraph(name='cluster_mesh') as mesh:
+    mesh.attr(label='Service Mesh')
+    with mesh.subgraph(name='cluster_ossm') as ossm:
+        ossm.attr(label='openshift-operators')
+        ossm.node('ossm_operator', label=html_node(OPERATOR_ICON, 'Service Mesh Operator'), shape='none')
+        ossm.node('istio', label=html_node(OSSM_ICON, 'Istio<br/>(Control Plane)'), shape='none')
 
-        with Cluster("rhsso-operator"):
-            keycloak_operator = Custom("\nKeycloak Operator", KEYCLOAK_ICON)
+# Kuadrant (AuthZ + Rate Limiting)
+with dot.subgraph(name='cluster_kuadrant') as kuadrant:
+    kuadrant.attr(label='kuadrant-system')
+    kuadrant.node('authorino', label=html_node(AUTHORINO_ICON, 'Authorino<br/>(AuthZ)'), shape='none')
+    kuadrant.node('limitador', label=html_node(LIMITADOR_ICON, 'Limitador<br/>(Rate Limiting)'), shape='none')
 
-        with Cluster("keycloak (instance namespace)"):
-            keycloak_server = Custom("\nKeycloak Server\n(Red Hat build)", KEYCLOAK_ICON)
-            keycloak_realms = Vault("\nRealms & Clients\n(OIDC/SAML)")
+# App Workloads
+with dot.subgraph(name='cluster_apps') as apps:
+    apps.attr(label='Application Workloads')
+    apps.node('app_pods', label=html_node(OPENSHIFT_ICON, 'Application Pods<br/>(in Service Mesh)'), shape='none')
 
-        with Cluster("authorino-operator"):
-            authorino_operator = Custom("\nAuthorino Operator", OPERATOR_ICON)
+# Connections
+dot.edge('api', 'keycloak_operator', color='orange')
+dot.edge('api', 'certmgr_operator', color='orange')
+dot.edge('api', 'ossm_operator', color='orange')
 
-        with Cluster("authorino-instances"):
-            authorino_service = Vault("\nAuthorino\n(API Authorization)")
+dot.edge('keycloak_operator', 'keycloak', color='orange')
+dot.edge('certmgr_operator', 'certmgr', color='orange')
+dot.edge('ossm_operator', 'istio', color='orange')
 
-    # ========== CERTIFICATE MANAGEMENT ==========
-    with Cluster("Certificate Management"):
+dot.edge('istio', 'app_pods', color='purple', label='sidecar injection')
+dot.edge('app_pods', 'authorino', color='blue', style='dotted', label='authz check')
+dot.edge('app_pods', 'limitador', color='red', style='dotted', label='rate limit')
+dot.edge('app_pods', 'keycloak', color='green', style='dotted', label='OIDC auth')
 
-        with Cluster("openshift-cert-manager-operator"):
-            certmanager_operator = Custom("\ncert-manager\nOperator", OPERATOR_ICON)
+dot.edge('certmgr', 'istio', color='brown', style='dashed', label='TLS certs')
 
-        with Cluster("openshift-cert-manager"):
-            with Cluster("Certificate Issuers"):
-                ca_issuer = Vault("\nCA Issuer")
-                acme_issuer = Vault("\nACME Issuer\n(Let's Encrypt)")
-                cert_manager = Vault("\ncert-manager\nController")
-
-    # ========== SERVICE MESH ==========
-    with Cluster("Service Mesh"):
-
-        with Cluster("openshift-operators (Service Mesh)"):
-            servicemesh_operator = Custom("\nService Mesh\nOperator", SERVICE_MESH_ICON)
-
-        with Cluster("istio-system"):
-            istiod = Custom("\nIstiod\n(Control Plane)", SERVICE_MESH_ICON)
-
-            with Cluster("Mesh Features"):
-                mtls_enforcement = Server("\nmTLS Enforcement")
-                traffic_management = Server("\nTraffic Management\n(VirtualServices)")
-                mesh_observability = Server("\nMesh Telemetry\n(Traces)")
-
-    # ========== RATE LIMITING ==========
-    with Cluster("Rate Limiting & Traffic Control"):
-
-        with Cluster("openshift-operators (Limitador)"):
-            limitador_operator = Custom("\nLimitador Operator", OPERATOR_ICON)
-
-        with Cluster("limitador-system"):
-            limitador_service = Server("\nLimitador\n(Rate Limiting)")
-
-    # ========== CONNECTIVITY ==========
-    with Cluster("Hybrid Cloud Connectivity"):
-
-        with Cluster("openshift-operators (Connectivity)"):
-            connectivity_operator = Custom("\nConnectivity Link\nOperator", CONNECTIVITY_ICON)
-
-        with Cluster("skupper-site-controller"):
-            connectivity_service = Custom("\nSkupper\n(Service Interconnect)", CONNECTIVITY_ICON)
-
-    # ========== APPLICATION SERVICES ==========
-    with Cluster("Application Services"):
-        mesh_applications = Server("\nService Mesh\nApplications")
-        standard_applications = Server("\nStandard\nApplications")
-
-    with Cluster("Remote Services"):
-        remote_services = Server("\nOn-Premise/Cloud\nServices")
-
-    # =========================================================
-    # CONNECTIONS
-    # =========================================================
-
-    # --- OPERATOR MANAGEMENT (Orange) ---
-    api >> Edge(color="orange") >> keycloak_operator
-    api >> Edge(color="orange") >> authorino_operator
-    api >> Edge(color="orange") >> certmanager_operator
-    api >> Edge(color="orange") >> servicemesh_operator
-    api >> Edge(color="orange") >> limitador_operator
-    api >> Edge(color="orange") >> connectivity_operator
-
-    keycloak_operator >> Edge(color="orange") >> keycloak_server
-    authorino_operator >> Edge(color="orange") >> authorino_service
-    certmanager_operator >> Edge(color="orange") >> cert_manager
-    servicemesh_operator >> Edge(color="orange") >> istiod
-    limitador_operator >> Edge(color="orange") >> limitador_service
-    connectivity_operator >> Edge(color="orange") >> connectivity_service
-
-    # Keycloak internal
-    keycloak_server >> keycloak_realms
-
-    # Service mesh features
-    istiod >> [mtls_enforcement, traffic_management, mesh_observability]
-
-    # cert-manager issuers
-    cert_manager >> [ca_issuer, acme_issuer]
-
-    # --- EXTERNAL INTEGRATION ---
-    corporate_idp >> Edge(label="federation") >> keycloak_server
-    enterprise_pki >> Edge(color="red", label="issue certs") >> ca_issuer
-
-    # --- USER AUTHENTICATION FLOW (Green → Red enforcement) ---
-    end_users >> Edge(color="green", label="1. access") >> router
-    router >> Edge(color="red", label="2. AuthN/AuthZ") >> authorino_service
-    authorino_service >> Edge(color="red", label="3. validate") >> keycloak_server
-    keycloak_server >> Edge(label="OIDC token") >> api
-
-    # --- CERTIFICATE PROVISIONING ---
-    cert_manager >> Edge(color="red", label="provision") >> router
-    cert_manager >> Edge(color="red", label="provision") >> api
-    cert_manager >> Edge(color="red", label="provision") >> istiod
-
-    # --- SERVICE MESH TRAFFIC FLOW (Purple = mTLS) ---
-    router >> Edge(color="green", label="ingress") >> mesh_applications
-    mesh_applications >> Edge(color="purple", label="mTLS", style="bold") >> mesh_applications
-    istiod >> Edge(color="purple", label="configure sidecars") >> mesh_applications
-
-    # --- RATE LIMITING (Red = enforcement) ---
-    router >> Edge(color="red", label="rate limit check") >> limitador_service
-    limitador_service >> Edge(color="red", label="allow/deny") >> mesh_applications
-
-    # --- STANDARD APPS (bypass mesh) ---
-    router >> Edge(style="dashed", label="direct") >> standard_applications
-
-    # --- OBSERVABILITY INTEGRATION ---
-    mesh_observability >> Edge(style="dotted", label="export traces") >> Server("\nTempo/Jaeger")
-
-    # --- HYBRID CONNECTIVITY (Purple = secure tunnel) ---
-    connectivity_service >> Edge(color="purple", style="dotted", label="secure tunnel") >> remote_services
-    mesh_applications >> Edge(style="dotted") >> connectivity_service
-
-print("✓ Generated: output/baseline-ocp-04-security-servicemesh-stack.png")
-print("  → Namespace-based: rhsso-operator → istio-system → limitador-system")
-print("  → Color-coded: Orange=management, Green=traffic, Red=security, Purple=mTLS")
+dot.render(format='png', view=False, quiet=True)
+print("✓ Generated: output/baseline-ocp-04-security-servicemesh-stack.png (Graphviz HTML)")

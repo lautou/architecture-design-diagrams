@@ -407,36 +407,46 @@ row1_col1 >> row2_col1  # Vertical
 # Results in diagonal staircase
 ```
 
-### Known Trade-offs
+### Icon Centering Solution (Apr 2026)
 
-**Icon centering with long cluster labels (ROOT CAUSE IDENTIFIED - Apr 2026):** Single-node namespace clusters show left-alignment when cluster labels are long (e.g., "openshift-apiserver-operator"). This is a **Graphviz layout engine limitation**, not incorrect cluster settings or anchor edge issues.
+**RESOLVED:** All baseline diagrams now use direct Graphviz with HTML table labels for perfect icon centering, regardless of cluster label length.
 
-**Root cause:** Long cluster label names interfere with Graphviz's node centering algorithm. Testing confirms:
-- Short cluster labels (e.g., "ns-1", "ns-2"): nodes center perfectly ✓
-- Long cluster labels (e.g., "openshift-apiserver-operator"): nodes left-align ✗
-- This occurs even with NO anchor edges and correct cluster attributes (`margin=10, bgcolor=white, style=rounded, labeljust=c`)
+**Historical context:** The Python `diagrams` library had a limitation where long cluster labels (e.g., "openshift-apiserver-operator") caused icons to appear left-aligned within namespace rectangles. This was a Graphviz LP (Linear Programming) constraint solver limitation, not a configuration error.
 
-**Enhancement request filed:** https://gitlab.com/graphviz/graphviz/-/work_items/2832
+**Solution implemented:** Stephen North (Graphviz maintainer) provided a workaround in [GitLab issue #2832](https://gitlab.com/graphviz/graphviz/-/work_items/2832): Use HTML table labels instead of plain text labels. This bypasses the LP solver's centering algorithm and provides pixel-perfect centering.
 
-**Trade-off decision:**
-- **For accuracy**: Use full namespace names, accept variable centering (recommended for documentation)
-- **For perfect centering**: Use abbreviated cluster labels, lose namespace clarity
+**Implementation:** All 6 baseline diagrams converted from `diagrams` library to direct `graphviz.Digraph()` with HTML table labels:
 
-**When to accept:** If test diagrams with short labels show perfect centering, the cluster settings are correct. Variable centering with long labels is a known Graphviz limitation (verified on v13.1.2), not a configuration error. Workarounds (spacer nodes, reduced anchors, margin adjustments) don't fix the root cause.
+```python
+from graphviz import Digraph
+
+def html_node(icon_path, label_text):
+    """Create HTML table label for perfect centering"""
+    return f'''<<table border="0">
+<tr><td><img src="{icon_path}"/></td></tr>
+<tr><td>{label_text}</td></tr>
+</table>>'''
+
+# Usage
+dot.node('my_node', label=html_node(ICON_PATH, 'My Label'), shape='none')
+```
+
+**Benefits:**
+- ✅ Perfect icon centering with any cluster label length
+- ✅ Full control over Graphviz DOT attributes
+- ✅ Accurate OpenShift namespace names preserved
+- ✅ No trade-offs between accuracy and aesthetics
 
 ### Real-World Examples
 
-**Icon Centering Test Cases** - `diagrams/test-core-components.py`:
-- Demonstrates long vs short cluster label centering behavior
-- Shows that 2 namespaces don't center, but 3+ do (when labels are short)
-- Confirms root cause: cluster label length, not icon type or node label length
-- Reference for reproducing the Graphviz limitation
+All baseline diagrams now use direct Graphviz with HTML table labels:
 
 **RHOAI Functional Components** - `diagrams/baseline-reference/rhoai/functional-components.py`:
 - Two areas: Platform Components (top) + AI Projects (bottom)
 - 5×3 grid in applications namespace using vertical-only edges
 - 8 distributed anchor points for clean vertical stacking
 - Vertical stacking within namespaces to save space
+- Perfect icon centering with HTML table labels
 
 **RHOAI-OCP Integration** - `diagrams/baseline-reference/integration/rhoai-ocp-integration.py`:
 - 4-row layout: RHOAI platform (row 1) + OCP Compute/Observability (row 2) + OCP Security/Developer/Storage (row 3) + Core Components (row 4)
@@ -521,70 +531,79 @@ When creating engagement diagrams:
 
 ### Diagram Structure Template
 
+**IMPORTANT:** All baseline diagrams use direct Graphviz with HTML table labels for perfect icon centering.
+
 ```python
 """
-Diagram Title
+Diagram Title (Direct Graphviz)
 
 Brief description of what this diagram shows.
 
 Namespace organization: list key namespaces
 Color coding: explain color scheme used
 
-Note: Any special considerations
+Note: Uses direct Graphviz with HTML table labels for perfect icon centering
 """
 
-from diagrams import Diagram, Cluster, Edge
-# ... imports
+from graphviz import Digraph
+import os
 
-graph_attr = {
-    "fontsize": "14-16",
-    "bgcolor": "white",
-    "pad": "0.5",
-    "nodesep": "0.8-1.0",
-    "ranksep": "1.5-1.8"
-}
+# Get absolute paths for icons
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+PROJECT_ROOT = os.path.join(BASE_DIR, '../../..')
+ICON_PATH = os.path.join(PROJECT_ROOT, "custom_icons/...")
 
-with Diagram(
-    "Diagram Title",
-    show=False,
-    direction="TB or LR",
-    filename="output/diagram-name",
-    graph_attr=graph_attr
-):
-    # Diagram code with clear sections
-    pass
+# Helper function
+def html_node(icon_path, label_text):
+    """Create HTML table label for perfect centering"""
+    return f'''<<table border="0">
+<tr><td><img src="{icon_path}"/></td></tr>
+<tr><td>{label_text}</td></tr>
+</table>>'''
 
-print("✓ Generated: output/diagram-name.png")
+# Create diagram
+dot = Digraph("Diagram_Name", filename="output/diagram-name")
+dot.attr(rankdir="TB")  # or "LR"
+dot.attr(fontsize="14-16", bgcolor="white", pad="0.5", nodesep="0.8-1.0", ranksep="1.5-1.8")
+
+# Diagram code with clear sections
+dot.node('node_id', label=html_node(ICON_PATH, 'Label<br/>Text'), shape='none')
+
+# Render diagram
+dot.render(format='png', view=False, quiet=True)
+
+print("✓ Generated: output/diagram-name.png (Direct Graphviz with HTML tables)")
 print("  → Additional context about the diagram")
 ```
 
 ### Import Organization
 
+**All baseline diagrams use direct Graphviz:**
+
 ```python
-# Standard diagrams imports
-from diagrams import Diagram, Cluster, Edge
+# Direct Graphviz for perfect icon centering
+from graphviz import Digraph
+import os
 
-# Kubernetes components
-from diagrams.k8s.controlplane import APIServer
-from diagrams.k8s.ecosystem import Helm
+# Get absolute icon paths (CRITICAL for custom icons)
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+PROJECT_ROOT = os.path.join(BASE_DIR, '../../..')
 
-# On-premise/generic components
-from diagrams.onprem.monitoring import Prometheus
-from diagrams.onprem.compute import Server
-
-# Users/personas
-from diagrams.onprem.client import Users
+# Icon paths
+OPERATOR_ICON = os.path.join(PROJECT_ROOT, "custom_icons/Technology icons/operator/...")
+OPENSHIFT_ICON = os.path.join(PROJECT_ROOT, "custom_icons/Technology icons/Red Hat OpenShift/...")
+# ... other icons
 ```
 
-### Using Custom Icons
+### Using Custom Icons with Graphviz
 
-**CRITICAL: Custom icons require absolute paths**
+**CRITICAL: Icons require absolute paths and HTML table labels**
 
-When using Red Hat Technology icons via `Custom()`, always use absolute paths calculated from `__file__`:
+All baseline diagrams use direct Graphviz with HTML table labels for perfect icon centering:
 
 ```python
 import os
-from diagrams.custom import Custom
+from graphviz import Digraph
 
 # Calculate absolute paths at the top of the file
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
@@ -592,37 +611,32 @@ PROJECT_ROOT = os.path.join(BASE_DIR, '../../..')
 OPERATOR_ICON = os.path.join(PROJECT_ROOT, "custom_icons/Technology icons/operator/Technology_icon-Red_Hat-operator-Standard-RGB.Large_icon_transparent.png")
 AI_MODEL_ICON = os.path.join(PROJECT_ROOT, "custom_icons/Technology icons/AI model/Technology_icon-Red_Hat-AI_model-Standard-RGB.Large_icon_transparent.png")
 
-# Use in diagram with leading newline for proper spacing
-with Diagram(...):
-    operator = Custom("\nMy Operator", OPERATOR_ICON)
-    model = Custom("\nAI Model", AI_MODEL_ICON)
+# Helper function for HTML table labels
+def html_node(icon_path, label_text):
+    """Create HTML table label for perfect centering"""
+    return f'''<<table border="0">
+<tr><td><img src="{icon_path}"/></td></tr>
+<tr><td>{label_text}</td></tr>
+</table>>'''
+
+# Use in diagram
+dot = Digraph(...)
+dot.node('operator', label=html_node(OPERATOR_ICON, 'My Operator'), shape='none')
+dot.node('model', label=html_node(AI_MODEL_ICON, 'AI Model'), shape='none')
 ```
 
-**Why absolute paths:** Relative paths don't resolve correctly from nested diagram directories. Icons won't render (only text labels appear) when using relative paths like `"custom_icons/..."`.
+**Why absolute paths:** Relative paths don't resolve correctly from nested diagram directories. Icons won't render when using relative paths like `"custom_icons/..."`.
 
-**Symptom if broken:** Diagrams generate without errors, but Custom icons don't appear - only text labels show.
+**Why HTML table labels:** Provides pixel-perfect icon centering regardless of cluster label length. See [Icon Centering Solution](#icon-centering-solution-apr-2026) for details.
 
-**IMPORTANT: Add leading newline to all labels**
-
-Always prefix labels with `\n` to create vertical spacing between icon images and label text:
+**HTML label formatting:** Use `<br/>` for line breaks in label text:
 
 ```python
-# CORRECT - has leading newline for spacing
-dashboard = Custom("\nDashboard", DASHBOARD_ICON)
-operator = Custom("\nRed Hat\nOpenShift AI\nOperator", OPERATOR_ICON)
+# Multi-line label
+operator = html_node(OPERATOR_ICON, 'Red Hat<br/>OpenShift AI<br/>Operator')
 
-# WRONG - label text touches icon bottom edge
-dashboard = Custom("Dashboard", DASHBOARD_ICON)
-operator = Custom("Red Hat\nOpenShift AI\nOperator", OPERATOR_ICON)
-```
-
-**Why:** The `node_attr` margin parameter controls padding around the entire node, not internal spacing between the icon image and label text. Without the leading newline, labels touch the bottom of icons.
-
-**Also applies to standard library icons** (Prometheus, Tempo, etc.) when spacing is needed:
-
-```python
-prometheus = Prometheus("\nPrometheus\nData Science\nMonitoring Stack")
-tempo = Tempo("\nTempo\nData Science\nTempoMonolithic")
+# Single line
+dashboard = html_node(DASHBOARD_ICON, 'Dashboard')
 ```
 
 ---

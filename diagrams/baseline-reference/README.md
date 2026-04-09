@@ -168,14 +168,30 @@ When adapting for customer engagements:
 - Use the engagement-specific diagrams to show actual customer deployments
 - Update these baselines as new operators/features become available
 
-### Known Limitation: Icon Centering
+### Implementation: Direct Graphviz with HTML Table Labels
 
-Some icons may appear left-aligned within their namespace rectangles due to a **Graphviz layout engine limitation** with long cluster label names. This is not a diagram error:
-- **Root cause**: Long cluster labels (e.g., "openshift-apiserver-operator") interfere with Graphviz's node centering algorithm
-- **Verified**: Graphviz v13.1.2, diagrams v0.25.1 (latest versions as of Apr 2026)
-- **Enhancement request**: https://gitlab.com/graphviz/graphviz/-/work_items/2832
-- **Trade-off**: We use accurate namespace names for clarity, accepting variable centering
-- **Test cases**: See `../test-core-components.py` for reproduction examples
+All baseline diagrams use **direct Graphviz** with **HTML table labels** for perfect icon centering, regardless of cluster label length.
+
+**Why this approach:**
+- ✅ Perfect icon centering with any cluster label length (including long namespace names like "openshift-apiserver-operator")
+- ✅ Full control over Graphviz DOT attributes
+- ✅ Accurate OpenShift namespace names preserved
+- ✅ Solves the Python `diagrams` library limitation documented in [GitLab issue #2832](https://gitlab.com/graphviz/graphviz/-/work_items/2832)
+
+**Implementation pattern:**
+```python
+from graphviz import Digraph
+
+def html_node(icon_path, label_text):
+    return f'''<<table border="0">
+<tr><td><img src="{icon_path}"/></td></tr>
+<tr><td>{label_text}</td></tr>
+</table>>'''
+
+dot.node('node_id', label=html_node(ICON_PATH, 'Label<br/>Text'), shape='none')
+```
+
+See `CLAUDE.md` for complete code style guidelines and the "Icon Centering Solution" section for historical context.
 
 ## Related Documentation
 
