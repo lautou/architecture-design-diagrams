@@ -95,19 +95,19 @@ with dot.subgraph(name='cluster_ocp') as ocp:
             compute.attr(label='Compute And Acceleration Services', margin='10', bgcolor='lightyellow')
 
             with compute.subgraph(name='cluster_gpu') as gpu_cluster:
-                gpu_cluster.attr(label='NVIDIA GPU\nOperator', margin='10', bgcolor='white', style='rounded', labeljust='c')
+                gpu_cluster.attr(label='nvidia-gpu-operator', margin='10', bgcolor='white', style='rounded', labeljust='c')
                 gpu_cluster.node('gpu_operator', label=html_node(NVIDIA_ICON, 'NVIDIA GPU<br/>Operator'), shape='none')
 
             with compute.subgraph(name='cluster_nfd') as nfd_cluster:
-                nfd_cluster.attr(label='OpenShift\nNFD', margin='10', bgcolor='white', style='rounded', labeljust='c')
+                nfd_cluster.attr(label='openshift-nfd', margin='10', bgcolor='white', style='rounded', labeljust='c')
                 nfd_cluster.node('nfd', label=html_node(NFD_ICON, 'Node Feature<br/>Discovery Operator'), shape='none')
 
             with compute.subgraph(name='cluster_kueue') as kueue_cluster:
-                kueue_cluster.attr(label='OpenShift\nKueue\nOperator', margin='10', bgcolor='white', style='rounded', labeljust='c')
+                kueue_cluster.attr(label='openshift-kueue-operator', margin='10', bgcolor='white', style='rounded', labeljust='c')
                 kueue_cluster.node('kueue', label=html_node(KUEUE_ICON, 'Red Hat Build Of<br/>Kueue Operator'), shape='none')
 
             with compute.subgraph(name='cluster_lws') as lws_cluster:
-                lws_cluster.attr(label='OpenShift\nLeader Worker Set\nOperator', margin='10', bgcolor='white', style='rounded', labeljust='c')
+                lws_cluster.attr(label='openshift-leader-worker-set-operator', margin='10', bgcolor='white', style='rounded', labeljust='c')
                 lws_cluster.node('lws', label=html_node(LWS_ICON, 'Red Hat Build Of<br/>Leader Worker Set<br/>Operator'), shape='none')
 
         # Observability Services
@@ -115,39 +115,39 @@ with dot.subgraph(name='cluster_ocp') as ocp:
             obs.attr(label='Observability Services', margin='10', bgcolor='lightyellow')
 
             with obs.subgraph(name='cluster_monitoring') as monitoring_cluster:
-                monitoring_cluster.attr(label='OpenShift\nMonitoring', margin='10', bgcolor='white', style='rounded', labeljust='c')
+                monitoring_cluster.attr(label='openshift-monitoring', margin='10', bgcolor='white', style='rounded', labeljust='c')
                 monitoring_cluster.node('cluster_monitoring', label=html_node(MONITORING_ICON, 'Cluster Monitoring'), shape='none')
 
             with obs.subgraph(name='cluster_udwm') as udwm_cluster:
-                udwm_cluster.attr(label='OpenShift User\nWorkload\nMonitoring', margin='10', bgcolor='white', style='rounded', labeljust='c')
+                udwm_cluster.attr(label='openshift-user-workload-monitoring', margin='10', bgcolor='white', style='rounded', labeljust='c')
                 udwm_cluster.node('udwm', label=html_node(MONITORING_ICON, 'User Defined<br/>Workload Monitoring'), shape='none')
 
             with obs.subgraph(name='cluster_grafana') as grafana_cluster:
-                grafana_cluster.attr(label='Grafana\nOperator', margin='10', bgcolor='white', style='rounded', labeljust='c')
+                grafana_cluster.attr(label='openshift-operators', margin='10', bgcolor='white', style='rounded', labeljust='c')
                 grafana_cluster.node('grafana', label=html_node(GRAFANA_ICON, 'Grafana<br/>Operator'), shape='none')
 
             with obs.subgraph(name='cluster_cluster_obs') as cluster_obs_cluster:
-                cluster_obs_cluster.attr(label='OpenShift\nObservability\nOperator', margin='10', bgcolor='white', style='rounded', labeljust='c')
+                cluster_obs_cluster.attr(label='openshift-cluster-observability-operator', margin='10', bgcolor='white', style='rounded', labeljust='c')
                 cluster_obs_cluster.node('cluster_observability', label=html_node(CLUSTER_OBSERVABILITY_ICON, 'Cluster Observability<br/>Operator'), shape='none')
 
             with obs.subgraph(name='cluster_logging') as logging_cluster:
-                logging_cluster.attr(label='OpenShift\nLogging', margin='10', bgcolor='white', style='rounded', labeljust='c')
+                logging_cluster.attr(label='openshift-logging', margin='10', bgcolor='white', style='rounded', labeljust='c')
                 logging_cluster.node('openshift_logging', label=html_node(LOGGING_ICON, 'OpenShift<br/>Logging Operator'), shape='none')
 
             with obs.subgraph(name='cluster_loki') as loki_cluster:
-                loki_cluster.attr(label='OpenShift\nOperators\nRedHat', margin='10', bgcolor='white', style='rounded', labeljust='c')
+                loki_cluster.attr(label='openshift-operators-redhat', margin='10', bgcolor='white', style='rounded', labeljust='c')
                 loki_cluster.node('loki', label=html_node(LOKI_ICON, 'Loki<br/>Operator'), shape='none')
 
             with obs.subgraph(name='cluster_otel') as otel_cluster:
-                otel_cluster.attr(label='OpenShift\nOpenTelemetry\nOperator', margin='10', bgcolor='white', style='rounded', labeljust='c')
+                otel_cluster.attr(label='openshift-opentelemetry-operator', margin='10', bgcolor='white', style='rounded', labeljust='c')
                 otel_cluster.node('opentelemetry', label=html_node(OPENTELEMETRY_ICON, 'Red Hat Build Of<br/>OpenTelemetry'), shape='none')
 
             with obs.subgraph(name='cluster_tempo') as tempo_cluster:
-                tempo_cluster.attr(label='OpenShift\nTempo Operator', margin='10', bgcolor='white', style='rounded', labeljust='c')
+                tempo_cluster.attr(label='openshift-tempo-operator', margin='10', bgcolor='white', style='rounded', labeljust='c')
                 tempo_cluster.node('tempo', label=html_node(TEMPO_ICON, 'Tempo<br/>Operator'), shape='none')
 
             with obs.subgraph(name='cluster_netobserv') as netobserv_cluster:
-                netobserv_cluster.attr(label='OpenShift\nNetObserv\nOperator', margin='10', bgcolor='white', style='rounded', labeljust='c')
+                netobserv_cluster.attr(label='netobserv', margin='10', bgcolor='white', style='rounded', labeljust='c')
                 netobserv_cluster.node('netobserv', label=html_node(NETWORK_OBSERVABILITY_ICON, 'Network<br/>Observability<br/>Operator'), shape='none')
 
         # Security & Identity Services
@@ -155,11 +155,11 @@ with dot.subgraph(name='cluster_ocp') as ocp:
             security.attr(label='Security & Identity Services', margin='10', bgcolor='lightyellow')
 
             with security.subgraph(name='cluster_cert_manager') as cert_cluster:
-                cert_cluster.attr(label='Cert Manager\nOperator', margin='10', bgcolor='white', style='rounded', labeljust='c')
+                cert_cluster.attr(label='cert-manager-operator', margin='10', bgcolor='white', style='rounded', labeljust='c')
                 cert_cluster.node('cert_manager', label=html_node(CERT_MANAGER_ICON, 'Cert Manager For<br/>Red Hat OpenShift'), shape='none')
 
             with security.subgraph(name='cluster_kuadrant') as kuadrant_cluster:
-                kuadrant_cluster.attr(label='Kuadrant\nSystem', margin='10', bgcolor='white', style='rounded', labeljust='c')
+                kuadrant_cluster.attr(label='kuadrant-system', margin='10', bgcolor='white', style='rounded', labeljust='c')
                 kuadrant_cluster.node('authorino', label=html_node(AUTHORINO_ICON, 'Authorino<br/>Operator'), shape='none')
                 kuadrant_cluster.node('limitador', label=html_node(LIMITADOR_ICON, 'Limitador<br/>Operator'), shape='none')
                 kuadrant_cluster.node('dns', label=html_node(DNS_ICON, 'DNS<br/>Operator'), shape='none')
@@ -174,15 +174,15 @@ with dot.subgraph(name='cluster_ocp') as ocp:
             developer.attr(label='Developer Services', margin='10', bgcolor='lightyellow')
 
             with developer.subgraph(name='cluster_builds') as builds_cluster:
-                builds_cluster.attr(label='OpenShift\nBuilds', margin='10', bgcolor='white', style='rounded', labeljust='c')
+                builds_cluster.attr(label='openshift-builds', margin='10', bgcolor='white', style='rounded', labeljust='c')
                 builds_cluster.node('builds', label=html_node(BUILDS_ICON, 'Builds For<br/>Red Hat OpenShift'), shape='none')
 
             with developer.subgraph(name='cluster_pipelines') as pipelines_cluster:
-                pipelines_cluster.attr(label='OpenShift\nPipelines', margin='10', bgcolor='white', style='rounded', labeljust='c')
+                pipelines_cluster.attr(label='openshift-pipelines', margin='10', bgcolor='white', style='rounded', labeljust='c')
                 pipelines_cluster.node('pipelines', label=html_node(PIPELINES_ICON, 'OpenShift<br/>Pipelines Operator'), shape='none')
 
             with developer.subgraph(name='cluster_gitops') as gitops_cluster:
-                gitops_cluster.attr(label='OpenShift\nGitOps\nOperator', margin='10', bgcolor='white', style='rounded', labeljust='c')
+                gitops_cluster.attr(label='openshift-gitops-operator', margin='10', bgcolor='white', style='rounded', labeljust='c')
                 gitops_cluster.node('gitops', label=html_node(GITOPS_ICON, 'OpenShift<br/>GitOps Operator'), shape='none')
 
         # Storage Services
@@ -190,7 +190,7 @@ with dot.subgraph(name='cluster_ocp') as ocp:
             storage.attr(label='Storage Services', margin='10', bgcolor='lightyellow')
 
             with storage.subgraph(name='cluster_odf') as odf_cluster:
-                odf_cluster.attr(label='OpenShift\nStorage', margin='10', bgcolor='white', style='rounded', labeljust='c')
+                odf_cluster.attr(label='openshift-storage', margin='10', bgcolor='white', style='rounded', labeljust='c')
                 odf_cluster.node('odf', label=html_node(ODF_ICON, 'OpenShift Data<br/>Foundation<br/>Operator'), shape='none')
 
         # Core Components (20 essential components - no namespace rectangles, just icons)
@@ -238,15 +238,15 @@ with dot.subgraph(name='cluster_ocp') as ocp:
         rhoai.attr(label='Red Hat OpenShift AI Platform', margin='15', bgcolor='lightblue')
 
         with rhoai.subgraph(name='cluster_rhoai_apps') as apps:
-            apps.attr(label='RedHat ODS\nApplications', margin='10', bgcolor='white', style='rounded', labeljust='c')
+            apps.attr(label='redhat-ods-applications', margin='10', bgcolor='white', style='rounded', labeljust='c')
             apps.node('rhoai_platform', label=html_node(RHOAI_ICON, 'Red Hat<br/>OpenShift AI'), shape='none')
 
         with rhoai.subgraph(name='cluster_rhoai_mon') as mon:
-            mon.attr(label='RedHat ODS\nMonitoring', margin='10', bgcolor='white', style='rounded', labeljust='c')
+            mon.attr(label='redhat-ods-monitoring', margin='10', bgcolor='white', style='rounded', labeljust='c')
             mon.node('rhoai_monitoring', label=html_node(CLUSTER_OBSERVABILITY_ICON, 'RHOAI<br/>Monitoring'), shape='none')
 
         with rhoai.subgraph(name='cluster_notebooks') as notebooks:
-            notebooks.attr(label='RHODS\nNotebooks', margin='10', bgcolor='white', style='rounded', labeljust='c')
+            notebooks.attr(label='rhods-notebooks', margin='10', bgcolor='white', style='rounded', labeljust='c')
             notebooks.node('jupyter_workbench', label=html_node(JUPYTER_ICON, 'Jupyter<br/>Workbench'), shape='none')
             notebooks.node('vscode_workbench', label=html_node(VSCODE_ICON, 'Code Server<br/>Workbench'), shape='none')
 

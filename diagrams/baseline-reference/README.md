@@ -173,9 +173,9 @@ When adapting for customer engagements:
 All baseline diagrams use **direct Graphviz** with **HTML table labels** for perfect icon centering, regardless of cluster label length.
 
 **Why this approach:**
-- ✅ Perfect icon centering with any cluster label length (including long namespace names like "openshift-apiserver-operator")
+- ✅ Perfect icon centering with any cluster label length (e.g., `openshift-cluster-observability-operator`)
 - ✅ Full control over Graphviz DOT attributes
-- ✅ Accurate OpenShift namespace names preserved
+- ✅ Accurate OpenShift namespace names with dashes (e.g., `openshift-monitoring`, `redhat-ods-applications`, `rhods-notebooks`)
 - ✅ Solves the Python `diagrams` library limitation documented in [GitLab issue #2832](https://gitlab.com/graphviz/graphviz/-/work_items/2832)
 
 **Implementation pattern:**

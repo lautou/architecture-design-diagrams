@@ -432,9 +432,9 @@ dot.node('my_node', label=html_node(ICON_PATH, 'My Label'), shape='none')
 ```
 
 **Benefits:**
-- ✅ Perfect icon centering with any cluster label length
+- ✅ Perfect icon centering with any cluster label length (including long names like `openshift-cluster-observability-operator`)
 - ✅ Full control over Graphviz DOT attributes
-- ✅ Accurate OpenShift namespace names preserved
+- ✅ Accurate OpenShift namespace names with dashes (e.g., `openshift-monitoring`, `redhat-ods-applications`)
 - ✅ No trade-offs between accuracy and aesthetics
 
 ### Real-World Examples
