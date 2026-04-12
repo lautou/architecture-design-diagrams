@@ -1,0 +1,281 @@
+ai-project-namespace-x: {
+  label: AI project namespace X
+
+  rag-data-ingestion: {
+    label: RAG data ingestion pipeline
+
+    system-dag-driver: {
+      label: system-dag-driver
+      shape: rectangle
+      icon: ../../../custom_icons/kubeflow-icon.png
+    }
+
+    import-pdfs: {
+      label: import-pdfs
+
+      system-driver: {
+        label: system-driver
+        shape: rectangle
+        icon: ../../../custom_icons/kubeflow-icon.png
+      }
+
+      system-impl: {
+        label: system-impl
+
+        boto3: {
+          icon: ../../../custom_icons/boto3-icon.png
+        }
+
+        requests: {
+          icon: ../../../custom_icons/requests-icon.png
+        }
+      }
+    }
+
+    download-docling-models: {
+      label: download-docling-models
+
+      system-driver: {
+        label: system-driver
+        shape: rectangle
+        icon: ../../../custom_icons/kubeflow-icon.png
+      }
+
+      system-impl: {
+        label: system-impl
+        shape: rectangle
+        icon: ../../../custom_icons/docling.jpeg
+      }
+    }
+
+    create-pdf-splits: {
+      label: create-pdf-splits
+
+      system-driver: {
+        label: system-driver
+        shape: rectangle
+        icon: ../../../custom_icons/kubeflow-icon.png
+      }
+
+      system-impl: {
+        label: system-impl
+        shape: rectangle
+        icon: ../../../custom_icons/docling.jpeg
+      }
+    }
+
+    docling-convert-json: {
+      label: docling-convert-json
+
+      system-driver: {
+        label: system-driver
+        shape: rectangle
+        icon: ../../../custom_icons/kubeflow-icon.png
+      }
+
+      system-impl: {
+        label: system-impl
+        shape: rectangle
+        icon: ../../../custom_icons/docling.jpeg
+      }
+    }
+
+    docling-chunk: {
+      label: docling-chunk
+
+      system-driver: {
+        label: system-driver
+        shape: rectangle
+        icon: ../../../custom_icons/kubeflow-icon.png
+      }
+
+      system-impl: {
+        label: system-impl
+        shape: rectangle
+        icon: ../../../custom_icons/docling.jpeg
+      }
+    }
+
+    collect-chunks: {
+      label: collect-chunks
+
+      system-driver: {
+        label: system-driver
+        shape: rectangle
+        icon: ../../../custom_icons/kubeflow-icon.png
+      }
+
+      system-impl: {
+        label: system-impl
+        shape: rectangle
+        icon: ../../../custom_icons/docling.jpeg
+      }
+    }
+
+    generate-embeddings: {
+      label: generate-embeddings
+
+      system-driver: {
+        label: system-driver
+        shape: rectangle
+        icon: ../../../custom_icons/kubeflow-icon.png
+      }
+
+      system-impl: {
+        label: system-impl
+        shape: rectangle
+        icon: ../../../custom_icons/docling.jpeg
+      }
+    }
+
+    store-in-vectordb: {
+      label: store-in-vectordb
+
+      system-driver: {
+        label: system-driver
+        shape: rectangle
+        icon: ../../../custom_icons/kubeflow-icon.png
+      }
+
+      system-impl: {
+        label: system-impl
+        shape: rectangle
+        icon: ../../../custom_icons/docling.jpeg
+      }
+    }
+
+    # Connections
+    # DAG driver forks to parallel tasks
+    system-dag-driver -> import-pdfs
+    system-dag-driver -> download-docling-models
+
+    # Parallel execution paths
+    import-pdfs -> create-pdf-splits
+    download-docling-models -> docling-convert-json
+    create-pdf-splits -> docling-convert-json
+    docling-convert-json -> docling-chunk
+    docling-chunk -> collect-chunks
+    collect-chunks -> generate-embeddings
+    generate-embeddings -> store-in-vectordb
+  }
+
+  ai-pipeline-server: {
+    label: AI pipeline server
+
+    ds-pipeline-metadata-envoy: {
+      label: ds-pipeline-metadata-envoy
+      shape: rectangle
+      icon: ../../../custom_icons/kubeflow-icon.png
+    }
+
+    ds-pipeline-metadata-grpc: {
+      label: ds-pipeline-metadata-grpc
+      shape: rectangle
+      icon: ../../../custom_icons/kubeflow-icon.png
+    }
+
+    ds-pipeline-persistentagent: {
+      label: ds-pipeline-persistentagent
+      shape: rectangle
+      icon: ../../../custom_icons/kubeflow-icon.png
+    }
+
+    ds-pipeline: {
+      label: ds-pipeline
+      shape: rectangle
+      icon: ../../../custom_icons/kubeflow-icon.png
+    }
+
+    ds-pipeline-scheduledworkflow: {
+      label: ds-pipeline-scheduledworkflow
+      shape: rectangle
+      icon: ../../../custom_icons/kubeflow-icon.png
+    }
+
+    ds-pipeline-workflow-controller: {
+      label: ds-pipeline-workflow-controller
+      shape: rectangle
+      icon: ../../../custom_icons/kubeflow-icon.png
+    }
+  }
+}
+
+HA database services: {
+  label: HA database services
+
+  pgVector database: {
+    label: pgVector database
+    shape: rectangle
+    icon: ../../../custom_icons/postgresql-icon.png
+  }
+
+  AI pipelines database: {
+    label: AI pipelines database
+    shape: rectangle
+    icon: ../../../custom_icons/mariadb-icon.png
+  }
+}
+
+Storage service: {
+  label: Storage service
+
+  HTTP source documents: {
+    label: HTTP source documents
+    shape: rectangle
+    icon: ../../../custom_icons/http-server-icon.png
+  }
+
+  S3 source documents: {
+    label: S3 source documents
+    shape: rectangle
+    icon: ../../../custom_icons/Icons/Bucket/Icon-Red_Hat-Bucket-A-Red-RGB.Large_icon_transparent.png
+  }
+
+  S3 AI pipelines artifacts: {
+    label: S3 AI pipelines artifacts
+    shape: rectangle
+    icon: ../../../custom_icons/Icons/Bucket/Icon-Red_Hat-Bucket-A-Red-RGB.Large_icon_transparent.png
+  }
+}
+
+# S3 source documents to import pipeline (pull operation - dotted)
+Storage service.S3 source documents -> ai-project-namespace-x.rag-data-ingestion.import-pdfs.system-impl.boto3: {
+  style.stroke-dash: 5
+}
+
+# HTTP source documents to import pipeline (pull operation - dotted)
+Storage service.HTTP source documents -> ai-project-namespace-x.rag-data-ingestion.import-pdfs.system-impl.requests: {
+  style.stroke-dash: 5
+}
+
+# Pipeline writes to external database
+ai-project-namespace-x.rag-data-ingestion.store-in-vectordb -> HA database services.pgVector database
+
+# AI pipeline server uses metadata database (bidirectional)
+ai-project-namespace-x.ai-pipeline-server -> HA database services.AI pipelines database
+HA database services.AI pipelines database -> ai-project-namespace-x.ai-pipeline-server: {
+  style.stroke-dash: 5
+}
+
+# AI project namespace uses S3 artifact storage (bidirectional)
+ai-project-namespace-x -> Storage service.S3 AI pipelines artifacts
+Storage service.S3 AI pipelines artifacts -> ai-project-namespace-x: {
+  style.stroke-dash: 5
+}
+
+# Legend
+legend: {
+  label: "Data Flow Convention"
+
+  push: {
+    source: {label: "source"}
+    destination: {label: "destination"}
+    source -> destination
+  }
+
+  pull: {
+    source: {label: "source"}
+    destination: {label: "destination"}
+    source -> destination: {style.stroke-dash: 5}
+  }
+}
