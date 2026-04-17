@@ -1,279 +1,328 @@
-ai-project-namespace-x: {
-  label: AI project namespace X
+Red Hat OpenShift AI: {
+  label: Red Hat OpenShift AI
 
-  rag-data-ingestion: {
-    label: RAG data ingestion pipeline
+  ai-project-namespace-x: {
+    label: AI project namespace X
+    direction: down
 
-    system-dag-driver: {
-      label: system-dag-driver
-      shape: rectangle
-      icon: ../../../custom_icons/kubeflow-icon.png
-    }
+    rag-data-ingestion: {
+      label: RAG data ingestion pipeline
 
-    import-pdfs: {
-      label: import-pdfs
-
-      system-driver: {
-        label: system-driver
+      system-dag-driver: {
+        label: system-dag-driver
         shape: rectangle
         icon: ../../../custom_icons/kubeflow-icon.png
       }
 
-      system-impl: {
-        label: system-impl
+      import-pdfs: {
+        label: import-pdfs
 
-        boto3: {
-          icon: ../../../custom_icons/boto3-icon.png
+        system-driver: {
+          label: system-driver
+          shape: rectangle
+          icon: ../../../custom_icons/kubeflow-icon.png
         }
 
-        requests: {
+        system-impl: {
+          label: system-impl
+
+          boto3: {
+            icon: ../../../custom_icons/boto3-icon.png
+          }
+
+          requests: {
+            icon: ../../../custom_icons/requests-icon.png
+          }
+        }
+      }
+
+      download-docling-models: {
+        label: download-docling-models
+
+        system-driver: {
+          label: system-driver
+          shape: rectangle
+          icon: ../../../custom_icons/kubeflow-icon.png
+        }
+
+        system-impl: {
+          label: system-impl
+          shape: rectangle
+          icon: ../../../custom_icons/docling.jpeg
+        }
+      }
+
+      create-pdf-splits: {
+        label: create-pdf-splits
+
+        system-driver: {
+          label: system-driver
+          shape: rectangle
+          icon: ../../../custom_icons/kubeflow-icon.png
+        }
+
+        system-impl: {
+          label: system-impl
+          shape: rectangle
+          icon: ../../../custom_icons/python-icon.png
+        }
+      }
+
+      docling-convert-json: {
+        label: docling-convert-json
+
+        system-driver: {
+          label: system-driver
+          shape: rectangle
+          icon: ../../../custom_icons/kubeflow-icon.png
+        }
+
+        system-impl: {
+          label: system-impl
+          shape: rectangle
+          icon: ../../../custom_icons/docling.jpeg
+        }
+      }
+
+      docling-chunk: {
+        label: docling-chunk
+
+        system-driver: {
+          label: system-driver
+          shape: rectangle
+          icon: ../../../custom_icons/kubeflow-icon.png
+        }
+
+        system-impl: {
+          label: system-impl
+          shape: rectangle
+          icon: ../../../custom_icons/docling.jpeg
+        }
+      }
+
+      collect-chunks: {
+        label: collect-chunks
+
+        system-driver: {
+          label: system-driver
+          shape: rectangle
+          icon: ../../../custom_icons/kubeflow-icon.png
+        }
+
+        system-impl: {
+          label: system-impl
+          shape: rectangle
+          icon: ../../../custom_icons/boto3-icon.png
+        }
+      }
+
+      generate-embeddings: {
+        label: generate-embeddings
+
+        system-driver: {
+          label: system-driver
+          shape: rectangle
+          icon: ../../../custom_icons/kubeflow-icon.png
+        }
+
+        system-impl: {
+          label: system-impl
+          shape: rectangle
           icon: ../../../custom_icons/requests-icon.png
         }
       }
+
+      store-in-vectordb: {
+        label: store-in-vectordb
+
+        system-driver: {
+          label: system-driver
+          shape: rectangle
+          icon: ../../../custom_icons/kubeflow-icon.png
+        }
+
+        system-impl: {
+          label: system-impl
+          shape: rectangle
+          icon: ../../../custom_icons/psycopg-icon.png
+        }
+      }
+
+      # Connections
+      # DAG driver forks to parallel tasks (execution flow - thick red)
+      system-dag-driver -> import-pdfs: {style.stroke: "#e03131"; style.stroke-width: 3}
+      system-dag-driver -> download-docling-models: {style.stroke: "#e03131"; style.stroke-width: 3}
+
+      # Parallel execution paths (execution flow - thick red)
+      import-pdfs -> create-pdf-splits: {style.stroke: "#e03131"; style.stroke-width: 3}
+      download-docling-models -> docling-convert-json: {style.stroke: "#e03131"; style.stroke-width: 3}
+      create-pdf-splits -> docling-convert-json: {style.stroke: "#e03131"; style.stroke-width: 3}
+      docling-convert-json -> docling-chunk: {style.stroke: "#e03131"; style.stroke-width: 3}
+      docling-chunk -> collect-chunks: {style.stroke: "#e03131"; style.stroke-width: 3}
+      collect-chunks -> generate-embeddings: {style.stroke: "#e03131"; style.stroke-width: 3}
+      generate-embeddings -> store-in-vectordb: {style.stroke: "#e03131"; style.stroke-width: 3}
     }
 
-    download-docling-models: {
-      label: download-docling-models
+    ai-pipeline-server: {
+      label: AI pipeline server
+      direction: down
+      grid-gap: 10
 
-      system-driver: {
-        label: system-driver
+      ds-pipeline-metadata-envoy: {
+        label: ds-pipeline-metadata-envoy
         shape: rectangle
         icon: ../../../custom_icons/kubeflow-icon.png
       }
 
-      system-impl: {
-        label: system-impl
-        shape: rectangle
-        icon: ../../../custom_icons/docling.jpeg
-      }
-    }
-
-    create-pdf-splits: {
-      label: create-pdf-splits
-
-      system-driver: {
-        label: system-driver
+      ds-pipeline-metadata-grpc: {
+        label: ds-pipeline-metadata-grpc
         shape: rectangle
         icon: ../../../custom_icons/kubeflow-icon.png
       }
 
-      system-impl: {
-        label: system-impl
-        shape: rectangle
-        icon: ../../../custom_icons/docling.jpeg
-      }
-    }
-
-    docling-convert-json: {
-      label: docling-convert-json
-
-      system-driver: {
-        label: system-driver
+      ds-pipeline-persistentagent: {
+        label: ds-pipeline-persistentagent
         shape: rectangle
         icon: ../../../custom_icons/kubeflow-icon.png
       }
 
-      system-impl: {
-        label: system-impl
-        shape: rectangle
-        icon: ../../../custom_icons/docling.jpeg
-      }
-    }
-
-    docling-chunk: {
-      label: docling-chunk
-
-      system-driver: {
-        label: system-driver
+      ds-pipeline: {
+        label: ds-pipeline
         shape: rectangle
         icon: ../../../custom_icons/kubeflow-icon.png
       }
 
-      system-impl: {
-        label: system-impl
-        shape: rectangle
-        icon: ../../../custom_icons/docling.jpeg
-      }
-    }
-
-    collect-chunks: {
-      label: collect-chunks
-
-      system-driver: {
-        label: system-driver
+      ds-pipeline-scheduledworkflow: {
+        label: ds-pipeline-scheduledworkflow
         shape: rectangle
         icon: ../../../custom_icons/kubeflow-icon.png
       }
 
-      system-impl: {
-        label: system-impl
-        shape: rectangle
-        icon: ../../../custom_icons/docling.jpeg
-      }
-    }
-
-    generate-embeddings: {
-      label: generate-embeddings
-
-      system-driver: {
-        label: system-driver
+      ds-pipeline-workflow-controller: {
+        label: ds-pipeline-workflow-controller
         shape: rectangle
         icon: ../../../custom_icons/kubeflow-icon.png
       }
 
-      system-impl: {
-        label: system-impl
+      # Force vertical layout with invisible edges
+      ds-pipeline-metadata-envoy -> ds-pipeline-metadata-grpc: {style.opacity: 0}
+      ds-pipeline-metadata-grpc -> ds-pipeline-persistentagent: {style.opacity: 0}
+      ds-pipeline-persistentagent -> ds-pipeline: {style.opacity: 0}
+      ds-pipeline -> ds-pipeline-scheduledworkflow: {style.opacity: 0}
+      ds-pipeline-scheduledworkflow -> ds-pipeline-workflow-controller: {style.opacity: 0}
+    }
+
+    model-servers: {
+      label: Model servers (KServe)
+
+      embedding-model: {
+        label: Embedding model
         shape: rectangle
-        icon: ../../../custom_icons/docling.jpeg
+        icon: ../../../custom_icons/vllm-icon.png
       }
-    }
-
-    store-in-vectordb: {
-      label: store-in-vectordb
-
-      system-driver: {
-        label: system-driver
-        shape: rectangle
-        icon: ../../../custom_icons/kubeflow-icon.png
-      }
-
-      system-impl: {
-        label: system-impl
-        shape: rectangle
-        icon: ../../../custom_icons/docling.jpeg
-      }
-    }
-
-    # Connections
-    # DAG driver forks to parallel tasks
-    system-dag-driver -> import-pdfs
-    system-dag-driver -> download-docling-models
-
-    # Parallel execution paths
-    import-pdfs -> create-pdf-splits
-    download-docling-models -> docling-convert-json
-    create-pdf-splits -> docling-convert-json
-    docling-convert-json -> docling-chunk
-    docling-chunk -> collect-chunks
-    collect-chunks -> generate-embeddings
-    generate-embeddings -> store-in-vectordb
-  }
-
-  ai-pipeline-server: {
-    label: AI pipeline server
-
-    ds-pipeline-metadata-envoy: {
-      label: ds-pipeline-metadata-envoy
-      shape: rectangle
-      icon: ../../../custom_icons/kubeflow-icon.png
-    }
-
-    ds-pipeline-metadata-grpc: {
-      label: ds-pipeline-metadata-grpc
-      shape: rectangle
-      icon: ../../../custom_icons/kubeflow-icon.png
-    }
-
-    ds-pipeline-persistentagent: {
-      label: ds-pipeline-persistentagent
-      shape: rectangle
-      icon: ../../../custom_icons/kubeflow-icon.png
-    }
-
-    ds-pipeline: {
-      label: ds-pipeline
-      shape: rectangle
-      icon: ../../../custom_icons/kubeflow-icon.png
-    }
-
-    ds-pipeline-scheduledworkflow: {
-      label: ds-pipeline-scheduledworkflow
-      shape: rectangle
-      icon: ../../../custom_icons/kubeflow-icon.png
-    }
-
-    ds-pipeline-workflow-controller: {
-      label: ds-pipeline-workflow-controller
-      shape: rectangle
-      icon: ../../../custom_icons/kubeflow-icon.png
     }
   }
 }
 
-HA database services: {
-  label: HA database services
-
-  pgVector database: {
-    label: pgVector database
-    shape: rectangle
-    icon: ../../../custom_icons/postgresql-icon.png
-  }
-
-  AI pipelines database: {
-    label: AI pipelines database
-    shape: rectangle
-    icon: ../../../custom_icons/mariadb-icon.png
-  }
+tableformer: {
+  label: TableFormer model
+  shape: rectangle
+  icon: ../../../custom_icons/huggingface-icon.svg
 }
 
-Storage service: {
-  label: Storage service
+layout: {
+  label: Layout model
+  shape: rectangle
+  icon: ../../../custom_icons/huggingface-icon.svg
+}
 
-  HTTP source documents: {
-    label: HTTP source documents
-    shape: rectangle
-    icon: ../../../custom_icons/http-server-icon.png
-  }
+pgVector database: {
+  label: pgVector database
+  shape: rectangle
+  icon: ../../../custom_icons/postgresql-icon.png
+}
 
-  S3 source documents: {
-    label: S3 source documents
-    shape: rectangle
-    icon: ../../../custom_icons/Icons/Bucket/Icon-Red_Hat-Bucket-A-Red-RGB.Large_icon_transparent.png
-  }
+AI pipelines database: {
+  label: AI pipelines database
+  shape: rectangle
+  icon: ../../../custom_icons/mariadb-icon.png
+}
 
-  S3 AI pipelines artifacts: {
-    label: S3 AI pipelines artifacts
-    shape: rectangle
-    icon: ../../../custom_icons/Icons/Bucket/Icon-Red_Hat-Bucket-A-Red-RGB.Large_icon_transparent.png
-  }
+HTTP source documents: {
+  label: HTTP source documents
+  shape: rectangle
+  icon: ../../../custom_icons/http-server-icon.png
+}
+
+S3 source documents: {
+  label: S3 source documents
+  shape: rectangle
+  icon: ../../../custom_icons/Icons/Bucket/Icon-Red_Hat-Bucket-A-Red-RGB.Large_icon_transparent.png
+}
+
+S3 AI pipelines artifacts: {
+  label: S3 AI pipelines artifacts
+  shape: rectangle
+  icon: ../../../custom_icons/Icons/Bucket/Icon-Red_Hat-Bucket-A-Red-RGB.Large_icon_transparent.png
+}
+
+# Hugging Face models to download pipeline (pull operation - dotted)
+tableformer -> Red Hat OpenShift AI.ai-project-namespace-x.rag-data-ingestion.download-docling-models.system-impl: {
+  style.stroke-dash: 5
+}
+layout -> Red Hat OpenShift AI.ai-project-namespace-x.rag-data-ingestion.download-docling-models.system-impl: {
+  style.stroke-dash: 5
 }
 
 # S3 source documents to import pipeline (pull operation - dotted)
-Storage service.S3 source documents -> ai-project-namespace-x.rag-data-ingestion.import-pdfs.system-impl.boto3: {
+S3 source documents -> Red Hat OpenShift AI.ai-project-namespace-x.rag-data-ingestion.import-pdfs.system-impl.boto3: {
   style.stroke-dash: 5
 }
 
 # HTTP source documents to import pipeline (pull operation - dotted)
-Storage service.HTTP source documents -> ai-project-namespace-x.rag-data-ingestion.import-pdfs.system-impl.requests: {
+HTTP source documents -> Red Hat OpenShift AI.ai-project-namespace-x.rag-data-ingestion.import-pdfs.system-impl.requests: {
+  style.stroke-dash: 5
+}
+
+# Embedding model to generate embeddings task (pull operation - dotted)
+Red Hat OpenShift AI.ai-project-namespace-x.model-servers.embedding-model -> Red Hat OpenShift AI.ai-project-namespace-x.rag-data-ingestion.generate-embeddings.system-impl: {
   style.stroke-dash: 5
 }
 
 # Pipeline writes to external database
-ai-project-namespace-x.rag-data-ingestion.store-in-vectordb -> HA database services.pgVector database
+Red Hat OpenShift AI.ai-project-namespace-x.rag-data-ingestion.store-in-vectordb -> pgVector database
 
 # AI pipeline server uses metadata database (bidirectional)
-ai-project-namespace-x.ai-pipeline-server -> HA database services.AI pipelines database
-HA database services.AI pipelines database -> ai-project-namespace-x.ai-pipeline-server: {
+Red Hat OpenShift AI.ai-project-namespace-x.ai-pipeline-server -> AI pipelines database
+AI pipelines database -> Red Hat OpenShift AI.ai-project-namespace-x.ai-pipeline-server: {
   style.stroke-dash: 5
 }
 
 # AI project namespace uses S3 artifact storage (bidirectional)
-ai-project-namespace-x -> Storage service.S3 AI pipelines artifacts
-Storage service.S3 AI pipelines artifacts -> ai-project-namespace-x: {
+Red Hat OpenShift AI.ai-project-namespace-x -> S3 AI pipelines artifacts
+S3 AI pipelines artifacts -> Red Hat OpenShift AI.ai-project-namespace-x: {
   style.stroke-dash: 5
 }
 
 # Legend
 legend: {
-  label: "Data Flow Convention"
+  label: "Flow Convention"
+  direction: right
+  grid-gap: 20
 
-  push: {
+  execution: {
+    source: {label: "task"}
+    destination: {label: "task"}
+    source -> destination: {style.stroke: "#e03131"; style.stroke-width: 3}
+  }
+
+  data-push: {
     source: {label: "source"}
     destination: {label: "destination"}
     source -> destination
   }
 
-  pull: {
+  data-pull: {
     source: {label: "source"}
     destination: {label: "destination"}
     source -> destination: {style.stroke-dash: 5}
